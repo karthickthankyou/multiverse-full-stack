@@ -25,6 +25,7 @@
     "tsc": "yarn workspaces run tsc",
     "prevalidate": "yarn format:write",
     "validate": "run-p format:check lint tsc",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "cloc": "npx cloc --exclude-dir=node_modules,dist,build,yarn.lock,package.json,@generated,generated,.next ."
   }
 }
