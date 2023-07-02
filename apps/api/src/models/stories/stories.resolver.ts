@@ -4,11 +4,13 @@ import { Story } from './entities/story.entity'
 import { FindManyStoryArgs, FindUniqueStoryArgs } from './dto/find.args'
 import { CreateStoryInput } from './dto/create-story.input'
 import { UpdateStoryInput } from './dto/update-story.input'
+import { AllowAuthenticated } from 'src/common/decorators/auth/auth.decorator'
 
 @Resolver(() => Story)
 export class StoriesResolver {
   constructor(private readonly storiesService: StoriesService) {}
 
+  @AllowAuthenticated()
   @Mutation(() => Story)
   createStory(@Args('createStoryInput') args: CreateStoryInput) {
     return this.storiesService.create(args)

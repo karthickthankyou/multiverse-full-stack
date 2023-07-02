@@ -1,4 +1,3 @@
-import { forwardRef } from '@nestjs/common'
 import { Field, InputType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import {

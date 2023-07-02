@@ -9,6 +9,7 @@ import { NodesModule } from './models/nodes/nodes.module'
 import { StoriesModule } from './models/stories/stories.module'
 import { UsersModule } from './models/users/users.module'
 import { PrismaModule } from './common/prisma/prisma.module'
+import { FirebaseModule } from './common/firebase/firebase.module'
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { PrismaModule } from './common/prisma/prisma.module'
     ConfigModule.forRoot(),
 
     PrismaModule,
+    FirebaseModule,
 
     NodesModule,
     StoriesModule,

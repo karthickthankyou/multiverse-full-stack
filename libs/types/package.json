@@ -1,0 +1,10 @@
+{
+  "name": "@multiverse-org/types",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "license": "MIT",
+  "scripts": {
+    "lint": "echo 'No lint script for type library.'",
+    "tsc": "echo 'No tsc script for type library.'"
+  }
+}
