@@ -35,6 +35,36 @@ type User {
   name: String!
 }
 
+type LoginOutput {
+  kind: String!
+  localId: String!
+  email: String!
+  displayName: String!
+  idToken: String!
+  refreshToken: String!
+  expiresIn: String!
+}
+
+type RegisterOutput {
+  kind: String!
+  localId: String!
+  email: String!
+  displayName: String!
+  idToken: String!
+  refreshToken: String!
+  expiresIn: String!
+}
+
+type RefreshTokenOutput {
+  access_token: String!
+  expires_in: String!
+  token_type: String!
+  refresh_token: String!
+  id_token: String!
+  user_id: String!
+  project_id: String!
+}
+
 type Query {
   nodes(where: NodeWhereInput, orderBy: [NodeOrderByWithRelationInput!], cursor: NodeWhereUniqueInput, take: Int, skip: Int, distinct: [NodeScalarFieldEnum!]): [Node!]!
   node(where: NodeWhereUniqueInput): Node!
@@ -252,6 +282,12 @@ enum UserScalarFieldEnum {
 }
 
 type Mutation {
+  login(credentials: LoginInput!): LoginOutput!
+  register(credentials: RegisterInput!): RegisterOutput!
+  logout: Boolean!
+  refreshToken(refreshTokenInput: RefreshTokenInput!): RefreshTokenOutput!
+  setRole(setRoleInput: SetRoleInput!): Boolean!
+  setAdmin(uid: String!): Boolean!
   createNode(createNodeInput: CreateNodeInput!): Node!
   updateNode(updateNodeInput: UpdateNodeInput!): Node!
   removeNode(where: NodeWhereUniqueInput): Node!
@@ -261,6 +297,32 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(where: UserWhereUniqueInput): User!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+  displayName: String
+}
+
+input RefreshTokenInput {
+  refresh_token: String!
+}
+
+input SetRoleInput {
+  uid: String!
+  role: RoleEnum!
+}
+
+"""Enum for roles"""
+enum RoleEnum {
+  admin
+  manager
 }
 
 input CreateNodeInput {

@@ -1,0 +1,1 @@
+export { AboutPageCustomer } from './AboutPageCustomer'

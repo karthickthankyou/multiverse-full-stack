@@ -10,6 +10,7 @@ import { StoriesModule } from './models/stories/stories.module'
 import { UsersModule } from './models/users/users.module'
 import { PrismaModule } from './common/prisma/prisma.module'
 import { FirebaseModule } from './common/firebase/firebase.module'
+import { AuthModule } from './common/auth/auth.module'
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { FirebaseModule } from './common/firebase/firebase.module'
     PrismaModule,
     FirebaseModule,
 
+    AuthModule,
     NodesModule,
     StoriesModule,
     UsersModule,

@@ -1,0 +1,15 @@
+{
+  "name": "@multiverse-org/hooks",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "dependencies": {
+    "@multiverse-org/network": "*",
+    "@multiverse-org/store": "*",
+    "@multiverse-org/hooks": "*"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "lint": "echo 'No lint script for type library.'"
+  }
+}
