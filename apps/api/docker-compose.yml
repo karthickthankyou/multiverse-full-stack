@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: multiverse_db
+    image: postgres
+    restart: always
+    ports:
+      - 1005:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  meilisearch:
+    container_name: multiverse_meili
+    image: getmeili/meilisearch:latest
+    ports:
+      - 1205:7700
+    environment:
+      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
+
+volumes:
+  db_data:

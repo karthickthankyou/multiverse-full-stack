@@ -1,0 +1,304 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Node {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  content: String!
+  start: Boolean!
+  end: Boolean!
+  authorId: String!
+  storyId: Int!
+  parentNodeId: Int!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Story {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  authorId: String!
+}
+
+type User {
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+}
+
+type Query {
+  nodes(where: NodeWhereInput, orderBy: [NodeOrderByWithRelationInput!], cursor: NodeWhereUniqueInput, take: Int, skip: Int, distinct: [NodeScalarFieldEnum!]): [Node!]!
+  node(where: NodeWhereUniqueInput): Node!
+  stories(where: StoryWhereInput, orderBy: [StoryOrderByWithRelationInput!], cursor: StoryWhereUniqueInput, take: Int, skip: Int, distinct: [StoryScalarFieldEnum!]): [Story!]!
+  story(where: StoryWhereUniqueInput): Story!
+  users(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
+  user(where: UserWhereUniqueInput): User!
+}
+
+input NodeWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  title: StringFilter
+  content: StringFilter
+  start: BoolFilter
+  end: BoolFilter
+  authorId: StringFilter
+  storyId: IntFilter
+  parentNodeId: IntFilter
+  author: UserRelationFilter
+  story: StoryRelationFilter
+  parentNode: NodeRelationFilter
+  choices: NodeListRelationFilter
+  AND: [NodeWhereInput!]
+  OR: [NodeWhereInput!]
+  NOT: [NodeWhereInput!]
+}
+
+input IntFilter {
+  equals: Int
+  in: Int
+  notIn: Int
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: Int
+}
+
+input DateTimeFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: String
+  mode: QueryMode
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: Boolean
+}
+
+input UserRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
+input UserWhereInput {
+  uid: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  name: StringFilter
+  stories: StoryListRelationFilter
+  nodes: NodeListRelationFilter
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+}
+
+input StoryListRelationFilter {
+  every: StoryWhereInput
+  some: StoryWhereInput
+  none: StoryWhereInput
+}
+
+input StoryWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  title: StringFilter
+  authorId: StringFilter
+  author: UserRelationFilter
+  nodes: NodeListRelationFilter
+  AND: [StoryWhereInput!]
+  OR: [StoryWhereInput!]
+  NOT: [StoryWhereInput!]
+}
+
+input NodeListRelationFilter {
+  every: NodeWhereInput
+  some: NodeWhereInput
+  none: NodeWhereInput
+}
+
+input StoryRelationFilter {
+  is: StoryWhereInput
+  isNot: StoryWhereInput
+}
+
+input NodeRelationFilter {
+  is: NodeWhereInput
+  isNot: NodeWhereInput
+}
+
+input NodeOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  title: SortOrder
+  content: SortOrder
+  start: SortOrder
+  end: SortOrder
+  authorId: SortOrder
+  storyId: SortOrder
+  parentNodeId: SortOrder
+  author: UserOrderByWithRelationInput
+  story: StoryOrderByWithRelationInput
+  parentNode: NodeOrderByWithRelationInput
+  choices: NodeOrderByRelationAggregateInput
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input UserOrderByWithRelationInput {
+  uid: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  name: SortOrder
+  stories: StoryOrderByRelationAggregateInput
+  nodes: NodeOrderByRelationAggregateInput
+}
+
+input StoryOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input NodeOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input StoryOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  title: SortOrder
+  authorId: SortOrder
+  author: UserOrderByWithRelationInput
+  nodes: NodeOrderByRelationAggregateInput
+}
+
+input NodeWhereUniqueInput {
+  id: Int
+}
+
+enum NodeScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  title
+  content
+  start
+  end
+  authorId
+  storyId
+  parentNodeId
+}
+
+input StoryWhereUniqueInput {
+  id: Int
+}
+
+enum StoryScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  title
+  authorId
+}
+
+input UserWhereUniqueInput {
+  uid: String
+}
+
+enum UserScalarFieldEnum {
+  uid
+  createdAt
+  updatedAt
+  name
+}
+
+type Mutation {
+  createNode(createNodeInput: CreateNodeInput!): Node!
+  updateNode(updateNodeInput: UpdateNodeInput!): Node!
+  removeNode(where: NodeWhereUniqueInput): Node!
+  createStory(createStoryInput: CreateStoryInput!): Story!
+  updateStory(updateStoryInput: UpdateStoryInput!): Story!
+  removeStory(where: StoryWhereUniqueInput): Story!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(where: UserWhereUniqueInput): User!
+}
+
+input CreateNodeInput {
+  title: String!
+  content: String!
+  start: Boolean!
+  end: Boolean!
+  authorId: String!
+  storyId: Int!
+}
+
+input UpdateNodeInput {
+  title: String
+  content: String
+  start: Boolean
+  end: Boolean
+  authorId: String
+  storyId: Int
+  id: Int!
+}
+
+input CreateStoryInput {
+  title: String!
+  authorId: String!
+}
+
+input UpdateStoryInput {
+  title: String
+  authorId: String
+  id: Int!
+}
+
+input CreateUserInput {
+  uid: String!
+  name: String!
+}
+
+input UpdateUserInput {
+  uid: String!
+  name: String
+}

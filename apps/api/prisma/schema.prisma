@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    uid       String   @id
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name String
+
+    stories Story[]
+    nodes   Node[]
+}
+
+model Story {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    title String
+
+    author   User   @relation(fields: [authorId], references: [uid])
+    authorId String
+    nodes    Node[]
+}
+
+model Node {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    title   String
+    content String
+    start   Boolean? @default(false)
+    end     Boolean? @default(false)
+
+    author   User   @relation(fields: [authorId], references: [uid])
+    authorId String
+    story    Story  @relation(fields: [storyId], references: [id])
+    storyId  Int
+
+    parentNodeId Int?
+    parentNode   Node?  @relation("Choices", fields: [parentNodeId], references: [id])
+    choices      Node[] @relation("Choices")
+}
