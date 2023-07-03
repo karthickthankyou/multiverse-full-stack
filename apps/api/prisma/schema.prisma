@@ -48,7 +48,6 @@ model Node {
     story    Story  @relation(fields: [storyId], references: [id])
     storyId  Int
 
-    parentNodeId Int?
-    parentNode   Node?  @relation("Choices", fields: [parentNodeId], references: [id])
-    choices      Node[] @relation("Choices")
+    parentNodes Node[] @relation("Choices")
+    childNodes  Node[] @relation("Choices")
 }

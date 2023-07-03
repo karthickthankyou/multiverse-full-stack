@@ -12,7 +12,10 @@ type Node {
   end: Boolean!
   authorId: String!
   storyId: Int!
-  parentNodeId: Int!
+  author: User
+  story: Story
+  parentNodes: [Node!]
+  childNodes: [Node!]
 }
 
 """
@@ -20,19 +23,22 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type User {
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  stories: [Story!]
+}
+
 type Story {
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
   authorId: String!
-}
-
-type User {
-  uid: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  name: String!
+  nodes: [Node!]
+  users: User
 }
 
 type LoginOutput {
@@ -68,13 +74,15 @@ type RefreshTokenOutput {
 type Query {
   nodes(where: NodeWhereInput, orderBy: [NodeOrderByWithRelationInput!], cursor: NodeWhereUniqueInput, take: Int, skip: Int, distinct: [NodeScalarFieldEnum!]): [Node!]!
   node(where: NodeWhereUniqueInput): Node!
-  stories(where: StoryWhereInput, orderBy: [StoryOrderByWithRelationInput!], cursor: StoryWhereUniqueInput, take: Int, skip: Int, distinct: [StoryScalarFieldEnum!]): [Story!]!
+  stories(where: StoryWhereInput, orderBy: [StoryOrderByWithRelationInput!], cursor: StoryWhereUniqueInput, take: Int, skip: Int, distinct: [StoryScalarFieldEnum!], searchTerm: String): [Story!]!
   story(where: StoryWhereUniqueInput): Story!
   users(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
-  user(where: UserWhereUniqueInput): User!
+  user(where: UserWhereUniqueInput): User
 }
 
 input NodeWhereInput {
+  parentNodes: NodeListRelationFilter
+  childNodes: NodeListRelationFilter
   id: IntFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -84,14 +92,17 @@ input NodeWhereInput {
   end: BoolFilter
   authorId: StringFilter
   storyId: IntFilter
-  parentNodeId: IntFilter
   author: UserRelationFilter
   story: StoryRelationFilter
-  parentNode: NodeRelationFilter
-  choices: NodeListRelationFilter
   AND: [NodeWhereInput!]
   OR: [NodeWhereInput!]
   NOT: [NodeWhereInput!]
+}
+
+input NodeListRelationFilter {
+  every: NodeWhereInput
+  some: NodeWhereInput
+  none: NodeWhereInput
 }
 
 input IntFilter {
@@ -176,23 +187,14 @@ input StoryWhereInput {
   NOT: [StoryWhereInput!]
 }
 
-input NodeListRelationFilter {
-  every: NodeWhereInput
-  some: NodeWhereInput
-  none: NodeWhereInput
-}
-
 input StoryRelationFilter {
   is: StoryWhereInput
   isNot: StoryWhereInput
 }
 
-input NodeRelationFilter {
-  is: NodeWhereInput
-  isNot: NodeWhereInput
-}
-
 input NodeOrderByWithRelationInput {
+  parentNodes: NodeOrderByRelationAggregateInput
+  childNodes: NodeOrderByRelationAggregateInput
   id: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
@@ -202,11 +204,12 @@ input NodeOrderByWithRelationInput {
   end: SortOrder
   authorId: SortOrder
   storyId: SortOrder
-  parentNodeId: SortOrder
   author: UserOrderByWithRelationInput
   story: StoryOrderByWithRelationInput
-  parentNode: NodeOrderByWithRelationInput
-  choices: NodeOrderByRelationAggregateInput
+}
+
+input NodeOrderByRelationAggregateInput {
+  _count: SortOrder
 }
 
 enum SortOrder {
@@ -224,10 +227,6 @@ input UserOrderByWithRelationInput {
 }
 
 input StoryOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
-input NodeOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
@@ -255,7 +254,6 @@ enum NodeScalarFieldEnum {
   end
   authorId
   storyId
-  parentNodeId
 }
 
 input StoryWhereUniqueInput {

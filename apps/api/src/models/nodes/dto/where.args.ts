@@ -24,6 +24,10 @@ export class NodeWhereUniqueInput
 export class NodeWhereInput
   implements RestrictProperties<NodeWhereInput, Prisma.NodeWhereInput>
 {
+  @Field(() => NodeListRelationFilter, { nullable: true })
+  parentNodes: NodeListRelationFilter
+  @Field(() => NodeListRelationFilter, { nullable: true })
+  childNodes: NodeListRelationFilter
   @Field(() => IntFilter, { nullable: true })
   id: IntFilter
   @Field(() => DateTimeFilter, { nullable: true })
@@ -42,16 +46,11 @@ export class NodeWhereInput
   authorId: StringFilter
   @Field(() => IntFilter, { nullable: true })
   storyId: IntFilter
-  @Field(() => IntFilter, { nullable: true })
-  parentNodeId: IntFilter
+
   @Field(() => UserRelationFilter, { nullable: true })
   author: UserRelationFilter
   @Field(() => StoryRelationFilter, { nullable: true })
   story: StoryRelationFilter
-  @Field(() => NodeRelationFilter, { nullable: true })
-  parentNode: NodeRelationFilter
-  @Field(() => NodeListRelationFilter, { nullable: true })
-  choices: NodeListRelationFilter
 
   @Field(() => [NodeWhereInput], { nullable: true })
   AND: NodeWhereInput[]

@@ -1,6 +1,6 @@
 import { ArgsType, Field, registerEnumType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
-import { NodeOrderByWithRelationInput } from './orderBy.args'
+import NodeOrderByWithRelationInput from './orderBy.args'
 import { NodeWhereInput, NodeWhereUniqueInput } from './where.args'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 

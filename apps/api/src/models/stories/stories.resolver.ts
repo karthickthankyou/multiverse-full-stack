@@ -1,17 +1,33 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql'
 import { StoriesService } from './stories.service'
 import { Story } from './entities/story.entity'
 import { FindManyStoryArgs, FindUniqueStoryArgs } from './dto/find.args'
 import { CreateStoryInput } from './dto/create-story.input'
 import { UpdateStoryInput } from './dto/update-story.input'
-import { AllowAuthenticated } from 'src/common/decorators/auth/auth.decorator'
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator'
 import { MeilisearchService } from 'src/common/meilisearch/meilisearch.service'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { GetUserType } from '@multiverse-org/types'
+import { checkRowLevelPermission } from 'src/common/guards'
+import { Node } from '../nodes/entities/node.entity'
+import { User } from '../users/entities/user.entity'
 
 @Resolver(() => Story)
 export class StoriesResolver {
   constructor(
     private readonly storiesService: StoriesService,
     private readonly meili: MeilisearchService,
+    private readonly prisma: PrismaService,
   ) {}
 
   @AllowAuthenticated()
@@ -23,8 +39,11 @@ export class StoriesResolver {
   }
 
   @Query(() => [Story], { name: 'stories' })
-  findAll(@Args() args: FindManyStoryArgs) {
-    return this.storiesService.findAll(args)
+  findAll(
+    @Args() args: FindManyStoryArgs,
+    @Args('searchTerm', { nullable: true }) searchTerm: string,
+  ) {
+    return this.storiesService.findAll(args, searchTerm)
   }
 
   @Query(() => Story, { name: 'story' })
@@ -32,13 +51,39 @@ export class StoriesResolver {
     return this.storiesService.findOne(args)
   }
 
+  @AllowAuthenticated()
   @Mutation(() => Story)
-  updateStory(@Args('updateStoryInput') args: UpdateStoryInput) {
+  async updateStory(
+    @Args('updateStoryInput') args: UpdateStoryInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const story = await this.prisma.story.findUnique({ where: { id: args.id } })
+    checkRowLevelPermission(user, story.authorId)
     return this.storiesService.update(args)
   }
 
+  @AllowAuthenticated()
   @Mutation(() => Story)
-  removeStory(@Args() args: FindUniqueStoryArgs) {
+  async removeStory(
+    @Args() args: FindUniqueStoryArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const story = await this.prisma.story.findUnique(args)
+    checkRowLevelPermission(user, story.authorId)
     return this.storiesService.remove(args)
+  }
+
+  @ResolveField(() => [Node], { nullable: true })
+  nodes(@Parent() parent: Story) {
+    return this.prisma.node.findMany({
+      where: { storyId: parent.id },
+    })
+  }
+
+  @ResolveField(() => User, { nullable: true })
+  author(@Parent() parent: Story) {
+    return this.prisma.user.findUnique({
+      where: { uid: parent.authorId },
+    })
   }
 }

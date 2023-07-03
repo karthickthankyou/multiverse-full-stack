@@ -11,13 +11,17 @@ export class NodeOrderByRelationAggregateInput {
 }
 
 @InputType()
-export class NodeOrderByWithRelationInput
+export default class NodeOrderByWithRelationInput
   implements
     RestrictProperties<
       NodeOrderByWithRelationInput,
       Prisma.NodeOrderByWithRelationInput
     >
 {
+  @Field(() => NodeOrderByRelationAggregateInput, { nullable: true })
+  parentNodes: NodeOrderByRelationAggregateInput
+  @Field(() => NodeOrderByRelationAggregateInput, { nullable: true })
+  childNodes: NodeOrderByRelationAggregateInput
   @Field(() => Prisma.SortOrder, { nullable: true })
   id: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
@@ -36,14 +40,9 @@ export class NodeOrderByWithRelationInput
   authorId: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
   storyId: Prisma.SortOrder
-  @Field(() => Prisma.SortOrder, { nullable: true })
-  parentNodeId: Prisma.SortOrder
+
   @Field(() => UserOrderByWithRelationInput, { nullable: true })
   author: UserOrderByWithRelationInput
   @Field(() => StoryOrderByWithRelationInput, { nullable: true })
   story: StoryOrderByWithRelationInput
-  @Field(() => NodeOrderByWithRelationInput, { nullable: true })
-  parentNode: NodeOrderByWithRelationInput
-  @Field(() => NodeOrderByRelationAggregateInput, { nullable: true })
-  choices: NodeOrderByRelationAggregateInput
 }

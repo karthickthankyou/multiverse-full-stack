@@ -13,7 +13,6 @@ export class Node implements RestrictProperties<Node, NodeType> {
   end: boolean
   authorId: string
   storyId: number
-  parentNodeId: number
   // Todo fill all properties. To make it nullable add below.
   // @Field(() => String, { nullable: true })
 }

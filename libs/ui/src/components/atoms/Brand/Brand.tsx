@@ -3,7 +3,7 @@ import { BrandIcon } from '../BrandIcon'
 export interface IBrandProps {
   shortForm?: boolean
   className?: string
-  type?: 'admin' | 'manager' | 'valet'
+  type?: 'admin' | 'writer'
 }
 
 export const Brand = ({
