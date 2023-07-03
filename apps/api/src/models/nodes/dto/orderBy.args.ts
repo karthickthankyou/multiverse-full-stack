@@ -18,6 +18,8 @@ export default class NodeOrderByWithRelationInput
       Prisma.NodeOrderByWithRelationInput
     >
 {
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  image: Prisma.SortOrder
   @Field(() => NodeOrderByRelationAggregateInput, { nullable: true })
   parentNodes: NodeOrderByRelationAggregateInput
   @Field(() => NodeOrderByRelationAggregateInput, { nullable: true })

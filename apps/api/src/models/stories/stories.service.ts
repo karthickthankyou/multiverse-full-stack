@@ -11,9 +11,10 @@ export class StoriesService {
     private readonly prisma: PrismaService,
     private readonly meili: MeilisearchService,
   ) {}
-  create(createStoryInput: CreateStoryInput) {
+
+  create({ nodes, ...createStoryInput }: CreateStoryInput) {
     return this.prisma.story.create({
-      data: createStoryInput,
+      data: { ...createStoryInput, nodes: { createMany: { data: nodes } } },
     })
   }
 
@@ -49,7 +50,7 @@ export class StoriesService {
   }
 
   update(updateStoryInput: UpdateStoryInput) {
-    const { id, ...data } = updateStoryInput
+    const { id, nodes, ...data } = updateStoryInput
     return this.prisma.story.update({
       where: { id },
       data: data,

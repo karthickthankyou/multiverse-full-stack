@@ -1,4 +1,4 @@
-import { ObjectType } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
 import { User as UserType } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 
@@ -7,6 +7,7 @@ export class User implements RestrictProperties<User, UserType> {
   uid: string
   createdAt: Date
   updatedAt: Date
+  @Field(() => String, { nullable: true })
   name: string
   // Todo fill all properties. To make it nullable add below.
   // @Field(() => String, { nullable: true })

@@ -1,4 +1,4 @@
-import create from 'zustand'
+import { create } from 'zustand'
 import { persist, devtools } from 'zustand/middleware'
 
 type Role = 'admin' | 'cook'
@@ -30,5 +30,5 @@ export const useUserStore = create<UserSliceType>((set) => ({
   ...initialState,
   setUser: (payload: Partial<UserSliceType>) =>
     set((state) => ({ ...state, ...payload, loaded: true })),
-  resetUser: () => set(initialState),
+  resetUser: () => set({ ...initialState, loaded: true }),
 }))

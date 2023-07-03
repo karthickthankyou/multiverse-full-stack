@@ -3,13 +3,14 @@
 # ------------------------------------------------------
 
 type Node {
+  image: String
+  start: Boolean
+  end: Boolean
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
   content: String!
-  start: Boolean!
-  end: Boolean!
   authorId: String!
   storyId: Int!
   author: User
@@ -23,22 +24,27 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type AggregateCountOutput {
+  count: Int!
+}
+
 type User {
+  name: String
   uid: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  name: String!
   stories: [Story!]
 }
 
 type Story {
+  image: String!
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
   authorId: String!
   nodes: [Node!]
-  users: User
+  author: User
 }
 
 type LoginOutput {
@@ -74,6 +80,7 @@ type RefreshTokenOutput {
 type Query {
   nodes(where: NodeWhereInput, orderBy: [NodeOrderByWithRelationInput!], cursor: NodeWhereUniqueInput, take: Int, skip: Int, distinct: [NodeScalarFieldEnum!]): [Node!]!
   node(where: NodeWhereUniqueInput): Node!
+  nodesCount(where: NodeWhereInput): AggregateCountOutput!
   stories(where: StoryWhereInput, orderBy: [StoryOrderByWithRelationInput!], cursor: StoryWhereUniqueInput, take: Int, skip: Int, distinct: [StoryScalarFieldEnum!], searchTerm: String): [Story!]!
   story(where: StoryWhereUniqueInput): Story!
   users(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
@@ -81,6 +88,7 @@ type Query {
 }
 
 input NodeWhereInput {
+  image: StringFilter
   parentNodes: NodeListRelationFilter
   childNodes: NodeListRelationFilter
   id: IntFilter
@@ -97,6 +105,26 @@ input NodeWhereInput {
   AND: [NodeWhereInput!]
   OR: [NodeWhereInput!]
   NOT: [NodeWhereInput!]
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: String
+  mode: QueryMode
+}
+
+enum QueryMode {
+  default
+  insensitive
 }
 
 input NodeListRelationFilter {
@@ -124,26 +152,6 @@ input DateTimeFilter {
   lte: String
   gt: String
   gte: String
-}
-
-input StringFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: String
-  mode: QueryMode
-}
-
-enum QueryMode {
-  default
-  insensitive
 }
 
 input BoolFilter {
@@ -175,6 +183,7 @@ input StoryListRelationFilter {
 }
 
 input StoryWhereInput {
+  image: StringFilter
   id: IntFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -193,6 +202,7 @@ input StoryRelationFilter {
 }
 
 input NodeOrderByWithRelationInput {
+  image: SortOrder
   parentNodes: NodeOrderByRelationAggregateInput
   childNodes: NodeOrderByRelationAggregateInput
   id: SortOrder
@@ -208,13 +218,13 @@ input NodeOrderByWithRelationInput {
   story: StoryOrderByWithRelationInput
 }
 
-input NodeOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
 enum SortOrder {
   asc
   desc
+}
+
+input NodeOrderByRelationAggregateInput {
+  _count: SortOrder
 }
 
 input UserOrderByWithRelationInput {
@@ -231,6 +241,7 @@ input StoryOrderByRelationAggregateInput {
 }
 
 input StoryOrderByWithRelationInput {
+  image: SortOrder
   id: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
@@ -252,6 +263,7 @@ enum NodeScalarFieldEnum {
   content
   start
   end
+  image
   authorId
   storyId
 }
@@ -266,6 +278,7 @@ enum StoryScalarFieldEnum {
   updatedAt
   title
   authorId
+  image
 }
 
 input UserWhereUniqueInput {
@@ -324,41 +337,56 @@ enum RoleEnum {
 }
 
 input CreateNodeInput {
+  image: String
+  start: Boolean
+  end: Boolean
   title: String!
   content: String!
-  start: Boolean!
-  end: Boolean!
   authorId: String!
   storyId: Int!
 }
 
 input UpdateNodeInput {
-  title: String
-  content: String
+  image: String
   start: Boolean
   end: Boolean
+  title: String
+  content: String
   authorId: String
   storyId: Int
   id: Int!
 }
 
 input CreateStoryInput {
+  image: String!
   title: String!
+  authorId: String!
+  nodes: [CreateNodeInputWithoutStory!]!
+}
+
+input CreateNodeInputWithoutStory {
+  image: String
+  start: Boolean
+  end: Boolean
+  title: String!
+  content: String!
   authorId: String!
 }
 
 input UpdateStoryInput {
+  image: String
   title: String
   authorId: String
+  nodes: [CreateNodeInputWithoutStory!]
   id: Int!
 }
 
 input CreateUserInput {
+  name: String
   uid: String!
-  name: String!
 }
 
 input UpdateUserInput {
-  uid: String!
   name: String
+  uid: String!
 }

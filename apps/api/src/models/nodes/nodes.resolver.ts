@@ -21,6 +21,8 @@ import { checkRowLevelPermission } from 'src/common/guards'
 
 import { User } from '../users/entities/user.entity'
 import { Story } from '../stories/entities/story.entity'
+import { AggregateCountOutput } from 'src/common/dtos/common.input'
+import { NodeWhereInput } from './dto/where.args'
 
 @Resolver(() => Node)
 export class NodesResolver {
@@ -65,6 +67,20 @@ export class NodesResolver {
     const node = await this.prisma.node.findUnique(args)
     checkRowLevelPermission(user, node.authorId)
     return this.nodesService.remove(args)
+  }
+
+  @Query(() => AggregateCountOutput, {
+    name: 'nodesCount',
+  })
+  async nodesCount(
+    @Args('where', { nullable: true })
+    where: NodeWhereInput,
+  ) {
+    const nodes = await this.prisma.node.aggregate({
+      _count: { _all: true },
+      where,
+    })
+    return { count: nodes._count._all }
   }
 
   @ResolveField(() => User, { nullable: true })

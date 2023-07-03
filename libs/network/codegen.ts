@@ -5,8 +5,8 @@ const config: CodegenConfig = {
   schema: '../../apps/api/src/schema.gql',
   watch: true,
   generates: {
-    '../../apps/web/src/gql/generated.tsx': {
-      documents: '../../apps/web/src/**/*.gql.tsx',
+    './src/gql/generated.tsx': {
+      documents: './src/**/*.gql.tsx',
       plugins: [
         'typescript',
         'typescript-operations',

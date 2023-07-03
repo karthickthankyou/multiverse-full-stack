@@ -23,6 +23,8 @@ export class StoryWhereUniqueInput
 export class StoryWhereInput
   implements RestrictProperties<StoryWhereInput, Prisma.StoryWhereInput>
 {
+  @Field(() => StringFilter, { nullable: true })
+  image: StringFilter
   @Field(() => IntFilter, { nullable: true })
   id: IntFilter
   @Field(() => DateTimeFilter, { nullable: true })

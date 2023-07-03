@@ -1,9 +1,10 @@
 import { BrandIcon } from '../BrandIcon'
+import { Role } from '@multiverse-org/types'
 
 export interface IBrandProps {
   shortForm?: boolean
   className?: string
-  type?: 'admin' | 'writer'
+  type?: Role
 }
 
 export const Brand = ({
@@ -20,7 +21,7 @@ export const Brand = ({
           </div>
         ) : (
           <div className="flex items-center gap-1 font-medium tracking-tighter font-playfair">
-            <BrandIcon /> Autospace
+            <BrandIcon /> Multiverse
             <span className="text-xs">{type}</span>
           </div>
         )}

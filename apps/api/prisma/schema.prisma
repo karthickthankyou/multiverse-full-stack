@@ -15,7 +15,7 @@ model User {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    name String
+    name String?
 
     stories Story[]
     nodes   Node[]
@@ -28,8 +28,9 @@ model Story {
 
     title String
 
-    author   User   @relation(fields: [authorId], references: [uid])
+    author   User    @relation(fields: [authorId], references: [uid])
     authorId String
+    image    String?
     nodes    Node[]
 }
 
@@ -42,6 +43,7 @@ model Node {
     content String
     start   Boolean? @default(false)
     end     Boolean? @default(false)
+    image   String?
 
     author   User   @relation(fields: [authorId], references: [uid])
     authorId String

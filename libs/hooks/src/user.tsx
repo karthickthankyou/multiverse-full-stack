@@ -5,7 +5,6 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { useEffect } from 'react'
 
 export const useUserListener = () => {
-  //   useRefreshToken()
   const { resetUser, setUser } = useUserStore((state) => state)
 
   useEffect(

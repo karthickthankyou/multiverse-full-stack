@@ -13,6 +13,8 @@ export class StoryOrderByWithRelationInput
     >
 {
   @Field(() => Prisma.SortOrder, { nullable: true })
+  image: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder, { nullable: true })
   id: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
   createdAt: Prisma.SortOrder

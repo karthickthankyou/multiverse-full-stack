@@ -33,6 +33,14 @@ export class StoriesResolver {
   @AllowAuthenticated()
   @Mutation(() => Story)
   async createStory(@Args('createStoryInput') args: CreateStoryInput) {
+    const author = await this.prisma.user.findUnique({
+      where: { uid: args.authorId },
+    })
+    if (!author?.name) {
+      const newAuthor = await this.prisma.user.create({
+        data: { uid: args.authorId },
+      })
+    }
     const story = await this.storiesService.create(args)
     await this.meili.addToIndex([{ id: story.id, name: story.title }])
     return story

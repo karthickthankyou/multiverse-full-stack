@@ -4,6 +4,7 @@ import { RestrictProperties } from 'src/common/dtos/common.input'
 
 @ObjectType()
 export class Story implements RestrictProperties<Story, StoryType> {
+  image: string
   id: number
   createdAt: Date
   updatedAt: Date

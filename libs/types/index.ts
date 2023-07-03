@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-export type Role = 'admin' | 'writer'
+export type Role = 'admin' | 'writer' | ''
 
 export type GetUserType = {
   uid: string

@@ -87,3 +87,10 @@ export const useIsPathInArray = (pathArray: string[]) => {
   const currentPath = usePathname()
   return pathArray.includes(currentPath)
 }
+
+export const useTakeSkip = () => {
+  const [take, setTake] = useState(12)
+  const [skip, setSkip] = useState(0)
+
+  return { take, skip, setTake, setSkip }
+}

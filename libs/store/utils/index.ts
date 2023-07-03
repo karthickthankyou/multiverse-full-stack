@@ -1,5 +1,4 @@
-import create from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from 'zustand'
 import { NotificationType } from '@multiverse-org/types'
 
 type State = {

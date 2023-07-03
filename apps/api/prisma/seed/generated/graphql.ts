@@ -22,6 +22,11 @@ export type Scalars = {
   DateTime: any
 }
 
+export type AggregateCountOutput = {
+  __typename?: 'AggregateCountOutput'
+  count: Scalars['Int']
+}
+
 export type BoolFilter = {
   equals?: InputMaybe<Scalars['Boolean']>
   not?: InputMaybe<Scalars['Boolean']>
@@ -30,19 +35,31 @@ export type BoolFilter = {
 export type CreateNodeInput = {
   authorId: Scalars['String']
   content: Scalars['String']
-  end: Scalars['Boolean']
-  start: Scalars['Boolean']
+  end?: InputMaybe<Scalars['Boolean']>
+  image?: InputMaybe<Scalars['String']>
+  start?: InputMaybe<Scalars['Boolean']>
   storyId: Scalars['Int']
+  title: Scalars['String']
+}
+
+export type CreateNodeInputWithoutStory = {
+  authorId: Scalars['String']
+  content: Scalars['String']
+  end?: InputMaybe<Scalars['Boolean']>
+  image?: InputMaybe<Scalars['String']>
+  start?: InputMaybe<Scalars['Boolean']>
   title: Scalars['String']
 }
 
 export type CreateStoryInput = {
   authorId: Scalars['String']
+  image: Scalars['String']
+  nodes: Array<CreateNodeInputWithoutStory>
   title: Scalars['String']
 }
 
 export type CreateUserInput = {
-  name: Scalars['String']
+  name?: InputMaybe<Scalars['String']>
   uid: Scalars['String']
 }
 
@@ -67,14 +84,36 @@ export type IntFilter = {
   notIn?: InputMaybe<Scalars['Int']>
 }
 
+export type LoginInput = {
+  email: Scalars['String']
+  password: Scalars['String']
+}
+
+export type LoginOutput = {
+  __typename?: 'LoginOutput'
+  displayName: Scalars['String']
+  email: Scalars['String']
+  expiresIn: Scalars['String']
+  idToken: Scalars['String']
+  kind: Scalars['String']
+  localId: Scalars['String']
+  refreshToken: Scalars['String']
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
   createNode: Node
   createStory: Story
   createUser: User
+  login: LoginOutput
+  logout: Scalars['Boolean']
+  refreshToken: RefreshTokenOutput
+  register: RegisterOutput
   removeNode: Node
   removeStory: Story
   removeUser: User
+  setAdmin: Scalars['Boolean']
+  setRole: Scalars['Boolean']
   updateNode: Node
   updateStory: Story
   updateUser: User
@@ -92,6 +131,18 @@ export type MutationCreateUserArgs = {
   createUserInput: CreateUserInput
 }
 
+export type MutationLoginArgs = {
+  credentials: LoginInput
+}
+
+export type MutationRefreshTokenArgs = {
+  refreshTokenInput: RefreshTokenInput
+}
+
+export type MutationRegisterArgs = {
+  credentials: RegisterInput
+}
+
 export type MutationRemoveNodeArgs = {
   where?: InputMaybe<NodeWhereUniqueInput>
 }
@@ -102,6 +153,14 @@ export type MutationRemoveStoryArgs = {
 
 export type MutationRemoveUserArgs = {
   where?: InputMaybe<UserWhereUniqueInput>
+}
+
+export type MutationSetAdminArgs = {
+  uid: Scalars['String']
+}
+
+export type MutationSetRoleArgs = {
+  setRoleInput: SetRoleInput
 }
 
 export type MutationUpdateNodeArgs = {
@@ -118,13 +177,17 @@ export type MutationUpdateUserArgs = {
 
 export type Node = {
   __typename?: 'Node'
+  author?: Maybe<User>
   authorId: Scalars['String']
+  childNodes?: Maybe<Array<Node>>
   content: Scalars['String']
   createdAt: Scalars['DateTime']
-  end: Scalars['Boolean']
+  end?: Maybe<Scalars['Boolean']>
   id: Scalars['Int']
-  parentNodeId: Scalars['Int']
-  start: Scalars['Boolean']
+  image?: Maybe<Scalars['String']>
+  parentNodes?: Maybe<Array<Node>>
+  start?: Maybe<Scalars['Boolean']>
+  story?: Maybe<Story>
   storyId: Scalars['Int']
   title: Scalars['String']
   updatedAt: Scalars['DateTime']
@@ -143,23 +206,18 @@ export type NodeOrderByRelationAggregateInput = {
 export type NodeOrderByWithRelationInput = {
   author?: InputMaybe<UserOrderByWithRelationInput>
   authorId?: InputMaybe<SortOrder>
-  choices?: InputMaybe<NodeOrderByRelationAggregateInput>
+  childNodes?: InputMaybe<NodeOrderByRelationAggregateInput>
   content?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
   end?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
-  parentNode?: InputMaybe<NodeOrderByWithRelationInput>
-  parentNodeId?: InputMaybe<SortOrder>
+  image?: InputMaybe<SortOrder>
+  parentNodes?: InputMaybe<NodeOrderByRelationAggregateInput>
   start?: InputMaybe<SortOrder>
   story?: InputMaybe<StoryOrderByWithRelationInput>
   storyId?: InputMaybe<SortOrder>
   title?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
-}
-
-export type NodeRelationFilter = {
-  is?: InputMaybe<NodeWhereInput>
-  isNot?: InputMaybe<NodeWhereInput>
 }
 
 export enum NodeScalarFieldEnum {
@@ -168,7 +226,7 @@ export enum NodeScalarFieldEnum {
   CreatedAt = 'createdAt',
   End = 'end',
   Id = 'id',
-  ParentNodeId = 'parentNodeId',
+  Image = 'image',
   Start = 'start',
   StoryId = 'storyId',
   Title = 'title',
@@ -181,13 +239,13 @@ export type NodeWhereInput = {
   OR?: InputMaybe<Array<NodeWhereInput>>
   author?: InputMaybe<UserRelationFilter>
   authorId?: InputMaybe<StringFilter>
-  choices?: InputMaybe<NodeListRelationFilter>
+  childNodes?: InputMaybe<NodeListRelationFilter>
   content?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   end?: InputMaybe<BoolFilter>
   id?: InputMaybe<IntFilter>
-  parentNode?: InputMaybe<NodeRelationFilter>
-  parentNodeId?: InputMaybe<IntFilter>
+  image?: InputMaybe<StringFilter>
+  parentNodes?: InputMaybe<NodeListRelationFilter>
   start?: InputMaybe<BoolFilter>
   story?: InputMaybe<StoryRelationFilter>
   storyId?: InputMaybe<IntFilter>
@@ -203,9 +261,10 @@ export type Query = {
   __typename?: 'Query'
   node: Node
   nodes: Array<Node>
+  nodesCount: AggregateCountOutput
   stories: Array<Story>
   story: Story
-  user: User
+  user?: Maybe<User>
   users: Array<User>
 }
 
@@ -222,10 +281,15 @@ export type QueryNodesArgs = {
   where?: InputMaybe<NodeWhereInput>
 }
 
+export type QueryNodesCountArgs = {
+  where?: InputMaybe<NodeWhereInput>
+}
+
 export type QueryStoriesArgs = {
   cursor?: InputMaybe<StoryWhereUniqueInput>
   distinct?: InputMaybe<Array<StoryScalarFieldEnum>>
   orderBy?: InputMaybe<Array<StoryOrderByWithRelationInput>>
+  searchTerm?: InputMaybe<Scalars['String']>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
   where?: InputMaybe<StoryWhereInput>
@@ -253,6 +317,49 @@ export enum QueryMode {
   Insensitive = 'insensitive',
 }
 
+export type RefreshTokenInput = {
+  refresh_token: Scalars['String']
+}
+
+export type RefreshTokenOutput = {
+  __typename?: 'RefreshTokenOutput'
+  access_token: Scalars['String']
+  expires_in: Scalars['String']
+  id_token: Scalars['String']
+  project_id: Scalars['String']
+  refresh_token: Scalars['String']
+  token_type: Scalars['String']
+  user_id: Scalars['String']
+}
+
+export type RegisterInput = {
+  displayName?: InputMaybe<Scalars['String']>
+  email: Scalars['String']
+  password: Scalars['String']
+}
+
+export type RegisterOutput = {
+  __typename?: 'RegisterOutput'
+  displayName: Scalars['String']
+  email: Scalars['String']
+  expiresIn: Scalars['String']
+  idToken: Scalars['String']
+  kind: Scalars['String']
+  localId: Scalars['String']
+  refreshToken: Scalars['String']
+}
+
+/** Enum for roles */
+export enum RoleEnum {
+  Admin = 'admin',
+  Manager = 'manager',
+}
+
+export type SetRoleInput = {
+  role: RoleEnum
+  uid: Scalars['String']
+}
+
 export enum SortOrder {
   Asc = 'asc',
   Desc = 'desc',
@@ -260,9 +367,12 @@ export enum SortOrder {
 
 export type Story = {
   __typename?: 'Story'
+  author?: Maybe<User>
   authorId: Scalars['String']
   createdAt: Scalars['DateTime']
   id: Scalars['Int']
+  image: Scalars['String']
+  nodes?: Maybe<Array<Node>>
   title: Scalars['String']
   updatedAt: Scalars['DateTime']
 }
@@ -282,6 +392,7 @@ export type StoryOrderByWithRelationInput = {
   authorId?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
+  image?: InputMaybe<SortOrder>
   nodes?: InputMaybe<NodeOrderByRelationAggregateInput>
   title?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
@@ -296,6 +407,7 @@ export enum StoryScalarFieldEnum {
   AuthorId = 'authorId',
   CreatedAt = 'createdAt',
   Id = 'id',
+  Image = 'image',
   Title = 'title',
   UpdatedAt = 'updatedAt',
 }
@@ -308,6 +420,7 @@ export type StoryWhereInput = {
   authorId?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   id?: InputMaybe<IntFilter>
+  image?: InputMaybe<StringFilter>
   nodes?: InputMaybe<NodeListRelationFilter>
   title?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
@@ -337,6 +450,7 @@ export type UpdateNodeInput = {
   content?: InputMaybe<Scalars['String']>
   end?: InputMaybe<Scalars['Boolean']>
   id: Scalars['Int']
+  image?: InputMaybe<Scalars['String']>
   start?: InputMaybe<Scalars['Boolean']>
   storyId?: InputMaybe<Scalars['Int']>
   title?: InputMaybe<Scalars['String']>
@@ -345,6 +459,8 @@ export type UpdateNodeInput = {
 export type UpdateStoryInput = {
   authorId?: InputMaybe<Scalars['String']>
   id: Scalars['Int']
+  image?: InputMaybe<Scalars['String']>
+  nodes?: InputMaybe<Array<CreateNodeInputWithoutStory>>
   title?: InputMaybe<Scalars['String']>
 }
 
@@ -356,7 +472,8 @@ export type UpdateUserInput = {
 export type User = {
   __typename?: 'User'
   createdAt: Scalars['DateTime']
-  name: Scalars['String']
+  name?: Maybe<Scalars['String']>
+  stories?: Maybe<Array<Story>>
   uid: Scalars['String']
   updatedAt: Scalars['DateTime']
 }
