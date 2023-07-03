@@ -11,6 +11,7 @@ import { UsersModule } from './models/users/users.module'
 import { PrismaModule } from './common/prisma/prisma.module'
 import { FirebaseModule } from './common/firebase/firebase.module'
 import { AuthModule } from './common/auth/auth.module'
+import { MeilisearchModule } from './common/meilisearch/meilisearch.module'
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AuthModule } from './common/auth/auth.module'
 
     PrismaModule,
     FirebaseModule,
+    MeilisearchModule,
 
     AuthModule,
     NodesModule,

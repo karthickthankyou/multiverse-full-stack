@@ -5,15 +5,21 @@ import { FindManyStoryArgs, FindUniqueStoryArgs } from './dto/find.args'
 import { CreateStoryInput } from './dto/create-story.input'
 import { UpdateStoryInput } from './dto/update-story.input'
 import { AllowAuthenticated } from 'src/common/decorators/auth/auth.decorator'
+import { MeilisearchService } from 'src/common/meilisearch/meilisearch.service'
 
 @Resolver(() => Story)
 export class StoriesResolver {
-  constructor(private readonly storiesService: StoriesService) {}
+  constructor(
+    private readonly storiesService: StoriesService,
+    private readonly meili: MeilisearchService,
+  ) {}
 
   @AllowAuthenticated()
   @Mutation(() => Story)
-  createStory(@Args('createStoryInput') args: CreateStoryInput) {
-    return this.storiesService.create(args)
+  async createStory(@Args('createStoryInput') args: CreateStoryInput) {
+    const story = await this.storiesService.create(args)
+    await this.meili.addToIndex([{ id: story.id, name: story.title }])
+    return story
   }
 
   @Query(() => [Story], { name: 'stories' })
