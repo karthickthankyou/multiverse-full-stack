@@ -1,7 +1,6 @@
 import {
   FormProviderCreateStory,
   FormTypeCreateStory,
-  createStoryFormSchema,
 } from '@multiverse-org/forms/src/createStory'
 
 import { Form } from '../../atoms/Form'
@@ -42,6 +41,9 @@ export const CreateStoryContent = ({}: ICreateStoryProps) => {
     formState: { errors },
   } = useFormContext<FormTypeCreateStory>()
 
+  const storyData = useWatch()
+  console.log('storyData', storyData, storyData.image, storyData.image?.[0])
+
   const [{ percent, uploading }, uploadImages] = useImageUpload()
   const uid = useUserStore((state) => state.uid)
 
@@ -57,14 +59,24 @@ export const CreateStoryContent = ({}: ICreateStoryProps) => {
             notification$.next({ message: 'You are not logged in.' })
             return
           }
-          const images = await uploadImages([data.image])
+          console.log('data.image ', data.image)
+          const images = await uploadImages(data.image)
+
+          const nodesWithImage = await Promise.all(
+            data.nodes.map(async (node) => {
+              console.log('node.image', node.image)
+              const nodeImage = await uploadImages(node.image)
+              return { ...node, authorId: uid, image: nodeImage[0] }
+            }),
+          )
+          console.log('nodesWithImage ', nodesWithImage, images)
           const story = await createStory({
             variables: {
               createStoryInput: {
                 authorId: uid,
                 image: images[0],
                 title: data.title,
-                nodes: data.nodes.map((node) => ({ ...node, authorId: uid })),
+                nodes: nodesWithImage,
               },
             },
           })
@@ -97,7 +109,7 @@ export const CreateStoryContent = ({}: ICreateStoryProps) => {
               />
             </HtmlLabel>
           )}
-        />{' '}
+        />
         <AddNodes />
         <Button loading={loading || uploading} type="submit">
           <div className="flex items-center justify-center gap-1">

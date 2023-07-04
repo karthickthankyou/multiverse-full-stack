@@ -641,7 +641,12 @@ export type NodesQueryVariables = Exact<{
 
 export type NodesQuery = {
   __typename?: 'Query'
-  nodes: Array<{ __typename?: 'Node'; id: number; title: string }>
+  nodes: Array<{
+    __typename?: 'Node'
+    id: number
+    title: string
+    image?: string | null
+  }>
   nodesCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
 
@@ -1024,6 +1029,7 @@ export const NodesDocument = /*#__PURE__*/ gql`
     ) {
       id
       title
+      image
     }
     nodesCount(where: $where) {
       count

@@ -30,6 +30,7 @@ export const useImageUpload = () => {
     setUploading(true)
 
     const uploadTasks = Array.from(files).map((file: any) => {
+      console.log('file name ', file.name, file)
       const storageRef = ref(storage, `/files/${file.name}`)
       const uploadTask = uploadBytesResumable(storageRef, file)
 

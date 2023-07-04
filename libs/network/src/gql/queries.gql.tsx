@@ -114,6 +114,7 @@ export const nodes = gql`
     ) {
       id
       title
+      image
     }
     nodesCount(where: $where) {
       count

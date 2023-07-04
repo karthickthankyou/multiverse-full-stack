@@ -1,15 +1,22 @@
 import {
+  CreateMultipleNodesInput,
   namedOperations,
   useCreateNodesMutation,
   useNodesQuery,
 } from '@multiverse-org/network/src/gql/generated'
+import Image from 'next/image'
 import { LoaderPanel } from '../../molecules/Loader'
 import { ShowData } from '../../organisms/ShowData'
 import { useTakeSkip } from '@multiverse-org/hooks'
 import { AddChoicesDialog } from '../../organisms/AddChoicesDialog'
 import { useState } from 'react'
 import { Button } from '../../atoms/Button'
-import { useFormContext, useWatch, useFieldArray } from 'react-hook-form'
+import {
+  useFormContext,
+  useWatch,
+  useFieldArray,
+  Controller,
+} from 'react-hook-form'
 import { Accordion } from '../../molecules/Accordion'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { Switch } from '../../atoms/Switch'
@@ -24,6 +31,7 @@ import { Dialog } from '../../atoms/Dialog'
 import { Form } from '../../atoms/Form'
 import { useUserStore } from '@multiverse-org/store/user'
 import { notification$ } from '@multiverse-org/util/subjects'
+import { useImageUpload } from '@multiverse-org/util'
 
 export interface INodesListProps {
   storyId: number
@@ -57,6 +65,14 @@ export const NodesList = ({ storyId }: INodesListProps) => {
         {data?.nodes?.map((node) => (
           <div key={node.id}>
             <div>{node.title}</div>
+            {node.image ? (
+              <Image
+                width={200}
+                height={160}
+                src={node.image}
+                alt={node.title}
+              />
+            ) : null}
             <AddChoicesDialog />
           </div>
         ))}
@@ -90,6 +106,7 @@ export const AddNodesDialog = ({ storyId }: INodesListProps) => {
   const [hovered, setHovered] = useState<string | null>(null)
 
   const [createNodes, { loading, data }] = useCreateNodesMutation()
+  const [{ percent, uploading }, uploadImages] = useImageUpload()
 
   const uid = useUserStore((state) => state.uid)
   return (
@@ -107,20 +124,25 @@ export const AddNodesDialog = ({ storyId }: INodesListProps) => {
               notification$.next({ message: 'You are not logged in.' })
               return
             }
+
+            const nodesWithImage: CreateMultipleNodesInput['nodes'] =
+              await Promise.all(
+                data.nodes.map(async (node) => {
+                  console.log(node.image)
+                  const nodeImage = await uploadImages(node.image)
+
+                  return {
+                    ...node,
+                    authorId: uid,
+                    image: nodeImage[0],
+                    storyId,
+                  }
+                }),
+              )
             await createNodes({
               variables: {
                 createMultipleNodesInput: {
-                  nodes: data.nodes.map(
-                    ({ content, end, start, title, image }) => ({
-                      authorId: uid,
-                      content,
-                      end,
-                      start,
-                      title,
-                      image,
-                      storyId,
-                    }),
-                  ),
+                  nodes: nodesWithImage,
                 },
               },
               awaitRefetchQueries: true,
@@ -210,6 +232,25 @@ export const AddNodesDialog = ({ storyId }: INodesListProps) => {
                     }}
                   />
                 </HtmlLabel>
+                <Controller
+                  control={control}
+                  name={`nodes.${nodeIndex}.image`}
+                  render={({ field }) => (
+                    <HtmlLabel
+                      title="Image"
+                      error={errors.nodes?.[
+                        nodeIndex
+                      ]?.image?.message?.toString()}
+                    >
+                      <HtmlInput
+                        type="file"
+                        accept="image/*"
+                        multiple={false}
+                        onChange={(e) => field.onChange(e?.target?.files)}
+                      />
+                    </HtmlLabel>
+                  )}
+                />
               </div>
             </Accordion>
           ))}
@@ -230,7 +271,7 @@ export const AddNodesDialog = ({ storyId }: INodesListProps) => {
               <IconPlus className="w-4 h-4" /> Add node
             </Button>
           </div>
-          <Button loading={loading} type="submit">
+          <Button loading={loading || uploading} type="submit">
             Create nodes
           </Button>
         </Form>
