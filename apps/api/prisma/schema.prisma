@@ -26,7 +26,8 @@ model Story {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    title String
+    title       String
+    description String @default("")
 
     author   User    @relation(fields: [authorId], references: [uid])
     authorId String
@@ -39,11 +40,12 @@ model Node {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    title   String
-    content String
-    start   Boolean? @default(false)
-    end     Boolean? @default(false)
-    image   String?
+    title      String
+    choiceText String   @default("")
+    content    String
+    start      Boolean? @default(false)
+    end        Boolean? @default(false)
+    image      String?
 
     author   User   @relation(fields: [authorId], references: [uid])
     authorId String

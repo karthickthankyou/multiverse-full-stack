@@ -19,6 +19,8 @@ export default class NodeOrderByWithRelationInput
     >
 {
   @Field(() => Prisma.SortOrder, { nullable: true })
+  choiceText: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder, { nullable: true })
   image: Prisma.SortOrder
   @Field(() => NodeOrderByRelationAggregateInput, { nullable: true })
   parentNodes: NodeOrderByRelationAggregateInput

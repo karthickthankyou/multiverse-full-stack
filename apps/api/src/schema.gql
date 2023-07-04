@@ -6,6 +6,7 @@ type Node {
   image: String
   start: Boolean
   end: Boolean
+  choiceText: String!
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -37,6 +38,7 @@ type User {
 }
 
 type Story {
+  description: String!
   image: String!
   id: Int!
   createdAt: DateTime!
@@ -88,6 +90,7 @@ type Query {
 }
 
 input NodeWhereInput {
+  choiceText: StringFilter
   image: StringFilter
   parentNodes: NodeListRelationFilter
   childNodes: NodeListRelationFilter
@@ -183,6 +186,7 @@ input StoryListRelationFilter {
 }
 
 input StoryWhereInput {
+  description: StringFilter
   image: StringFilter
   id: IntFilter
   createdAt: DateTimeFilter
@@ -202,6 +206,7 @@ input StoryRelationFilter {
 }
 
 input NodeOrderByWithRelationInput {
+  choiceText: SortOrder
   image: SortOrder
   parentNodes: NodeOrderByRelationAggregateInput
   childNodes: NodeOrderByRelationAggregateInput
@@ -241,6 +246,7 @@ input StoryOrderByRelationAggregateInput {
 }
 
 input StoryOrderByWithRelationInput {
+  description: SortOrder
   image: SortOrder
   id: SortOrder
   createdAt: SortOrder
@@ -260,6 +266,7 @@ enum NodeScalarFieldEnum {
   createdAt
   updatedAt
   title
+  choiceText
   content
   start
   end
@@ -277,6 +284,7 @@ enum StoryScalarFieldEnum {
   createdAt
   updatedAt
   title
+  description
   authorId
   image
 }
@@ -364,6 +372,7 @@ input UpdateNodeInput {
 }
 
 input CreateStoryInput {
+  description: String!
   image: String!
   title: String!
   authorId: String!
@@ -380,6 +389,7 @@ input CreateNodeInputWithoutStory {
 }
 
 input UpdateStoryInput {
+  description: String
   image: String
   title: String
   authorId: String

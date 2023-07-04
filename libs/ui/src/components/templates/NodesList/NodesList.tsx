@@ -277,6 +277,7 @@ export const AddNodesDialog = ({ storyId }: INodesListProps) => {
               onClick={() =>
                 append({
                   title: '',
+                  choiceText: '',
                   content: '',
                   start: false,
                   end: false,

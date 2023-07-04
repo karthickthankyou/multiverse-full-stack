@@ -6,6 +6,7 @@ import { createNodeFormSchema } from './createNode'
 
 export const createStoryFormSchema = z.object({
   title: z.string(),
+  description: z.string().optional(),
   image: z.any(),
   nodes: z.array(createNodeFormSchema),
 })

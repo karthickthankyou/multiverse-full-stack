@@ -24,6 +24,8 @@ export class StoryWhereInput
   implements RestrictProperties<StoryWhereInput, Prisma.StoryWhereInput>
 {
   @Field(() => StringFilter, { nullable: true })
+  description: StringFilter
+  @Field(() => StringFilter, { nullable: true })
   image: StringFilter
   @Field(() => IntFilter, { nullable: true })
   id: IntFilter

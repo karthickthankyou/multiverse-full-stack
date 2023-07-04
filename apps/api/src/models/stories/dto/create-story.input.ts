@@ -5,7 +5,7 @@ import { CreateNodeInputWithoutStory } from 'src/models/nodes/dto/create-node.in
 @InputType()
 export class CreateStoryInput extends PickType(
   Story,
-  ['authorId', 'title', 'image'],
+  ['authorId', 'title', 'image', 'description'],
   InputType,
 ) {
   @Field(() => [CreateNodeInputWithoutStory])

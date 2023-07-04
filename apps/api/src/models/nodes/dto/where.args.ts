@@ -25,6 +25,8 @@ export class NodeWhereInput
   implements RestrictProperties<NodeWhereInput, Prisma.NodeWhereInput>
 {
   @Field(() => StringFilter, { nullable: true })
+  choiceText: StringFilter
+  @Field(() => StringFilter, { nullable: true })
   image: StringFilter
   @Field(() => NodeListRelationFilter, { nullable: true })
   parentNodes: NodeListRelationFilter

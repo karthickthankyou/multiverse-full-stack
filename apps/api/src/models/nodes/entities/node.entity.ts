@@ -4,6 +4,7 @@ import { RestrictProperties } from 'src/common/dtos/common.input'
 
 @ObjectType()
 export class Node implements RestrictProperties<Node, NodeType> {
+  choiceText: string
   @Field(() => String, { nullable: true })
   image: string
   id: number

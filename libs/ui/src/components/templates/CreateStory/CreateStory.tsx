@@ -2,7 +2,7 @@ import {
   FormProviderCreateStory,
   FormTypeCreateStory,
 } from '@multiverse-org/forms/src/createStory'
-
+import Image from 'next/image'
 import { Form } from '../../atoms/Form'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { HtmlInput } from '../../atoms/HtmlInput'
@@ -14,12 +14,21 @@ import { useFormContext, useWatch, useFieldArray } from 'react-hook-form'
 import { useState } from 'react'
 import { Accordion } from '../../molecules/Accordion'
 import { HtmlTextArea } from '../../atoms/HtmlTextArea'
-import { IconArrowRight, IconFocus, IconPlus } from '@tabler/icons-react'
+import {
+  IconArrowRight,
+  IconFocus,
+  IconPlus,
+  IconTrash,
+} from '@tabler/icons-react'
 import { Container } from '../../atoms/Container'
-import { Switch } from '../../atoms/Switch'
+import { Switch2 } from '../../atoms/Switch2'
 import { useRouter } from 'next/router'
 import { useUserStore } from '@multiverse-org/store/user'
 import { notification$ } from '@multiverse-org/util/subjects'
+import { Header } from '../../organisms/Header'
+import { HeaderText } from '../../molecules/HeaderText'
+import { PlainButton } from '../../atoms/PlainButton'
+import { StickyLayout } from '../../organisms/StickyLayout'
 
 export interface ICreateStoryProps {}
 
@@ -38,10 +47,11 @@ export const CreateStoryContent = ({}: ICreateStoryProps) => {
     register,
     control,
     handleSubmit,
+    resetField,
     formState: { errors },
   } = useFormContext<FormTypeCreateStory>()
 
-  const storyData = useWatch()
+  const storyData = useWatch<FormTypeCreateStory>()
   console.log('storyData', storyData, storyData.image, storyData.image?.[0])
 
   const [{ percent, uploading }, uploadImages] = useImageUpload()
@@ -87,35 +97,65 @@ export const CreateStoryContent = ({}: ICreateStoryProps) => {
           })
         })}
       >
-        <HtmlLabel title="Title">
-          <HtmlInput
-            placeholder="Title of the story..."
-            {...register('title')}
-          />
-        </HtmlLabel>
-        <Controller
-          control={control}
-          name="image"
-          render={({ field }) => (
-            <HtmlLabel
-              title="Cover image"
-              error={errors.image?.message?.toString()}
-            >
-              <HtmlInput
-                type="file"
-                accept="image/*"
-                multiple={false}
-                onChange={(e) => field.onChange(e?.target?.files)}
-              />
-            </HtmlLabel>
-          )}
-        />
-        <AddNodes />
-        <Button loading={loading || uploading} type="submit">
-          <div className="flex items-center justify-center gap-1">
-            Connect nodes <IconArrowRight />
-          </div>
-        </Button>
+        <StickyLayout
+          sidebarContent={
+            <div className="flex flex-col gap-4">
+              <HeaderText>Create Story</HeaderText>
+              {storyData.image ? (
+                <div className="relative flex items-center justify-center w-full h-full min-h-[12rem]">
+                  <PlainButton
+                    className="flex items-center gap-1 p-2 text-white underline underline-offset-4 bg-black/30"
+                    onClick={() => {
+                      resetField(`image`)
+                    }}
+                  >
+                    <IconTrash /> Clear
+                  </PlainButton>
+                  <img
+                    className="absolute object-cover h-full z-full -z-10"
+                    alt=""
+                    src={URL.createObjectURL(storyData.image[0])}
+                  />
+                </div>
+              ) : (
+                <div className="flex items-center justify-center w-full h-full  min-h-[12rem] bg-gray-100">
+                  <Controller
+                    control={control}
+                    name={`image`}
+                    render={({ field }) => (
+                      <HtmlInput
+                        type="file"
+                        accept="image/*"
+                        multiple={false}
+                        onChange={(e) => field.onChange(e?.target?.files)}
+                      />
+                    )}
+                  />
+                </div>
+              )}
+
+              <HtmlLabel title="Title">
+                <HtmlInput
+                  placeholder="Title of the story..."
+                  {...register('title')}
+                />
+              </HtmlLabel>
+              <HtmlLabel title="Description">
+                <HtmlTextArea
+                  placeholder="Describe..."
+                  {...register('description')}
+                />
+              </HtmlLabel>
+              <Button loading={loading || uploading} type="submit">
+                <div className="flex items-center justify-center gap-1">
+                  Proceed to connect the nodes <IconArrowRight />
+                </div>
+              </Button>
+            </div>
+          }
+        >
+          <AddNodes />
+        </StickyLayout>
       </Form>
     </div>
   )
@@ -126,6 +166,7 @@ export const AddNodes = () => {
     control,
     register,
     setValue,
+    resetField,
     formState: { errors },
   } = useFormContext<FormTypeCreateStory>()
 
@@ -139,12 +180,19 @@ export const AddNodes = () => {
 
   return (
     <div>
+      <div className="mb-4 space-y-2">
+        <HeaderText>Nodes</HeaderText>
+        <p className="text-gray">
+          Each choice is a node. You will create all the choices and their
+          consequences here.
+        </p>
+      </div>
       {fields.map((item, nodeIndex) => (
         <Accordion
           title={
             (
               <div className="flex items-center gap-1">
-                <IconFocus /> <div> {nodes?.[nodeIndex]?.title}</div>
+                <IconFocus /> <div> {nodes?.[nodeIndex]?.choiceText}</div>
               </div>
             ) || '[Empty]'
           }
@@ -170,50 +218,88 @@ export const AddNodes = () => {
           </div>
 
           <div
-            className={`flex gap-2 ${hovered === item.id ? 'bg-strip' : null}`}
+            className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 ${
+              hovered === item.id ? 'bg-strip' : null
+            }`}
           >
-            <HtmlLabel
-              title="Title"
-              optional
-              error={errors.nodes?.[nodeIndex]?.title?.message}
-            >
-              <HtmlInput
-                placeholder="Enter the title"
-                {...register(`nodes.${nodeIndex}.title`)}
+            {nodes?.[nodeIndex]?.image ? (
+              <div className="relative flex items-center justify-center w-full h-full min-h-[12rem]">
+                <PlainButton
+                  className="flex items-center gap-1 p-2 text-white underline underline-offset-4 bg-black/30"
+                  onClick={() => {
+                    resetField(`nodes.${nodeIndex}.image`)
+                  }}
+                >
+                  <IconTrash /> Clear
+                </PlainButton>
+                <img
+                  className="absolute object-cover h-full z-full -z-10"
+                  alt=""
+                  src={URL.createObjectURL(nodes?.[nodeIndex].image[0])}
+                />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center w-full h-full  min-h-[12rem] bg-gray-100">
+                <Controller
+                  control={control}
+                  name={`nodes.${nodeIndex}.image`}
+                  render={({ field }) => (
+                    <HtmlInput
+                      type="file"
+                      accept="image/*"
+                      multiple={false}
+                      onChange={(e) => field.onChange(e?.target?.files)}
+                    />
+                  )}
+                />
+              </div>
+            )}
+            <div className="space-y-2">
+              <HtmlLabel
+                title="Choice text"
+                optional
+                error={errors.nodes?.[nodeIndex]?.choiceText?.message}
+              >
+                <HtmlInput
+                  placeholder="Enter the choice text"
+                  {...register(`nodes.${nodeIndex}.choiceText`)}
+                />
+              </HtmlLabel>
+              <HtmlLabel
+                title="Title"
+                optional
+                error={errors.nodes?.[nodeIndex]?.title?.message}
+              >
+                <HtmlInput
+                  placeholder="Enter the title"
+                  {...register(`nodes.${nodeIndex}.title`)}
+                />
+              </HtmlLabel>
+
+              <Switch2
+                checked={nodes?.[nodeIndex]?.start || false}
+                onChange={(value) => {
+                  setValue(`nodes.${nodeIndex}.start`, value)
+                }}
+                label={'Start?'}
               />
-            </HtmlLabel>
+              <Switch2
+                checked={nodes?.[nodeIndex]?.end || false}
+                onChange={(value) => {
+                  setValue(`nodes.${nodeIndex}.end`, value)
+                }}
+                label={'End?'}
+              />
+            </div>
             <HtmlLabel
               title="Content"
               optional
               error={errors.nodes?.[nodeIndex]?.content?.message}
             >
               <HtmlTextArea
+                rows={8}
                 placeholder="Enter the content"
                 {...register(`nodes.${nodeIndex}.content`)}
-              />
-            </HtmlLabel>
-            <HtmlLabel
-              title="Start?"
-              optional
-              error={errors.nodes?.[nodeIndex]?.content?.message}
-            >
-              <Switch
-                checked={nodes?.[nodeIndex]?.start}
-                onChange={(e) => {
-                  setValue(`nodes.${nodeIndex}.start`, e.target.checked)
-                }}
-              />
-            </HtmlLabel>
-            <HtmlLabel
-              title="End?"
-              optional
-              error={errors.nodes?.[nodeIndex]?.content?.message}
-            >
-              <Switch
-                checked={nodes?.[nodeIndex]?.end}
-                onChange={(e) => {
-                  setValue(`nodes.${nodeIndex}.end`, e.target.checked)
-                }}
               />
             </HtmlLabel>
           </div>

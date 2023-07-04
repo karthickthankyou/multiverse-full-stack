@@ -11,5 +11,9 @@ export const PlainButton = ({
   loading,
   ...props
 }: IPlainButtonProps) => {
-  return <button {...props}>{loading ? <Loader /> : children}</button>
+  return (
+    <button type={props.type || 'button'} {...props}>
+      {loading ? <Loader /> : children}
+    </button>
+  )
 }
