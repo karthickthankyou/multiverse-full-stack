@@ -301,6 +301,7 @@ type Mutation {
   setAdmin(uid: String!): Boolean!
   createNode(createNodeInput: CreateNodeInput!): Node!
   createNodes(CreateMultipleNodesInput: CreateMultipleNodesInput!): [Node!]!
+  addChildNodes(nodeId: Int!, childrenNodeIds: [Int!]!): Node!
   updateNode(updateNodeInput: UpdateNodeInput!): Node!
   removeNode(where: NodeWhereUniqueInput): Node!
   createStory(createStoryInput: CreateStoryInput!): Story!

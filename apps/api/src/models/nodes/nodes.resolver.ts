@@ -48,6 +48,32 @@ export class NodesResolver {
     return this.nodesService.createMany(args)
   }
 
+  @AllowAuthenticated()
+  @Mutation(() => Node)
+  async addChildNodes(
+    @Args('nodeId') nodeId: number,
+    @Args({ name: 'childrenNodeIds', type: () => [Number] })
+    childrenNodeIds: number[],
+  ): Promise<Node> {
+    const node = await this.prisma.node.findUnique({
+      where: { id: nodeId },
+      include: { childNodes: true },
+    })
+
+    // Get the ids of the current child nodes
+    const currentChildNodeIds = node.childNodes.map((childNode) => childNode.id)
+
+    return this.prisma.node.update({
+      where: { id: nodeId },
+      data: {
+        childNodes: {
+          disconnect: currentChildNodeIds.map((id) => ({ id })),
+          connect: childrenNodeIds.map((id) => ({ id })),
+        },
+      },
+    })
+  }
+
   @Query(() => [Node], { name: 'nodes' })
   findAll(@Args() args: FindManyNodeArgs) {
     return this.nodesService.findAll(args)

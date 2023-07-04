@@ -107,6 +107,7 @@ export type LoginOutput = {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  addChildNodes: Node
   createNode: Node
   createNodes: Array<Node>
   createStory: Story
@@ -123,6 +124,11 @@ export type Mutation = {
   updateNode: Node
   updateStory: Story
   updateUser: User
+}
+
+export type MutationAddChildNodesArgs = {
+  childrenNodeIds: Array<Scalars['Int']>
+  nodeId: Scalars['Int']
 }
 
 export type MutationCreateNodeArgs = {
@@ -646,8 +652,43 @@ export type NodesQuery = {
     id: number
     title: string
     image?: string | null
+    end?: boolean | null
+    childNodes?: Array<{
+      __typename?: 'Node'
+      id: number
+      title: string
+    }> | null
   }>
   nodesCount: { __typename?: 'AggregateCountOutput'; count: number }
+}
+
+export type AddChildNodesMutationVariables = Exact<{
+  nodeId: Scalars['Int']
+  childrenNodeIds: Array<Scalars['Int']> | Scalars['Int']
+}>
+
+export type AddChildNodesMutation = {
+  __typename?: 'Mutation'
+  addChildNodes: { __typename?: 'Node'; id: number }
+}
+
+export type NodeQueryVariables = Exact<{
+  where?: InputMaybe<NodeWhereUniqueInput>
+}>
+
+export type NodeQuery = {
+  __typename?: 'Query'
+  node: {
+    __typename?: 'Node'
+    id: number
+    title: string
+    content: string
+    childNodes?: Array<{
+      __typename?: 'Node'
+      id: number
+      title: string
+    }> | null
+  }
 }
 
 export const namedOperations = {
@@ -655,12 +696,14 @@ export const namedOperations = {
     stories: 'stories',
     story: 'story',
     Nodes: 'Nodes',
+    node: 'node',
   },
   Mutation: {
     Login: 'Login',
     register: 'register',
     createStory: 'createStory',
     createNodes: 'createNodes',
+    addChildNodes: 'addChildNodes',
   },
 }
 
@@ -1030,6 +1073,11 @@ export const NodesDocument = /*#__PURE__*/ gql`
       id
       title
       image
+      end
+      childNodes {
+        id
+        title
+      }
     }
     nodesCount(where: $where) {
       count
@@ -1082,3 +1130,102 @@ export type NodesQueryResult = Apollo.QueryResult<
   NodesQuery,
   NodesQueryVariables
 >
+export const AddChildNodesDocument = /*#__PURE__*/ gql`
+  mutation addChildNodes($nodeId: Int!, $childrenNodeIds: [Int!]!) {
+    addChildNodes(nodeId: $nodeId, childrenNodeIds: $childrenNodeIds) {
+      id
+    }
+  }
+`
+export type AddChildNodesMutationFn = Apollo.MutationFunction<
+  AddChildNodesMutation,
+  AddChildNodesMutationVariables
+>
+
+/**
+ * __useAddChildNodesMutation__
+ *
+ * To run a mutation, you first call `useAddChildNodesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddChildNodesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addChildNodesMutation, { data, loading, error }] = useAddChildNodesMutation({
+ *   variables: {
+ *      nodeId: // value for 'nodeId'
+ *      childrenNodeIds: // value for 'childrenNodeIds'
+ *   },
+ * });
+ */
+export function useAddChildNodesMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddChildNodesMutation,
+    AddChildNodesMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    AddChildNodesMutation,
+    AddChildNodesMutationVariables
+  >(AddChildNodesDocument, options)
+}
+export type AddChildNodesMutationHookResult = ReturnType<
+  typeof useAddChildNodesMutation
+>
+export type AddChildNodesMutationResult =
+  Apollo.MutationResult<AddChildNodesMutation>
+export type AddChildNodesMutationOptions = Apollo.BaseMutationOptions<
+  AddChildNodesMutation,
+  AddChildNodesMutationVariables
+>
+export const NodeDocument = /*#__PURE__*/ gql`
+  query node($where: NodeWhereUniqueInput) {
+    node(where: $where) {
+      id
+      title
+      content
+      childNodes {
+        id
+        title
+      }
+    }
+  }
+`
+
+/**
+ * __useNodeQuery__
+ *
+ * To run a query within a React component, call `useNodeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNodeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNodeQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useNodeQuery(
+  baseOptions?: Apollo.QueryHookOptions<NodeQuery, NodeQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<NodeQuery, NodeQueryVariables>(NodeDocument, options)
+}
+export function useNodeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<NodeQuery, NodeQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<NodeQuery, NodeQueryVariables>(
+    NodeDocument,
+    options,
+  )
+}
+export type NodeQueryHookResult = ReturnType<typeof useNodeQuery>
+export type NodeLazyQueryHookResult = ReturnType<typeof useNodeLazyQuery>
+export type NodeQueryResult = Apollo.QueryResult<NodeQuery, NodeQueryVariables>

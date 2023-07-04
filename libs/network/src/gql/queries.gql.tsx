@@ -115,9 +115,36 @@ export const nodes = gql`
       id
       title
       image
+      end
+      childNodes {
+        id
+        title
+      }
     }
     nodesCount(where: $where) {
       count
+    }
+  }
+`
+
+export const addChildNodes = gql`
+  mutation addChildNodes($nodeId: Int!, $childrenNodeIds: [Int!]!) {
+    addChildNodes(nodeId: $nodeId, childrenNodeIds: $childrenNodeIds) {
+      id
+    }
+  }
+`
+
+export const node = gql`
+  query node($where: NodeWhereUniqueInput) {
+    node(where: $where) {
+      id
+      title
+      content
+      childNodes {
+        id
+        title
+      }
     }
   }
 `

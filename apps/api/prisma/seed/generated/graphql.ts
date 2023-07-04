@@ -106,6 +106,7 @@ export type LoginOutput = {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  addChildNodes: Node
   createNode: Node
   createNodes: Array<Node>
   createStory: Story
@@ -122,6 +123,11 @@ export type Mutation = {
   updateNode: Node
   updateStory: Story
   updateUser: User
+}
+
+export type MutationAddChildNodesArgs = {
+  childrenNodeIds: Array<Scalars['Int']>
+  nodeId: Scalars['Int']
 }
 
 export type MutationCreateNodeArgs = {

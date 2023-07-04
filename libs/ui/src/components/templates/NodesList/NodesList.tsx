@@ -65,6 +65,21 @@ export const NodesList = ({ storyId }: INodesListProps) => {
         {data?.nodes?.map((node) => (
           <div key={node.id}>
             <div>{node.title}</div>
+            {node.end ? (
+              <div className="inline-block px-1 text-xs text-white bg-black">
+                End.
+              </div>
+            ) : null}
+            <ul>
+              {node.childNodes?.map((node) => (
+                <li
+                  key={node.id}
+                  className="text-xs text-gray decoration-slice"
+                >
+                  {node.title}
+                </li>
+              ))}
+            </ul>
             {node.image ? (
               <Image
                 width={200}
@@ -73,7 +88,7 @@ export const NodesList = ({ storyId }: INodesListProps) => {
                 alt={node.title}
               />
             ) : null}
-            <AddChoicesDialog />
+            {node.end ? null : <AddChoicesDialog nodeId={node.id} />}
           </div>
         ))}
       </ShowData>
