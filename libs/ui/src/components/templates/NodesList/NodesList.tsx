@@ -46,14 +46,14 @@ export const NodesList = ({ storyId }: INodesListProps) => {
 
   const { setSkip, setTake, skip, take } = useTakeSkip()
 
-  if (loading) {
-    return <LoaderPanel />
-  }
+  //   if (loading) {
+  //     return <LoaderPanel />
+  //   }
   return (
     <FormProviderCreateMultipleNodes>
       <AddNodesDialog storyId={storyId} />
       <ShowData
-        loading={false}
+        loading={loading}
         pagination={{
           resultCount: data?.nodes?.length,
           totalCount: data?.nodesCount.count,

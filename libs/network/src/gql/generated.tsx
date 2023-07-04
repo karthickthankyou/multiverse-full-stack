@@ -377,6 +377,7 @@ export type Query = {
   nodes: Array<Node>
   nodesCount: AggregateCountOutput
   stories: Array<Story>
+  storiesCount: AggregateCountOutput
   story: Story
   user?: Maybe<User>
   users: Array<User>
@@ -419,6 +420,10 @@ export type QueryStoriesArgs = {
   searchTerm?: InputMaybe<Scalars['String']>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<StoryWhereInput>
+}
+
+export type QueryStoriesCountArgs = {
   where?: InputMaybe<StoryWhereInput>
 }
 
@@ -501,6 +506,7 @@ export type Story = {
   id: Scalars['Int']
   image: Scalars['String']
   nodes?: Maybe<Array<Node>>
+  startingNodes?: Maybe<Array<Node>>
   title: Scalars['String']
   updatedAt: Scalars['DateTime']
 }
@@ -674,6 +680,7 @@ export type StoriesQuery = {
     title: string
     image: string
   }>
+  storiesCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
 
 export type StoryQueryVariables = Exact<{
@@ -688,9 +695,15 @@ export type StoryQuery = {
     createdAt: any
     id: number
     image: string
+    description: string
     title: string
     updatedAt: any
     author?: { __typename?: 'User'; uid: string; name?: string | null } | null
+    startingNodes?: Array<{
+      __typename?: 'Node'
+      title: string
+      id: number
+    }> | null
     nodes?: Array<{
       __typename?: 'Node'
       id: number
@@ -882,6 +895,9 @@ export const StoriesDocument = /*#__PURE__*/ gql`
       title
       image
     }
+    storiesCount(where: $where) {
+      count
+    }
   }
 `
 
@@ -945,6 +961,11 @@ export const StoryDocument = /*#__PURE__*/ gql`
       createdAt
       id
       image
+      description
+      startingNodes {
+        title
+        id
+      }
       nodes {
         id
         image

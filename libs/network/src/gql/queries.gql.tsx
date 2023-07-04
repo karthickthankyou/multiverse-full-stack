@@ -23,6 +23,9 @@ export const stories = gql`
       title
       image
     }
+    storiesCount(where: $where) {
+      count
+    }
   }
 `
 
@@ -37,6 +40,11 @@ export const story = gql`
       createdAt
       id
       image
+      description
+      startingNodes {
+        title
+        id
+      }
       nodes {
         id
         image

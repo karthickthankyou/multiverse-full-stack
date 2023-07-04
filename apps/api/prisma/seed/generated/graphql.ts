@@ -376,6 +376,7 @@ export type Query = {
   nodes: Array<Node>
   nodesCount: AggregateCountOutput
   stories: Array<Story>
+  storiesCount: AggregateCountOutput
   story: Story
   user?: Maybe<User>
   users: Array<User>
@@ -418,6 +419,10 @@ export type QueryStoriesArgs = {
   searchTerm?: InputMaybe<Scalars['String']>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<StoryWhereInput>
+}
+
+export type QueryStoriesCountArgs = {
   where?: InputMaybe<StoryWhereInput>
 }
 
@@ -500,6 +505,7 @@ export type Story = {
   id: Scalars['Int']
   image: Scalars['String']
   nodes?: Maybe<Array<Node>>
+  startingNodes?: Maybe<Array<Node>>
   title: Scalars['String']
   updatedAt: Scalars['DateTime']
 }

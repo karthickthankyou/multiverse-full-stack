@@ -21,6 +21,8 @@ import { GetUserType } from '@multiverse-org/types'
 import { checkRowLevelPermission } from 'src/common/guards'
 import { Node } from '../nodes/entities/node.entity'
 import { User } from '../users/entities/user.entity'
+import { AggregateCountOutput } from 'src/common/dtos/common.input'
+import { StoryWhereInput } from './dto/where.args'
 
 @Resolver(() => Story)
 export class StoriesResolver {
@@ -93,5 +95,26 @@ export class StoriesResolver {
     return this.prisma.user.findUnique({
       where: { uid: parent.authorId },
     })
+  }
+
+  @ResolveField(() => [Node], { nullable: true })
+  startingNodes(@Parent() parent: Story) {
+    return this.prisma.node.findMany({
+      where: { storyId: parent.id, start: true },
+    })
+  }
+
+  @Query(() => AggregateCountOutput, {
+    name: 'storiesCount',
+  })
+  async storiesCount(
+    @Args('where', { nullable: true })
+    where: StoryWhereInput,
+  ) {
+    const stories = await this.prisma.story.aggregate({
+      _count: { _all: true },
+      where,
+    })
+    return { count: stories._count._all }
   }
 }

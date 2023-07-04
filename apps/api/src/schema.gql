@@ -46,6 +46,7 @@ type Story {
   authorId: String!
   nodes: [Node!]
   author: User
+  startingNodes: [Node!]
 }
 
 type Choice {
@@ -95,6 +96,7 @@ type Query {
   nodesCount(where: NodeWhereInput): AggregateCountOutput!
   stories(where: StoryWhereInput, orderBy: [StoryOrderByWithRelationInput!], cursor: StoryWhereUniqueInput, take: Int, skip: Int, distinct: [StoryScalarFieldEnum!], searchTerm: String): [Story!]!
   story(where: StoryWhereUniqueInput): Story!
+  storiesCount(where: StoryWhereInput): AggregateCountOutput!
   users(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
   user(where: UserWhereUniqueInput): User
   choices(where: ChoiceWhereInput, orderBy: [ChoiceOrderByWithRelationInput!], cursor: ChoiceWhereUniqueInput, take: Int, skip: Int, distinct: [ChoiceScalarFieldEnum!]): [Choice!]!

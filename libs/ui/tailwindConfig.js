@@ -1,6 +1,6 @@
 const colors = require('tailwindcss/colors')
 
-const brandHue = 52
+const brandHue = 270
 
 // #ffdd00 for brandHue 52
 const primaryPallete = {
