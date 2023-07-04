@@ -66,6 +66,11 @@ export type ChoiceOrderByWithRelationInput = {
   updatedAt?: InputMaybe<SortOrder>
 }
 
+export type ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput = {
+  choiceNodeId: Scalars['Int']
+  parentNodeId: Scalars['Int']
+}
+
 export enum ChoiceScalarFieldEnum {
   ChoiceNodeId = 'choiceNodeId',
   ChoiceText = 'choiceText',
@@ -91,6 +96,7 @@ export type ChoiceWhereInput = {
 
 export type ChoiceWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>
+  parentNodeId_choiceNodeId?: InputMaybe<ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput>
 }
 
 export type CreateChoiceInput = {
@@ -179,7 +185,7 @@ export type LoginOutput = {
 export type Mutation = {
   __typename?: 'Mutation'
   createChoice: Choice
-  createManyChoices: Choice
+  createManyChoices: Array<Choice>
   createNode: Node
   createNodes: Array<Node>
   createStory: Story
@@ -771,6 +777,7 @@ export type NodesQuery = {
     image?: string | null
     end?: boolean | null
     start?: boolean | null
+    storyId: number
     content: string
     choiceNodes?: Array<{
       __typename?: 'Choice'
@@ -811,7 +818,7 @@ export type CreateManyChoicesMutationVariables = Exact<{
 
 export type CreateManyChoicesMutation = {
   __typename?: 'Mutation'
-  createManyChoices: { __typename?: 'Choice'; id: number }
+  createManyChoices: Array<{ __typename?: 'Choice'; id: number }>
 }
 
 export type ChoicesQueryVariables = Exact<{
@@ -1220,6 +1227,7 @@ export const NodesDocument = /*#__PURE__*/ gql`
       image
       end
       start
+      storyId
       content
       choiceNodes {
         id

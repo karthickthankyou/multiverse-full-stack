@@ -17,6 +17,7 @@ import { ShowData } from '../ShowData'
 import { useTakeSkip } from '@multiverse-org/hooks'
 import { notification$ } from '@multiverse-org/util/subjects'
 import { SelectedNode, useStoreSelectedNodesWithChoiceText } from './data'
+import { Switch2 } from '../../atoms/Switch2'
 
 export interface IAddChoicesDialogProps {
   node: NodesQuery['nodes'][0]
@@ -57,27 +58,31 @@ export const AddChoicesDialog = ({ node }: IAddChoicesDialogProps) => {
           <div>{node.title}</div>
           <div className="text-sm text-gray">{node.content}</div>
         </div>
-        <ChooseChoices nodeId={node.id} />
+        <SearchNodes node={node} />
       </Dialog>
     </div>
   )
 }
 
-const ChooseChoices = ({ nodeId }: { nodeId: number }) => {
+const SearchNodes = ({ node }: { node: NodesQuery['nodes'][0] }) => {
   const [searchText, setSearchText] = useState('')
+  const [showAllNodes, setShowAllNodes] = useState(false)
 
   const debouncedSearchText = useDebouncedValue(searchText, 300)
 
   const { data, loading } = useNodesQuery({
     variables: {
-      where: debouncedSearchText
-        ? {
-            title: {
-              contains: debouncedSearchText,
-              mode: QueryMode.Insensitive,
-            },
-          }
-        : undefined,
+      where: {
+        ...(debouncedSearchText
+          ? {
+              title: {
+                contains: debouncedSearchText,
+                mode: QueryMode.Insensitive,
+              },
+            }
+          : {}),
+        ...(showAllNodes ? {} : { storyId: { equals: node.storyId } }),
+      },
     },
   })
 
@@ -92,7 +97,8 @@ const ChooseChoices = ({ nodeId }: { nodeId: number }) => {
         nodes={selectedNodes}
         removeNode={(id) => removeSelectedNode(id)}
       />
-      <UpdateChoicesButton selectedNodes={selectedNodes} nodeId={nodeId} />
+      <UpdateChoicesButton selectedNodes={selectedNodes} nodeId={node.id} />
+
       <HtmlLabel title="Search">
         <HtmlInput
           placeholder="Search node titles"
@@ -100,6 +106,13 @@ const ChooseChoices = ({ nodeId }: { nodeId: number }) => {
           onChange={(e) => setSearchText(e.target.value)}
         />
       </HtmlLabel>
+      <Switch2
+        label={'Search nodes from all stories?'}
+        checked={showAllNodes}
+        onChange={(v) => {
+          setShowAllNodes(v)
+        }}
+      />
 
       <ShowData
         loading={loading}

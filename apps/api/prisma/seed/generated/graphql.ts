@@ -65,6 +65,11 @@ export type ChoiceOrderByWithRelationInput = {
   updatedAt?: InputMaybe<SortOrder>
 }
 
+export type ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput = {
+  choiceNodeId: Scalars['Int']
+  parentNodeId: Scalars['Int']
+}
+
 export enum ChoiceScalarFieldEnum {
   ChoiceNodeId = 'choiceNodeId',
   ChoiceText = 'choiceText',
@@ -90,6 +95,7 @@ export type ChoiceWhereInput = {
 
 export type ChoiceWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>
+  parentNodeId_choiceNodeId?: InputMaybe<ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput>
 }
 
 export type CreateChoiceInput = {
@@ -178,7 +184,7 @@ export type LoginOutput = {
 export type Mutation = {
   __typename?: 'Mutation'
   createChoice: Choice
-  createManyChoices: Choice
+  createManyChoices: Array<Choice>
   createNode: Node
   createNodes: Array<Node>
   createStory: Story

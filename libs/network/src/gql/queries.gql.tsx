@@ -117,6 +117,7 @@ export const nodes = gql`
       image
       end
       start
+      storyId
       content
       choiceNodes {
         id
