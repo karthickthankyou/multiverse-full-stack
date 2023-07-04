@@ -9,7 +9,10 @@ import {
 import { NodesService } from './nodes.service'
 import { Node } from './entities/node.entity'
 import { FindManyNodeArgs, FindUniqueNodeArgs } from './dto/find.args'
-import { CreateNodeInput } from './dto/create-node.input'
+import {
+  CreateMultipleNodesInput,
+  CreateNodeInput,
+} from './dto/create-node.input'
 import { UpdateNodeInput } from './dto/update-node.input'
 import {
   AllowAuthenticated,
@@ -35,6 +38,14 @@ export class NodesResolver {
   @Mutation(() => Node)
   createNode(@Args('createNodeInput') args: CreateNodeInput) {
     return this.nodesService.create(args)
+  }
+
+  @AllowAuthenticated()
+  @Mutation(() => [Node])
+  createNodes(
+    @Args('CreateMultipleNodesInput') args: CreateMultipleNodesInput,
+  ) {
+    return this.nodesService.createMany(args)
   }
 
   @Query(() => [Node], { name: 'nodes' })

@@ -1,7 +1,9 @@
 import {
   FormProviderCreateStory,
   FormTypeCreateStory,
+  createStoryFormSchema,
 } from '@multiverse-org/forms/src/createStory'
+
 import { Form } from '../../atoms/Form'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { HtmlInput } from '../../atoms/HtmlInput'
@@ -114,7 +116,8 @@ export const AddNodes = () => {
     setValue,
     formState: { errors },
   } = useFormContext<FormTypeCreateStory>()
-  const { fields, append, remove } = useFieldArray({
+
+  const { fields, append, remove } = useFieldArray<FormTypeCreateStory>({
     control,
     name: `nodes`,
   })

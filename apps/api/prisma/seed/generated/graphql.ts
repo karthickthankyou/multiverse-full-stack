@@ -32,6 +32,10 @@ export type BoolFilter = {
   not?: InputMaybe<Scalars['Boolean']>
 }
 
+export type CreateMultipleNodesInput = {
+  nodes: Array<CreateNodeInput>
+}
+
 export type CreateNodeInput = {
   authorId: Scalars['String']
   content: Scalars['String']
@@ -103,6 +107,7 @@ export type LoginOutput = {
 export type Mutation = {
   __typename?: 'Mutation'
   createNode: Node
+  createNodes: Array<Node>
   createStory: Story
   createUser: User
   login: LoginOutput
@@ -121,6 +126,10 @@ export type Mutation = {
 
 export type MutationCreateNodeArgs = {
   createNodeInput: CreateNodeInput
+}
+
+export type MutationCreateNodesArgs = {
+  CreateMultipleNodesInput: CreateMultipleNodesInput
 }
 
 export type MutationCreateStoryArgs = {

@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { MyStories } from '@multiverse-org/ui/src/components/templates/MyStories'
+import { Container } from '@multiverse-org/ui/src/components/atoms/Container'
 
 export default function MyStoriesPage() {
   return (
@@ -11,7 +12,9 @@ export default function MyStoriesPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <MyStories />
+        <Container>
+          <MyStories />
+        </Container>
       </main>
     </>
   )

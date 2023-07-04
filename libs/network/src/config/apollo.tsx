@@ -63,6 +63,7 @@ export const ApolloProvider = ({ children }: IApolloProviderProps) => {
     }
 
     const authToken = await getLatestToken({ token })
+    console.log('getLatestToken', authToken)
 
     if (authToken !== token) {
       setUser({ uid, token: authToken })

@@ -7,8 +7,8 @@ import { Header } from '@multiverse-org/ui/src/components/organisms/Header'
 import { MenuItem } from '@multiverse-org/types'
 
 const MENUITEMS: MenuItem[] = [
-  { label: 'Garages', href: '/', loggedIn: true },
-  { label: 'Admins', href: '/manageAdmins', loggedIn: true },
+  { label: 'My Stories', href: '/my-stories', loggedIn: true },
+  { label: 'Create Story', href: '/create-story', loggedIn: true },
   { label: 'Settings', href: '/settings', loggedIn: true },
 ]
 const SUBMENUITEMS: MenuItem[] = [

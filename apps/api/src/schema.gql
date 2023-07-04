@@ -300,6 +300,7 @@ type Mutation {
   setRole(setRoleInput: SetRoleInput!): Boolean!
   setAdmin(uid: String!): Boolean!
   createNode(createNodeInput: CreateNodeInput!): Node!
+  createNodes(CreateMultipleNodesInput: CreateMultipleNodesInput!): [Node!]!
   updateNode(updateNodeInput: UpdateNodeInput!): Node!
   removeNode(where: NodeWhereUniqueInput): Node!
   createStory(createStoryInput: CreateStoryInput!): Story!
@@ -344,6 +345,10 @@ input CreateNodeInput {
   content: String!
   authorId: String!
   storyId: Int!
+}
+
+input CreateMultipleNodesInput {
+  nodes: [CreateNodeInput!]!
 }
 
 input UpdateNodeInput {

@@ -33,6 +33,10 @@ export type BoolFilter = {
   not?: InputMaybe<Scalars['Boolean']>
 }
 
+export type CreateMultipleNodesInput = {
+  nodes: Array<CreateNodeInput>
+}
+
 export type CreateNodeInput = {
   authorId: Scalars['String']
   content: Scalars['String']
@@ -104,6 +108,7 @@ export type LoginOutput = {
 export type Mutation = {
   __typename?: 'Mutation'
   createNode: Node
+  createNodes: Array<Node>
   createStory: Story
   createUser: User
   login: LoginOutput
@@ -122,6 +127,10 @@ export type Mutation = {
 
 export type MutationCreateNodeArgs = {
   createNodeInput: CreateNodeInput
+}
+
+export type MutationCreateNodesArgs = {
+  CreateMultipleNodesInput: CreateMultipleNodesInput
 }
 
 export type MutationCreateStoryArgs = {
@@ -530,7 +539,12 @@ export type StoriesQueryVariables = Exact<{
 
 export type StoriesQuery = {
   __typename?: 'Query'
-  stories: Array<{ __typename?: 'Story'; id: number; image: string }>
+  stories: Array<{
+    __typename?: 'Story'
+    id: number
+    title: string
+    image: string
+  }>
 }
 
 export type StoryQueryVariables = Exact<{
@@ -605,6 +619,15 @@ export type CreateStoryMutation = {
   createStory: { __typename?: 'Story'; id: number }
 }
 
+export type CreateNodesMutationVariables = Exact<{
+  createMultipleNodesInput: CreateMultipleNodesInput
+}>
+
+export type CreateNodesMutation = {
+  __typename?: 'Mutation'
+  createNodes: Array<{ __typename?: 'Node'; id: number }>
+}
+
 export type NodesQueryVariables = Exact<{
   where?: InputMaybe<NodeWhereInput>
   orderBy?: InputMaybe<
@@ -632,6 +655,7 @@ export const namedOperations = {
     Login: 'Login',
     register: 'register',
     createStory: 'createStory',
+    createNodes: 'createNodes',
   },
 }
 
@@ -655,6 +679,7 @@ export const StoriesDocument = /*#__PURE__*/ gql`
       searchTerm: $searchTerm
     ) {
       id
+      title
       image
     }
   }
@@ -929,6 +954,56 @@ export type CreateStoryMutationResult =
 export type CreateStoryMutationOptions = Apollo.BaseMutationOptions<
   CreateStoryMutation,
   CreateStoryMutationVariables
+>
+export const CreateNodesDocument = /*#__PURE__*/ gql`
+  mutation createNodes($createMultipleNodesInput: CreateMultipleNodesInput!) {
+    createNodes(CreateMultipleNodesInput: $createMultipleNodesInput) {
+      id
+    }
+  }
+`
+export type CreateNodesMutationFn = Apollo.MutationFunction<
+  CreateNodesMutation,
+  CreateNodesMutationVariables
+>
+
+/**
+ * __useCreateNodesMutation__
+ *
+ * To run a mutation, you first call `useCreateNodesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNodesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNodesMutation, { data, loading, error }] = useCreateNodesMutation({
+ *   variables: {
+ *      createMultipleNodesInput: // value for 'createMultipleNodesInput'
+ *   },
+ * });
+ */
+export function useCreateNodesMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateNodesMutation,
+    CreateNodesMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateNodesMutation, CreateNodesMutationVariables>(
+    CreateNodesDocument,
+    options,
+  )
+}
+export type CreateNodesMutationHookResult = ReturnType<
+  typeof useCreateNodesMutation
+>
+export type CreateNodesMutationResult =
+  Apollo.MutationResult<CreateNodesMutation>
+export type CreateNodesMutationOptions = Apollo.BaseMutationOptions<
+  CreateNodesMutation,
+  CreateNodesMutationVariables
 >
 export const NodesDocument = /*#__PURE__*/ gql`
   query Nodes(

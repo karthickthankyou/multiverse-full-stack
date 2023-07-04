@@ -20,6 +20,7 @@ export const stories = gql`
       searchTerm: $searchTerm
     ) {
       id
+      title
       image
     }
   }
@@ -81,6 +82,14 @@ export const register = gql`
 export const createStory = gql`
   mutation createStory($createStoryInput: CreateStoryInput!) {
     createStory(createStoryInput: $createStoryInput) {
+      id
+    }
+  }
+`
+
+export const createNodes = gql`
+  mutation createNodes($createMultipleNodesInput: CreateMultipleNodesInput!) {
+    createNodes(CreateMultipleNodesInput: $createMultipleNodesInput) {
       id
     }
   }

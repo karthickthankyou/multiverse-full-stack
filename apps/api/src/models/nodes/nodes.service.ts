@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { FindManyNodeArgs, FindUniqueNodeArgs } from './dto/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
-import { CreateNodeInput } from './dto/create-node.input'
+import {
+  CreateMultipleNodesInput,
+  CreateNodeInput,
+} from './dto/create-node.input'
 import { UpdateNodeInput } from './dto/update-node.input'
 
 @Injectable()
@@ -11,6 +14,14 @@ export class NodesService {
     return this.prisma.node.create({
       data: createNodeInput,
     })
+  }
+  async createMany(createMultipleNodesInput: CreateMultipleNodesInput) {
+    // Todo: Can we create multiple items and return them all using createMany? right now createMany returns only the count.
+    return Promise.all(
+      createMultipleNodesInput.nodes.map((node) =>
+        this.prisma.node.create({ data: node }),
+      ),
+    )
   }
 
   findAll(args: FindManyNodeArgs) {

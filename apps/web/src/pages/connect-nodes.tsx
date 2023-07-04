@@ -1,7 +1,8 @@
 import Head from 'next/head'
-import { NodesList } from '@multiverse-org/ui/src/components/templates/NodesList'
+import { NodesList } from '@multiverse-org/ui/src/components/templates/NodesList/NodesList'
 import { useRouter } from 'next/router'
 import { AlertSection } from '@multiverse-org/ui/src/components/organisms/AlertSection'
+import { Container } from '@multiverse-org/ui/src/components/atoms/Container'
 
 export default function ConnectNodesPage() {
   const { query } = useRouter()
@@ -20,8 +21,9 @@ export default function ConnectNodesPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        Hey there. welcome to connect nodes. {query.storyId}
-        <NodesList storyId={storyId} />
+        <Container>
+          <NodesList storyId={storyId} />
+        </Container>
       </main>
     </>
   )
