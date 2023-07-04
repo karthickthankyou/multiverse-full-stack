@@ -96,7 +96,7 @@ export const createNodes = gql`
 `
 
 export const nodes = gql`
-  query Nodes(
+  query nodes(
     $where: NodeWhereInput
     $orderBy: [NodeOrderByWithRelationInput!]
     $cursor: NodeWhereUniqueInput
@@ -116,21 +116,19 @@ export const nodes = gql`
       title
       image
       end
-      childNodes {
+      start
+      content
+      choiceNodes {
         id
-        title
+        choiceText
+        choiceNode {
+          id
+          title
+        }
       }
     }
     nodesCount(where: $where) {
       count
-    }
-  }
-`
-
-export const addChildNodes = gql`
-  mutation addChildNodes($nodeId: Int!, $childrenNodeIds: [Int!]!) {
-    addChildNodes(nodeId: $nodeId, childrenNodeIds: $childrenNodeIds) {
-      id
     }
   }
 `
@@ -140,8 +138,50 @@ export const node = gql`
     node(where: $where) {
       id
       title
+      image
+      end
+      start
       content
-      childNodes {
+      choiceNodes {
+        id
+        choiceText
+        choiceNode {
+          id
+          title
+        }
+      }
+    }
+  }
+`
+
+export const createManyChoices = gql`
+  mutation createManyChoices($createManyChoiceInput: CreateManyChoiceInput!) {
+    createManyChoices(createManyChoiceInput: $createManyChoiceInput) {
+      id
+    }
+  }
+`
+
+export const choices = gql`
+  query choices(
+    $where: ChoiceWhereInput
+    $orderBy: [ChoiceOrderByWithRelationInput!]
+    $cursor: ChoiceWhereUniqueInput
+    $take: Int
+    $skip: Int
+    $distinct: [ChoiceScalarFieldEnum!]
+  ) {
+    choices(
+      where: $where
+      orderBy: $orderBy
+      cursor: $cursor
+      take: $take
+      skip: $skip
+      distinct: $distinct
+    ) {
+      id
+      choiceText
+      choiceNode {
         id
         title
       }

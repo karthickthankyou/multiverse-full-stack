@@ -32,6 +32,76 @@ export type BoolFilter = {
   not?: InputMaybe<Scalars['Boolean']>
 }
 
+export type Choice = {
+  __typename?: 'Choice'
+  choiceNode: Node
+  choiceNodeId: Scalars['Int']
+  choiceText: Scalars['String']
+  createdAt: Scalars['DateTime']
+  id: Scalars['Int']
+  parentNode: Node
+  parentNodeId: Scalars['Int']
+  updatedAt: Scalars['DateTime']
+}
+
+export type ChoiceListRelationFilter = {
+  every?: InputMaybe<ChoiceWhereInput>
+  none?: InputMaybe<ChoiceWhereInput>
+  some?: InputMaybe<ChoiceWhereInput>
+}
+
+export type ChoiceOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type ChoiceOrderByWithRelationInput = {
+  choiceNode?: InputMaybe<NodeOrderByWithRelationInput>
+  choiceNodeId?: InputMaybe<SortOrder>
+  choiceText?: InputMaybe<SortOrder>
+  createdAt?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  parentNode?: InputMaybe<NodeOrderByWithRelationInput>
+  parentNodeId?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export enum ChoiceScalarFieldEnum {
+  ChoiceNodeId = 'choiceNodeId',
+  ChoiceText = 'choiceText',
+  CreatedAt = 'createdAt',
+  Id = 'id',
+  ParentNodeId = 'parentNodeId',
+  UpdatedAt = 'updatedAt',
+}
+
+export type ChoiceWhereInput = {
+  AND?: InputMaybe<Array<ChoiceWhereInput>>
+  NOT?: InputMaybe<Array<ChoiceWhereInput>>
+  OR?: InputMaybe<Array<ChoiceWhereInput>>
+  choiceNode?: InputMaybe<NodeRelationFilter>
+  choiceNodeId?: InputMaybe<IntFilter>
+  choiceText?: InputMaybe<StringFilter>
+  createdAt?: InputMaybe<DateTimeFilter>
+  id?: InputMaybe<IntFilter>
+  parentNode?: InputMaybe<NodeRelationFilter>
+  parentNodeId?: InputMaybe<IntFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type ChoiceWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>
+}
+
+export type CreateChoiceInput = {
+  choiceNodeId: Scalars['Int']
+  choiceText: Scalars['String']
+  parentNodeId: Scalars['Int']
+}
+
+export type CreateManyChoiceInput = {
+  choices: Array<CreateChoiceInput>
+}
+
 export type CreateMultipleNodesInput = {
   nodes: Array<CreateNodeInput>
 }
@@ -57,6 +127,7 @@ export type CreateNodeInputWithoutStory = {
 
 export type CreateStoryInput = {
   authorId: Scalars['String']
+  description: Scalars['String']
   image: Scalars['String']
   nodes: Array<CreateNodeInputWithoutStory>
   title: Scalars['String']
@@ -106,7 +177,8 @@ export type LoginOutput = {
 
 export type Mutation = {
   __typename?: 'Mutation'
-  addChildNodes: Node
+  createChoice: Choice
+  createManyChoices: Choice
   createNode: Node
   createNodes: Array<Node>
   createStory: Story
@@ -115,19 +187,24 @@ export type Mutation = {
   logout: Scalars['Boolean']
   refreshToken: RefreshTokenOutput
   register: RegisterOutput
+  removeChoice: Choice
   removeNode: Node
   removeStory: Story
   removeUser: User
   setAdmin: Scalars['Boolean']
   setRole: Scalars['Boolean']
+  updateChoice: Choice
   updateNode: Node
   updateStory: Story
   updateUser: User
 }
 
-export type MutationAddChildNodesArgs = {
-  childrenNodeIds: Array<Scalars['Int']>
-  nodeId: Scalars['Int']
+export type MutationCreateChoiceArgs = {
+  createChoiceInput: CreateChoiceInput
+}
+
+export type MutationCreateManyChoicesArgs = {
+  createManyChoiceInput: CreateManyChoiceInput
 }
 
 export type MutationCreateNodeArgs = {
@@ -158,6 +235,10 @@ export type MutationRegisterArgs = {
   credentials: RegisterInput
 }
 
+export type MutationRemoveChoiceArgs = {
+  where?: InputMaybe<ChoiceWhereUniqueInput>
+}
+
 export type MutationRemoveNodeArgs = {
   where?: InputMaybe<NodeWhereUniqueInput>
 }
@@ -178,6 +259,10 @@ export type MutationSetRoleArgs = {
   setRoleInput: SetRoleInput
 }
 
+export type MutationUpdateChoiceArgs = {
+  updateChoiceInput: UpdateChoiceInput
+}
+
 export type MutationUpdateNodeArgs = {
   updateNodeInput: UpdateNodeInput
 }
@@ -194,13 +279,13 @@ export type Node = {
   __typename?: 'Node'
   author?: Maybe<User>
   authorId: Scalars['String']
-  childNodes?: Maybe<Array<Node>>
+  choiceNodes?: Maybe<Array<Choice>>
   content: Scalars['String']
   createdAt: Scalars['DateTime']
   end?: Maybe<Scalars['Boolean']>
   id: Scalars['Int']
   image?: Maybe<Scalars['String']>
-  parentNodes?: Maybe<Array<Node>>
+  parentNodes?: Maybe<Array<Choice>>
   start?: Maybe<Scalars['Boolean']>
   story?: Maybe<Story>
   storyId: Scalars['Int']
@@ -221,18 +306,23 @@ export type NodeOrderByRelationAggregateInput = {
 export type NodeOrderByWithRelationInput = {
   author?: InputMaybe<UserOrderByWithRelationInput>
   authorId?: InputMaybe<SortOrder>
-  childNodes?: InputMaybe<NodeOrderByRelationAggregateInput>
+  choiceNodes?: InputMaybe<ChoiceOrderByRelationAggregateInput>
   content?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
   end?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
   image?: InputMaybe<SortOrder>
-  parentNodes?: InputMaybe<NodeOrderByRelationAggregateInput>
+  parentNodes?: InputMaybe<ChoiceOrderByRelationAggregateInput>
   start?: InputMaybe<SortOrder>
   story?: InputMaybe<StoryOrderByWithRelationInput>
   storyId?: InputMaybe<SortOrder>
   title?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
+}
+
+export type NodeRelationFilter = {
+  is?: InputMaybe<NodeWhereInput>
+  isNot?: InputMaybe<NodeWhereInput>
 }
 
 export enum NodeScalarFieldEnum {
@@ -254,13 +344,13 @@ export type NodeWhereInput = {
   OR?: InputMaybe<Array<NodeWhereInput>>
   author?: InputMaybe<UserRelationFilter>
   authorId?: InputMaybe<StringFilter>
-  childNodes?: InputMaybe<NodeListRelationFilter>
+  choiceNodes?: InputMaybe<ChoiceListRelationFilter>
   content?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   end?: InputMaybe<BoolFilter>
   id?: InputMaybe<IntFilter>
   image?: InputMaybe<StringFilter>
-  parentNodes?: InputMaybe<NodeListRelationFilter>
+  parentNodes?: InputMaybe<ChoiceListRelationFilter>
   start?: InputMaybe<BoolFilter>
   story?: InputMaybe<StoryRelationFilter>
   storyId?: InputMaybe<IntFilter>
@@ -274,6 +364,8 @@ export type NodeWhereUniqueInput = {
 
 export type Query = {
   __typename?: 'Query'
+  choice: Choice
+  choices: Array<Choice>
   node: Node
   nodes: Array<Node>
   nodesCount: AggregateCountOutput
@@ -281,6 +373,19 @@ export type Query = {
   story: Story
   user?: Maybe<User>
   users: Array<User>
+}
+
+export type QueryChoiceArgs = {
+  where?: InputMaybe<ChoiceWhereUniqueInput>
+}
+
+export type QueryChoicesArgs = {
+  cursor?: InputMaybe<ChoiceWhereUniqueInput>
+  distinct?: InputMaybe<Array<ChoiceScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ChoiceOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ChoiceWhereInput>
 }
 
 export type QueryNodeArgs = {
@@ -385,6 +490,7 @@ export type Story = {
   author?: Maybe<User>
   authorId: Scalars['String']
   createdAt: Scalars['DateTime']
+  description: Scalars['String']
   id: Scalars['Int']
   image: Scalars['String']
   nodes?: Maybe<Array<Node>>
@@ -406,6 +512,7 @@ export type StoryOrderByWithRelationInput = {
   author?: InputMaybe<UserOrderByWithRelationInput>
   authorId?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
+  description?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
   image?: InputMaybe<SortOrder>
   nodes?: InputMaybe<NodeOrderByRelationAggregateInput>
@@ -421,6 +528,7 @@ export type StoryRelationFilter = {
 export enum StoryScalarFieldEnum {
   AuthorId = 'authorId',
   CreatedAt = 'createdAt',
+  Description = 'description',
   Id = 'id',
   Image = 'image',
   Title = 'title',
@@ -434,6 +542,7 @@ export type StoryWhereInput = {
   author?: InputMaybe<UserRelationFilter>
   authorId?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DateTimeFilter>
+  description?: InputMaybe<StringFilter>
   id?: InputMaybe<IntFilter>
   image?: InputMaybe<StringFilter>
   nodes?: InputMaybe<NodeListRelationFilter>
@@ -460,6 +569,13 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']>
 }
 
+export type UpdateChoiceInput = {
+  choiceNodeId?: InputMaybe<Scalars['Int']>
+  choiceText?: InputMaybe<Scalars['String']>
+  id: Scalars['Int']
+  parentNodeId?: InputMaybe<Scalars['Int']>
+}
+
 export type UpdateNodeInput = {
   authorId?: InputMaybe<Scalars['String']>
   content?: InputMaybe<Scalars['String']>
@@ -473,6 +589,7 @@ export type UpdateNodeInput = {
 
 export type UpdateStoryInput = {
   authorId?: InputMaybe<Scalars['String']>
+  description?: InputMaybe<Scalars['String']>
   id: Scalars['Int']
   image?: InputMaybe<Scalars['String']>
   nodes?: InputMaybe<Array<CreateNodeInputWithoutStory>>

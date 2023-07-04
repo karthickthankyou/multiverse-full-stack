@@ -33,6 +33,76 @@ export type BoolFilter = {
   not?: InputMaybe<Scalars['Boolean']>
 }
 
+export type Choice = {
+  __typename?: 'Choice'
+  choiceNode: Node
+  choiceNodeId: Scalars['Int']
+  choiceText: Scalars['String']
+  createdAt: Scalars['DateTime']
+  id: Scalars['Int']
+  parentNode: Node
+  parentNodeId: Scalars['Int']
+  updatedAt: Scalars['DateTime']
+}
+
+export type ChoiceListRelationFilter = {
+  every?: InputMaybe<ChoiceWhereInput>
+  none?: InputMaybe<ChoiceWhereInput>
+  some?: InputMaybe<ChoiceWhereInput>
+}
+
+export type ChoiceOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type ChoiceOrderByWithRelationInput = {
+  choiceNode?: InputMaybe<NodeOrderByWithRelationInput>
+  choiceNodeId?: InputMaybe<SortOrder>
+  choiceText?: InputMaybe<SortOrder>
+  createdAt?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  parentNode?: InputMaybe<NodeOrderByWithRelationInput>
+  parentNodeId?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export enum ChoiceScalarFieldEnum {
+  ChoiceNodeId = 'choiceNodeId',
+  ChoiceText = 'choiceText',
+  CreatedAt = 'createdAt',
+  Id = 'id',
+  ParentNodeId = 'parentNodeId',
+  UpdatedAt = 'updatedAt',
+}
+
+export type ChoiceWhereInput = {
+  AND?: InputMaybe<Array<ChoiceWhereInput>>
+  NOT?: InputMaybe<Array<ChoiceWhereInput>>
+  OR?: InputMaybe<Array<ChoiceWhereInput>>
+  choiceNode?: InputMaybe<NodeRelationFilter>
+  choiceNodeId?: InputMaybe<IntFilter>
+  choiceText?: InputMaybe<StringFilter>
+  createdAt?: InputMaybe<DateTimeFilter>
+  id?: InputMaybe<IntFilter>
+  parentNode?: InputMaybe<NodeRelationFilter>
+  parentNodeId?: InputMaybe<IntFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type ChoiceWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>
+}
+
+export type CreateChoiceInput = {
+  choiceNodeId: Scalars['Int']
+  choiceText: Scalars['String']
+  parentNodeId: Scalars['Int']
+}
+
+export type CreateManyChoiceInput = {
+  choices: Array<CreateChoiceInput>
+}
+
 export type CreateMultipleNodesInput = {
   nodes: Array<CreateNodeInput>
 }
@@ -58,6 +128,7 @@ export type CreateNodeInputWithoutStory = {
 
 export type CreateStoryInput = {
   authorId: Scalars['String']
+  description: Scalars['String']
   image: Scalars['String']
   nodes: Array<CreateNodeInputWithoutStory>
   title: Scalars['String']
@@ -107,7 +178,8 @@ export type LoginOutput = {
 
 export type Mutation = {
   __typename?: 'Mutation'
-  addChildNodes: Node
+  createChoice: Choice
+  createManyChoices: Choice
   createNode: Node
   createNodes: Array<Node>
   createStory: Story
@@ -116,19 +188,24 @@ export type Mutation = {
   logout: Scalars['Boolean']
   refreshToken: RefreshTokenOutput
   register: RegisterOutput
+  removeChoice: Choice
   removeNode: Node
   removeStory: Story
   removeUser: User
   setAdmin: Scalars['Boolean']
   setRole: Scalars['Boolean']
+  updateChoice: Choice
   updateNode: Node
   updateStory: Story
   updateUser: User
 }
 
-export type MutationAddChildNodesArgs = {
-  childrenNodeIds: Array<Scalars['Int']>
-  nodeId: Scalars['Int']
+export type MutationCreateChoiceArgs = {
+  createChoiceInput: CreateChoiceInput
+}
+
+export type MutationCreateManyChoicesArgs = {
+  createManyChoiceInput: CreateManyChoiceInput
 }
 
 export type MutationCreateNodeArgs = {
@@ -159,6 +236,10 @@ export type MutationRegisterArgs = {
   credentials: RegisterInput
 }
 
+export type MutationRemoveChoiceArgs = {
+  where?: InputMaybe<ChoiceWhereUniqueInput>
+}
+
 export type MutationRemoveNodeArgs = {
   where?: InputMaybe<NodeWhereUniqueInput>
 }
@@ -179,6 +260,10 @@ export type MutationSetRoleArgs = {
   setRoleInput: SetRoleInput
 }
 
+export type MutationUpdateChoiceArgs = {
+  updateChoiceInput: UpdateChoiceInput
+}
+
 export type MutationUpdateNodeArgs = {
   updateNodeInput: UpdateNodeInput
 }
@@ -195,13 +280,13 @@ export type Node = {
   __typename?: 'Node'
   author?: Maybe<User>
   authorId: Scalars['String']
-  childNodes?: Maybe<Array<Node>>
+  choiceNodes?: Maybe<Array<Choice>>
   content: Scalars['String']
   createdAt: Scalars['DateTime']
   end?: Maybe<Scalars['Boolean']>
   id: Scalars['Int']
   image?: Maybe<Scalars['String']>
-  parentNodes?: Maybe<Array<Node>>
+  parentNodes?: Maybe<Array<Choice>>
   start?: Maybe<Scalars['Boolean']>
   story?: Maybe<Story>
   storyId: Scalars['Int']
@@ -222,18 +307,23 @@ export type NodeOrderByRelationAggregateInput = {
 export type NodeOrderByWithRelationInput = {
   author?: InputMaybe<UserOrderByWithRelationInput>
   authorId?: InputMaybe<SortOrder>
-  childNodes?: InputMaybe<NodeOrderByRelationAggregateInput>
+  choiceNodes?: InputMaybe<ChoiceOrderByRelationAggregateInput>
   content?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
   end?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
   image?: InputMaybe<SortOrder>
-  parentNodes?: InputMaybe<NodeOrderByRelationAggregateInput>
+  parentNodes?: InputMaybe<ChoiceOrderByRelationAggregateInput>
   start?: InputMaybe<SortOrder>
   story?: InputMaybe<StoryOrderByWithRelationInput>
   storyId?: InputMaybe<SortOrder>
   title?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
+}
+
+export type NodeRelationFilter = {
+  is?: InputMaybe<NodeWhereInput>
+  isNot?: InputMaybe<NodeWhereInput>
 }
 
 export enum NodeScalarFieldEnum {
@@ -255,13 +345,13 @@ export type NodeWhereInput = {
   OR?: InputMaybe<Array<NodeWhereInput>>
   author?: InputMaybe<UserRelationFilter>
   authorId?: InputMaybe<StringFilter>
-  childNodes?: InputMaybe<NodeListRelationFilter>
+  choiceNodes?: InputMaybe<ChoiceListRelationFilter>
   content?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   end?: InputMaybe<BoolFilter>
   id?: InputMaybe<IntFilter>
   image?: InputMaybe<StringFilter>
-  parentNodes?: InputMaybe<NodeListRelationFilter>
+  parentNodes?: InputMaybe<ChoiceListRelationFilter>
   start?: InputMaybe<BoolFilter>
   story?: InputMaybe<StoryRelationFilter>
   storyId?: InputMaybe<IntFilter>
@@ -275,6 +365,8 @@ export type NodeWhereUniqueInput = {
 
 export type Query = {
   __typename?: 'Query'
+  choice: Choice
+  choices: Array<Choice>
   node: Node
   nodes: Array<Node>
   nodesCount: AggregateCountOutput
@@ -282,6 +374,19 @@ export type Query = {
   story: Story
   user?: Maybe<User>
   users: Array<User>
+}
+
+export type QueryChoiceArgs = {
+  where?: InputMaybe<ChoiceWhereUniqueInput>
+}
+
+export type QueryChoicesArgs = {
+  cursor?: InputMaybe<ChoiceWhereUniqueInput>
+  distinct?: InputMaybe<Array<ChoiceScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ChoiceOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ChoiceWhereInput>
 }
 
 export type QueryNodeArgs = {
@@ -386,6 +491,7 @@ export type Story = {
   author?: Maybe<User>
   authorId: Scalars['String']
   createdAt: Scalars['DateTime']
+  description: Scalars['String']
   id: Scalars['Int']
   image: Scalars['String']
   nodes?: Maybe<Array<Node>>
@@ -407,6 +513,7 @@ export type StoryOrderByWithRelationInput = {
   author?: InputMaybe<UserOrderByWithRelationInput>
   authorId?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
+  description?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
   image?: InputMaybe<SortOrder>
   nodes?: InputMaybe<NodeOrderByRelationAggregateInput>
@@ -422,6 +529,7 @@ export type StoryRelationFilter = {
 export enum StoryScalarFieldEnum {
   AuthorId = 'authorId',
   CreatedAt = 'createdAt',
+  Description = 'description',
   Id = 'id',
   Image = 'image',
   Title = 'title',
@@ -435,6 +543,7 @@ export type StoryWhereInput = {
   author?: InputMaybe<UserRelationFilter>
   authorId?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DateTimeFilter>
+  description?: InputMaybe<StringFilter>
   id?: InputMaybe<IntFilter>
   image?: InputMaybe<StringFilter>
   nodes?: InputMaybe<NodeListRelationFilter>
@@ -461,6 +570,13 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']>
 }
 
+export type UpdateChoiceInput = {
+  choiceNodeId?: InputMaybe<Scalars['Int']>
+  choiceText?: InputMaybe<Scalars['String']>
+  id: Scalars['Int']
+  parentNodeId?: InputMaybe<Scalars['Int']>
+}
+
 export type UpdateNodeInput = {
   authorId?: InputMaybe<Scalars['String']>
   content?: InputMaybe<Scalars['String']>
@@ -474,6 +590,7 @@ export type UpdateNodeInput = {
 
 export type UpdateStoryInput = {
   authorId?: InputMaybe<Scalars['String']>
+  description?: InputMaybe<Scalars['String']>
   id: Scalars['Int']
   image?: InputMaybe<Scalars['String']>
   nodes?: InputMaybe<Array<CreateNodeInputWithoutStory>>
@@ -653,23 +770,16 @@ export type NodesQuery = {
     title: string
     image?: string | null
     end?: boolean | null
-    childNodes?: Array<{
-      __typename?: 'Node'
+    start?: boolean | null
+    content: string
+    choiceNodes?: Array<{
+      __typename?: 'Choice'
       id: number
-      title: string
+      choiceText: string
+      choiceNode: { __typename?: 'Node'; id: number; title: string }
     }> | null
   }>
   nodesCount: { __typename?: 'AggregateCountOutput'; count: number }
-}
-
-export type AddChildNodesMutationVariables = Exact<{
-  nodeId: Scalars['Int']
-  childrenNodeIds: Array<Scalars['Int']> | Scalars['Int']
-}>
-
-export type AddChildNodesMutation = {
-  __typename?: 'Mutation'
-  addChildNodes: { __typename?: 'Node'; id: number }
 }
 
 export type NodeQueryVariables = Exact<{
@@ -682,28 +792,63 @@ export type NodeQuery = {
     __typename?: 'Node'
     id: number
     title: string
+    image?: string | null
+    end?: boolean | null
+    start?: boolean | null
     content: string
-    childNodes?: Array<{
-      __typename?: 'Node'
+    choiceNodes?: Array<{
+      __typename?: 'Choice'
       id: number
-      title: string
+      choiceText: string
+      choiceNode: { __typename?: 'Node'; id: number; title: string }
     }> | null
   }
+}
+
+export type CreateManyChoicesMutationVariables = Exact<{
+  createManyChoiceInput: CreateManyChoiceInput
+}>
+
+export type CreateManyChoicesMutation = {
+  __typename?: 'Mutation'
+  createManyChoices: { __typename?: 'Choice'; id: number }
+}
+
+export type ChoicesQueryVariables = Exact<{
+  where?: InputMaybe<ChoiceWhereInput>
+  orderBy?: InputMaybe<
+    Array<ChoiceOrderByWithRelationInput> | ChoiceOrderByWithRelationInput
+  >
+  cursor?: InputMaybe<ChoiceWhereUniqueInput>
+  take?: InputMaybe<Scalars['Int']>
+  skip?: InputMaybe<Scalars['Int']>
+  distinct?: InputMaybe<Array<ChoiceScalarFieldEnum> | ChoiceScalarFieldEnum>
+}>
+
+export type ChoicesQuery = {
+  __typename?: 'Query'
+  choices: Array<{
+    __typename?: 'Choice'
+    id: number
+    choiceText: string
+    choiceNode: { __typename?: 'Node'; id: number; title: string }
+  }>
 }
 
 export const namedOperations = {
   Query: {
     stories: 'stories',
     story: 'story',
-    Nodes: 'Nodes',
+    nodes: 'nodes',
     node: 'node',
+    choices: 'choices',
   },
   Mutation: {
     Login: 'Login',
     register: 'register',
     createStory: 'createStory',
     createNodes: 'createNodes',
-    addChildNodes: 'addChildNodes',
+    createManyChoices: 'createManyChoices',
   },
 }
 
@@ -1054,7 +1199,7 @@ export type CreateNodesMutationOptions = Apollo.BaseMutationOptions<
   CreateNodesMutationVariables
 >
 export const NodesDocument = /*#__PURE__*/ gql`
-  query Nodes(
+  query nodes(
     $where: NodeWhereInput
     $orderBy: [NodeOrderByWithRelationInput!]
     $cursor: NodeWhereUniqueInput
@@ -1074,9 +1219,15 @@ export const NodesDocument = /*#__PURE__*/ gql`
       title
       image
       end
-      childNodes {
+      start
+      content
+      choiceNodes {
         id
-        title
+        choiceText
+        choiceNode {
+          id
+          title
+        }
       }
     }
     nodesCount(where: $where) {
@@ -1130,66 +1281,22 @@ export type NodesQueryResult = Apollo.QueryResult<
   NodesQuery,
   NodesQueryVariables
 >
-export const AddChildNodesDocument = /*#__PURE__*/ gql`
-  mutation addChildNodes($nodeId: Int!, $childrenNodeIds: [Int!]!) {
-    addChildNodes(nodeId: $nodeId, childrenNodeIds: $childrenNodeIds) {
-      id
-    }
-  }
-`
-export type AddChildNodesMutationFn = Apollo.MutationFunction<
-  AddChildNodesMutation,
-  AddChildNodesMutationVariables
->
-
-/**
- * __useAddChildNodesMutation__
- *
- * To run a mutation, you first call `useAddChildNodesMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddChildNodesMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addChildNodesMutation, { data, loading, error }] = useAddChildNodesMutation({
- *   variables: {
- *      nodeId: // value for 'nodeId'
- *      childrenNodeIds: // value for 'childrenNodeIds'
- *   },
- * });
- */
-export function useAddChildNodesMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    AddChildNodesMutation,
-    AddChildNodesMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    AddChildNodesMutation,
-    AddChildNodesMutationVariables
-  >(AddChildNodesDocument, options)
-}
-export type AddChildNodesMutationHookResult = ReturnType<
-  typeof useAddChildNodesMutation
->
-export type AddChildNodesMutationResult =
-  Apollo.MutationResult<AddChildNodesMutation>
-export type AddChildNodesMutationOptions = Apollo.BaseMutationOptions<
-  AddChildNodesMutation,
-  AddChildNodesMutationVariables
->
 export const NodeDocument = /*#__PURE__*/ gql`
   query node($where: NodeWhereUniqueInput) {
     node(where: $where) {
       id
       title
+      image
+      end
+      start
       content
-      childNodes {
+      choiceNodes {
         id
-        title
+        choiceText
+        choiceNode {
+          id
+          title
+        }
       }
     }
   }
@@ -1229,3 +1336,128 @@ export function useNodeLazyQuery(
 export type NodeQueryHookResult = ReturnType<typeof useNodeQuery>
 export type NodeLazyQueryHookResult = ReturnType<typeof useNodeLazyQuery>
 export type NodeQueryResult = Apollo.QueryResult<NodeQuery, NodeQueryVariables>
+export const CreateManyChoicesDocument = /*#__PURE__*/ gql`
+  mutation createManyChoices($createManyChoiceInput: CreateManyChoiceInput!) {
+    createManyChoices(createManyChoiceInput: $createManyChoiceInput) {
+      id
+    }
+  }
+`
+export type CreateManyChoicesMutationFn = Apollo.MutationFunction<
+  CreateManyChoicesMutation,
+  CreateManyChoicesMutationVariables
+>
+
+/**
+ * __useCreateManyChoicesMutation__
+ *
+ * To run a mutation, you first call `useCreateManyChoicesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateManyChoicesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createManyChoicesMutation, { data, loading, error }] = useCreateManyChoicesMutation({
+ *   variables: {
+ *      createManyChoiceInput: // value for 'createManyChoiceInput'
+ *   },
+ * });
+ */
+export function useCreateManyChoicesMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateManyChoicesMutation,
+    CreateManyChoicesMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    CreateManyChoicesMutation,
+    CreateManyChoicesMutationVariables
+  >(CreateManyChoicesDocument, options)
+}
+export type CreateManyChoicesMutationHookResult = ReturnType<
+  typeof useCreateManyChoicesMutation
+>
+export type CreateManyChoicesMutationResult =
+  Apollo.MutationResult<CreateManyChoicesMutation>
+export type CreateManyChoicesMutationOptions = Apollo.BaseMutationOptions<
+  CreateManyChoicesMutation,
+  CreateManyChoicesMutationVariables
+>
+export const ChoicesDocument = /*#__PURE__*/ gql`
+  query choices(
+    $where: ChoiceWhereInput
+    $orderBy: [ChoiceOrderByWithRelationInput!]
+    $cursor: ChoiceWhereUniqueInput
+    $take: Int
+    $skip: Int
+    $distinct: [ChoiceScalarFieldEnum!]
+  ) {
+    choices(
+      where: $where
+      orderBy: $orderBy
+      cursor: $cursor
+      take: $take
+      skip: $skip
+      distinct: $distinct
+    ) {
+      id
+      choiceText
+      choiceNode {
+        id
+        title
+      }
+    }
+  }
+`
+
+/**
+ * __useChoicesQuery__
+ *
+ * To run a query within a React component, call `useChoicesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChoicesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChoicesQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      cursor: // value for 'cursor'
+ *      take: // value for 'take'
+ *      skip: // value for 'skip'
+ *      distinct: // value for 'distinct'
+ *   },
+ * });
+ */
+export function useChoicesQuery(
+  baseOptions?: Apollo.QueryHookOptions<ChoicesQuery, ChoicesQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ChoicesQuery, ChoicesQueryVariables>(
+    ChoicesDocument,
+    options,
+  )
+}
+export function useChoicesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ChoicesQuery,
+    ChoicesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ChoicesQuery, ChoicesQueryVariables>(
+    ChoicesDocument,
+    options,
+  )
+}
+export type ChoicesQueryHookResult = ReturnType<typeof useChoicesQuery>
+export type ChoicesLazyQueryHookResult = ReturnType<typeof useChoicesLazyQuery>
+export type ChoicesQueryResult = Apollo.QueryResult<
+  ChoicesQuery,
+  ChoicesQueryVariables
+>

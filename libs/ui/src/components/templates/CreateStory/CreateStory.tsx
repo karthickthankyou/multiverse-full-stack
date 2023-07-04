@@ -2,7 +2,6 @@ import {
   FormProviderCreateStory,
   FormTypeCreateStory,
 } from '@multiverse-org/forms/src/createStory'
-import Image from 'next/image'
 import { Form } from '../../atoms/Form'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { HtmlInput } from '../../atoms/HtmlInput'
@@ -25,7 +24,6 @@ import { Switch2 } from '../../atoms/Switch2'
 import { useRouter } from 'next/router'
 import { useUserStore } from '@multiverse-org/store/user'
 import { notification$ } from '@multiverse-org/util/subjects'
-import { Header } from '../../organisms/Header'
 import { HeaderText } from '../../molecules/HeaderText'
 import { PlainButton } from '../../atoms/PlainButton'
 import { StickyLayout } from '../../organisms/StickyLayout'
@@ -51,8 +49,9 @@ export const CreateStoryContent = ({}: ICreateStoryProps) => {
     formState: { errors },
   } = useFormContext<FormTypeCreateStory>()
 
+  console.log('errors ', errors)
+
   const storyData = useWatch<FormTypeCreateStory>()
-  console.log('storyData', storyData, storyData.image, storyData.image?.[0])
 
   const [{ percent, uploading }, uploadImages] = useImageUpload()
   const uid = useUserStore((state) => state.uid)
@@ -69,7 +68,15 @@ export const CreateStoryContent = ({}: ICreateStoryProps) => {
             notification$.next({ message: 'You are not logged in.' })
             return
           }
-          console.log('data.image ', data.image)
+
+          if (!data.image) {
+            notification$.next({
+              message: 'Story image is mandatory.',
+              type: 'error',
+            })
+            return
+          }
+
           const images = await uploadImages(data.image)
 
           const nodesWithImage = await Promise.all(
@@ -87,6 +94,7 @@ export const CreateStoryContent = ({}: ICreateStoryProps) => {
                 image: images[0],
                 title: data.title,
                 nodes: nodesWithImage,
+                description: data.description,
               },
             },
           })
@@ -192,7 +200,7 @@ export const AddNodes = () => {
           title={
             (
               <div className="flex items-center gap-1">
-                <IconFocus /> <div> {nodes?.[nodeIndex]?.choiceText}</div>
+                <IconFocus /> <div> {nodes?.[nodeIndex]?.title}</div>
               </div>
             ) || '[Empty]'
           }
@@ -256,18 +264,7 @@ export const AddNodes = () => {
             )}
             <div className="space-y-2">
               <HtmlLabel
-                title="Choice text"
-                optional
-                error={errors.nodes?.[nodeIndex]?.choiceText?.message}
-              >
-                <HtmlInput
-                  placeholder="Enter the choice text"
-                  {...register(`nodes.${nodeIndex}.choiceText`)}
-                />
-              </HtmlLabel>
-              <HtmlLabel
                 title="Title"
-                optional
                 error={errors.nodes?.[nodeIndex]?.title?.message}
               >
                 <HtmlInput

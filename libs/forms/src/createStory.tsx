@@ -6,8 +6,8 @@ import { createNodeFormSchema } from './createNode'
 
 export const createStoryFormSchema = z.object({
   title: z.string(),
-  description: z.string().optional(),
-  image: z.any(),
+  description: z.string(),
+  image: z.any(), // Todo: find a suitable type which throws validation error if the image is falsy.
   nodes: z.array(createNodeFormSchema),
 })
 

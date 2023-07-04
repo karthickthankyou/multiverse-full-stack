@@ -40,18 +40,32 @@ model Node {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    title      String
-    choiceText String   @default("")
-    content    String
-    start      Boolean? @default(false)
-    end        Boolean? @default(false)
-    image      String?
+    title   String
+    content String
+    start   Boolean? @default(false)
+    end     Boolean? @default(false)
+    image   String?
 
     author   User   @relation(fields: [authorId], references: [uid])
     authorId String
     story    Story  @relation(fields: [storyId], references: [id])
     storyId  Int
 
-    parentNodes Node[] @relation("Choices")
-    childNodes  Node[] @relation("Choices")
+    parentNodes Choice[] @relation("parentNodes")
+    choiceNodes Choice[] @relation("choiceNodes")
+}
+
+model Choice {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    choiceText String
+
+    parentNode   Node? @relation("parentNodes", fields: [parentNodeId], references: [id])
+    parentNodeId Int?
+    choiceNode   Node? @relation("choiceNodes", fields: [choiceNodeId], references: [id])
+    choiceNodeId Int?
+
+    @@unique([parentNodeId, choiceNodeId])
 }

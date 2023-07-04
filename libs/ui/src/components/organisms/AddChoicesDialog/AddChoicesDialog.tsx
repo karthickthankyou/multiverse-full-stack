@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import { Button } from '../../atoms/Button'
 import { Dialog } from '../../atoms/Dialog'
 import {
-  NodeQuery,
+  CreateManyChoiceInput,
+  NodesQuery,
   QueryMode,
   namedOperations,
-  useAddChildNodesMutation,
-  useNodeLazyQuery,
+  useChoicesLazyQuery,
+  useCreateManyChoicesMutation,
   useNodesQuery,
 } from '@multiverse-org/network/src/gql/generated'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
@@ -15,18 +16,36 @@ import { useDebouncedValue } from '@multiverse-org/hooks/src/async'
 import { ShowData } from '../ShowData'
 import { useTakeSkip } from '@multiverse-org/hooks'
 import { notification$ } from '@multiverse-org/util/subjects'
+import { SelectedNode, useStoreSelectedNodesWithChoiceText } from './data'
 
 export interface IAddChoicesDialogProps {
-  nodeId: number
+  node: NodesQuery['nodes'][0]
 }
 
-export const AddChoicesDialog = ({ nodeId }: IAddChoicesDialogProps) => {
+export const AddChoicesDialog = ({ node }: IAddChoicesDialogProps) => {
   const [open, setOpen] = useState(false)
 
-  const [getNode, { loading, data }] = useNodeLazyQuery()
+  const [getChoices, { loading, data }] = useChoicesLazyQuery()
   useEffect(() => {
-    getNode({ variables: { where: { id: nodeId } } })
+    getChoices({ variables: { where: { parentNodeId: { equals: node.id } } } })
   }, [])
+
+  const { setSelectedNodes, resetSelectedNodes } =
+    useStoreSelectedNodesWithChoiceText()
+
+  useEffect(() => {
+    setSelectedNodes(
+      data?.choices.map((choice) => ({
+        id: choice.choiceNode.id,
+        title: choice.choiceNode.title,
+        choiceText: choice.choiceText || '',
+      })) || [],
+    )
+
+    return () => {
+      resetSelectedNodes()
+    }
+  }, [data?.choices])
 
   return (
     <div>
@@ -34,26 +53,17 @@ export const AddChoicesDialog = ({ nodeId }: IAddChoicesDialogProps) => {
         Add choices
       </Button>
       <Dialog open={open} setOpen={setOpen} title={'Add choices'}>
-        <div>{data?.node.title}</div>
-        <div>{data?.node.content}</div>
-        <ChooseChoices
-          nodeId={nodeId}
-          childNodes={data?.node.childNodes || []}
-        />
+        <div className="mb-4 space-y-2">
+          <div>{node.title}</div>
+          <div className="text-sm text-gray">{node.content}</div>
+        </div>
+        <ChooseChoices nodeId={node.id} />
       </Dialog>
     </div>
   )
 }
 
-type ChildNodes = NonNullable<NodeQuery['node']['childNodes']>
-
-const ChooseChoices = ({
-  childNodes = [],
-  nodeId,
-}: {
-  childNodes: ChildNodes
-  nodeId: number
-}) => {
+const ChooseChoices = ({ nodeId }: { nodeId: number }) => {
   const [searchText, setSearchText] = useState('')
 
   const debouncedSearchText = useDebouncedValue(searchText, 300)
@@ -73,23 +83,16 @@ const ChooseChoices = ({
 
   const { setSkip, setTake, skip, take } = useTakeSkip()
 
-  const [selectedNodes, setSelectedNodes] = useState<ChildNodes>(
-    () => childNodes,
-  )
+  const { selectedNodes, addSelectedNode, removeSelectedNode } =
+    useStoreSelectedNodesWithChoiceText()
 
   return (
     <div>
       <RenderSelectedNodes
         nodes={selectedNodes}
-        removeNode={(id) =>
-          setSelectedNodes((state) => state?.filter((node) => node.id !== id))
-        }
+        removeNode={(id) => removeSelectedNode(id)}
       />
-      <UpdateChoicesButton
-        nodeId={nodeId}
-        childNodes={childNodes?.map((node) => node.id) || []}
-        selectedNodes={selectedNodes?.map((node) => node.id) || []}
-      />
+      <UpdateChoicesButton selectedNodes={selectedNodes} nodeId={nodeId} />
       <HtmlLabel title="Search">
         <HtmlInput
           placeholder="Search node titles"
@@ -119,13 +122,17 @@ const ChooseChoices = ({
               onClick={() => {
                 if (
                   selectedNodes?.find(
-                    (selectedNode) => selectedNode.id === node.id,
+                    (selectedNode) => selectedNode?.id === node.id,
                   )
                 ) {
                   notification$.next({ message: 'Already added.' })
                   return
                 }
-                setSelectedNodes((state) => [...state, node])
+                addSelectedNode({
+                  id: node.id,
+                  title: node.title,
+                  choiceText: '',
+                })
               }}
             >
               Add
@@ -141,10 +148,12 @@ export const RenderSelectedNodes = ({
   nodes,
   removeNode,
 }: {
-  nodes: ChildNodes
+  nodes: SelectedNode[]
   removeNode: (id: number) => void
 }) => {
   const { setSkip, setTake, skip, take } = useTakeSkip()
+
+  const { updateChoiceTextForNodeId } = useStoreSelectedNodesWithChoiceText()
 
   return (
     <ShowData
@@ -157,15 +166,24 @@ export const RenderSelectedNodes = ({
         skip,
         take,
       }}
-      title={undefined}
+      title={'Choices'}
+      className="flex flex-col gap-4"
     >
       {nodes.map((node) => (
-        <div key={node.id}>
+        <div key={node?.id} className="space-y-1">
+          {/* Add choice text somewhere. */}
           <div>{node.title}</div>
+
+          <HtmlInput
+            value={node.choiceText}
+            onChange={(e) => updateChoiceTextForNodeId(node.id, e.target.value)}
+            placeholder="Enter choice text"
+          />
+
           <Button
             variant="text"
             size="none"
-            onClick={() => removeNode(node.id)}
+            onClick={() => removeNode(node?.id)}
           >
             Remove
           </Button>
@@ -177,31 +195,49 @@ export const RenderSelectedNodes = ({
 
 export const UpdateChoicesButton = ({
   nodeId,
-  selectedNodes = [],
-  childNodes = [],
+  selectedNodes,
 }: {
   nodeId: number
-  selectedNodes: number[]
-  childNodes: number[]
+  selectedNodes: SelectedNode[]
 }) => {
-  const [addChildNodes, { data, loading }] = useAddChildNodesMutation()
+  const [addChildNodes, { data, loading }] = useCreateManyChoicesMutation()
 
-  const disableUpdateChildNodes = () => {
-    if (childNodes.length !== selectedNodes.length) {
-      return false
+  useEffect(() => {
+    if (data?.createManyChoices) {
+      notification$.next({ message: 'Choices created.' })
     }
+  }, [data?.createManyChoices])
 
-    return selectedNodes.every((nodeId) => childNodes.includes(nodeId))
-  }
   return (
     <Button
-      disabled={disableUpdateChildNodes()}
       loading={loading}
       onClick={async () => {
+        console.log('selectedNodes', selectedNodes)
+
+        selectedNodes.forEach((node) => {
+          if (!node.choiceText) {
+            notification$.next({ message: 'Choice text can not be empty.' })
+            return
+          }
+        })
+        const choices: CreateManyChoiceInput['choices'] = selectedNodes.map(
+          (choice) => ({
+            choiceNodeId: choice.id,
+            choiceText: choice.choiceText || '-',
+            parentNodeId: nodeId,
+          }),
+        )
         await addChildNodes({
-          variables: { childrenNodeIds: selectedNodes, nodeId },
+          variables: {
+            createManyChoiceInput: {
+              choices,
+            },
+          },
           awaitRefetchQueries: true,
-          refetchQueries: [namedOperations.Query.node],
+          refetchQueries: [
+            namedOperations.Query.choices,
+            namedOperations.Query.nodes,
+          ],
         })
       }}
     >

@@ -12,6 +12,7 @@ import { PrismaModule } from './common/prisma/prisma.module'
 import { FirebaseModule } from './common/firebase/firebase.module'
 import { AuthModule } from './common/auth/auth.module'
 import { MeilisearchModule } from './common/meilisearch/meilisearch.module'
+import { ChoicesModule } from './models/choices/choices.module'
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { MeilisearchModule } from './common/meilisearch/meilisearch.module'
     NodesModule,
     StoriesModule,
     UsersModule,
+    ChoicesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

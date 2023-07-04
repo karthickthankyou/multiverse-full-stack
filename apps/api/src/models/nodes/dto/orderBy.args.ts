@@ -1,6 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
+import { ChoiceOrderByRelationAggregateInput } from 'src/models/choices/dto/orderBy.args'
 import { StoryOrderByWithRelationInput } from 'src/models/stories/dto/orderBy.args'
 import { UserOrderByWithRelationInput } from 'src/models/users/dto/orderBy.args'
 
@@ -18,14 +19,12 @@ export default class NodeOrderByWithRelationInput
       Prisma.NodeOrderByWithRelationInput
     >
 {
-  @Field(() => Prisma.SortOrder, { nullable: true })
-  choiceText: Prisma.SortOrder
+  @Field(() => ChoiceOrderByRelationAggregateInput, { nullable: true })
+  parentNodes: ChoiceOrderByRelationAggregateInput
+  @Field(() => ChoiceOrderByRelationAggregateInput, { nullable: true })
+  choiceNodes: ChoiceOrderByRelationAggregateInput
   @Field(() => Prisma.SortOrder, { nullable: true })
   image: Prisma.SortOrder
-  @Field(() => NodeOrderByRelationAggregateInput, { nullable: true })
-  parentNodes: NodeOrderByRelationAggregateInput
-  @Field(() => NodeOrderByRelationAggregateInput, { nullable: true })
-  childNodes: NodeOrderByRelationAggregateInput
   @Field(() => Prisma.SortOrder, { nullable: true })
   id: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })

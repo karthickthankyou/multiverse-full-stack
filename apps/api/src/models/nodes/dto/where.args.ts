@@ -10,6 +10,7 @@ import {
 import { StoryRelationFilter } from 'src/models/stories/dto/where.args'
 import { UserRelationFilter } from 'src/models/users/dto/where.args'
 import { NodeListRelationFilter, NodeRelationFilter } from './relations.args'
+import { ChoiceListRelationFilter } from 'src/models/choices/dto/where.args'
 
 @InputType()
 export class NodeWhereUniqueInput
@@ -24,14 +25,14 @@ export class NodeWhereUniqueInput
 export class NodeWhereInput
   implements RestrictProperties<NodeWhereInput, Prisma.NodeWhereInput>
 {
-  @Field(() => StringFilter, { nullable: true })
-  choiceText: StringFilter
+  @Field(() => ChoiceListRelationFilter, { nullable: true })
+  parentNodes: ChoiceListRelationFilter
+  @Field(() => ChoiceListRelationFilter, { nullable: true })
+  choiceNodes: ChoiceListRelationFilter
+
   @Field(() => StringFilter, { nullable: true })
   image: StringFilter
-  @Field(() => NodeListRelationFilter, { nullable: true })
-  parentNodes: NodeListRelationFilter
-  @Field(() => NodeListRelationFilter, { nullable: true })
-  childNodes: NodeListRelationFilter
+
   @Field(() => IntFilter, { nullable: true })
   id: IntFilter
   @Field(() => DateTimeFilter, { nullable: true })

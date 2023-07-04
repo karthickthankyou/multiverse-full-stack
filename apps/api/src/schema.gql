@@ -6,7 +6,6 @@ type Node {
   image: String
   start: Boolean
   end: Boolean
-  choiceText: String!
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -16,8 +15,8 @@ type Node {
   storyId: Int!
   author: User
   story: Story
-  parentNodes: [Node!]
-  childNodes: [Node!]
+  parentNodes: [Choice!]
+  choiceNodes: [Choice!]
 }
 
 """
@@ -47,6 +46,17 @@ type Story {
   authorId: String!
   nodes: [Node!]
   author: User
+}
+
+type Choice {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  choiceText: String!
+  parentNodeId: Int!
+  choiceNodeId: Int!
+  parentNode: Node!
+  choiceNode: Node!
 }
 
 type LoginOutput {
@@ -87,13 +97,14 @@ type Query {
   story(where: StoryWhereUniqueInput): Story!
   users(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
   user(where: UserWhereUniqueInput): User
+  choices(where: ChoiceWhereInput, orderBy: [ChoiceOrderByWithRelationInput!], cursor: ChoiceWhereUniqueInput, take: Int, skip: Int, distinct: [ChoiceScalarFieldEnum!]): [Choice!]!
+  choice(where: ChoiceWhereUniqueInput): Choice!
 }
 
 input NodeWhereInput {
-  choiceText: StringFilter
+  parentNodes: ChoiceListRelationFilter
+  choiceNodes: ChoiceListRelationFilter
   image: StringFilter
-  parentNodes: NodeListRelationFilter
-  childNodes: NodeListRelationFilter
   id: IntFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -108,6 +119,47 @@ input NodeWhereInput {
   AND: [NodeWhereInput!]
   OR: [NodeWhereInput!]
   NOT: [NodeWhereInput!]
+}
+
+input ChoiceListRelationFilter {
+  every: ChoiceWhereInput
+  some: ChoiceWhereInput
+  none: ChoiceWhereInput
+}
+
+input ChoiceWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  choiceText: StringFilter
+  parentNodeId: IntFilter
+  choiceNodeId: IntFilter
+  parentNode: NodeRelationFilter
+  choiceNode: NodeRelationFilter
+  AND: [ChoiceWhereInput!]
+  OR: [ChoiceWhereInput!]
+  NOT: [ChoiceWhereInput!]
+}
+
+input IntFilter {
+  equals: Int
+  in: Int
+  notIn: Int
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: Int
+}
+
+input DateTimeFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
 }
 
 input StringFilter {
@@ -130,31 +182,9 @@ enum QueryMode {
   insensitive
 }
 
-input NodeListRelationFilter {
-  every: NodeWhereInput
-  some: NodeWhereInput
-  none: NodeWhereInput
-}
-
-input IntFilter {
-  equals: Int
-  in: Int
-  notIn: Int
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: Int
-}
-
-input DateTimeFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
+input NodeRelationFilter {
+  is: NodeWhereInput
+  isNot: NodeWhereInput
 }
 
 input BoolFilter {
@@ -200,16 +230,21 @@ input StoryWhereInput {
   NOT: [StoryWhereInput!]
 }
 
+input NodeListRelationFilter {
+  every: NodeWhereInput
+  some: NodeWhereInput
+  none: NodeWhereInput
+}
+
 input StoryRelationFilter {
   is: StoryWhereInput
   isNot: StoryWhereInput
 }
 
 input NodeOrderByWithRelationInput {
-  choiceText: SortOrder
+  parentNodes: ChoiceOrderByRelationAggregateInput
+  choiceNodes: ChoiceOrderByRelationAggregateInput
   image: SortOrder
-  parentNodes: NodeOrderByRelationAggregateInput
-  childNodes: NodeOrderByRelationAggregateInput
   id: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
@@ -223,13 +258,13 @@ input NodeOrderByWithRelationInput {
   story: StoryOrderByWithRelationInput
 }
 
+input ChoiceOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
 enum SortOrder {
   asc
   desc
-}
-
-input NodeOrderByRelationAggregateInput {
-  _count: SortOrder
 }
 
 input UserOrderByWithRelationInput {
@@ -242,6 +277,10 @@ input UserOrderByWithRelationInput {
 }
 
 input StoryOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input NodeOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
@@ -266,7 +305,6 @@ enum NodeScalarFieldEnum {
   createdAt
   updatedAt
   title
-  choiceText
   content
   start
   end
@@ -300,6 +338,36 @@ enum UserScalarFieldEnum {
   name
 }
 
+input ChoiceOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  choiceText: SortOrder
+  parentNodeId: SortOrder
+  choiceNodeId: SortOrder
+  parentNode: NodeOrderByWithRelationInput
+  choiceNode: NodeOrderByWithRelationInput
+}
+
+input ChoiceWhereUniqueInput {
+  parentNodeId_choiceNodeId: ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput
+  id: Int
+}
+
+input ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput {
+  parentNodeId: Int!
+  choiceNodeId: Int!
+}
+
+enum ChoiceScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  choiceText
+  parentNodeId
+  choiceNodeId
+}
+
 type Mutation {
   login(credentials: LoginInput!): LoginOutput!
   register(credentials: RegisterInput!): RegisterOutput!
@@ -309,7 +377,6 @@ type Mutation {
   setAdmin(uid: String!): Boolean!
   createNode(createNodeInput: CreateNodeInput!): Node!
   createNodes(CreateMultipleNodesInput: CreateMultipleNodesInput!): [Node!]!
-  addChildNodes(nodeId: Int!, childrenNodeIds: [Int!]!): Node!
   updateNode(updateNodeInput: UpdateNodeInput!): Node!
   removeNode(where: NodeWhereUniqueInput): Node!
   createStory(createStoryInput: CreateStoryInput!): Story!
@@ -318,6 +385,10 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(where: UserWhereUniqueInput): User!
+  createChoice(createChoiceInput: CreateChoiceInput!): Choice!
+  createManyChoices(createManyChoiceInput: CreateManyChoiceInput!): [Choice!]!
+  updateChoice(updateChoiceInput: UpdateChoiceInput!): Choice!
+  removeChoice(where: ChoiceWhereUniqueInput): Choice!
 }
 
 input LoginInput {
@@ -405,4 +476,21 @@ input CreateUserInput {
 input UpdateUserInput {
   name: String
   uid: String!
+}
+
+input CreateChoiceInput {
+  choiceText: String!
+  parentNodeId: Int!
+  choiceNodeId: Int!
+}
+
+input CreateManyChoiceInput {
+  choices: [CreateChoiceInput!]!
+}
+
+input UpdateChoiceInput {
+  choiceText: String
+  parentNodeId: Int
+  choiceNodeId: Int
+  id: Int!
 }

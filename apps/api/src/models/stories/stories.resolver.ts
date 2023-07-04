@@ -36,7 +36,7 @@ export class StoriesResolver {
     const author = await this.prisma.user.findUnique({
       where: { uid: args.authorId },
     })
-    if (!author?.name) {
+    if (!author?.uid) {
       const newAuthor = await this.prisma.user.create({
         data: { uid: args.authorId },
       })

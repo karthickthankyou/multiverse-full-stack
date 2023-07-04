@@ -24,7 +24,7 @@ import {
   FormProviderCreateMultipleNodes,
   FormTypeCreateMultipleNodes,
 } from '@multiverse-org/forms/src/createMultipleNodes'
-import { IconFocus, IconPlus } from '@tabler/icons-react'
+import { IconFocus, IconPlus, IconTrash } from '@tabler/icons-react'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { HtmlTextArea } from '../../atoms/HtmlTextArea'
 import { Dialog } from '../../atoms/Dialog'
@@ -32,6 +32,8 @@ import { Form } from '../../atoms/Form'
 import { useUserStore } from '@multiverse-org/store/user'
 import { notification$ } from '@multiverse-org/util/subjects'
 import { useImageUpload } from '@multiverse-org/util'
+import { PlainButton } from '../../atoms/PlainButton'
+import { Switch2 } from '../../atoms/Switch2'
 
 export interface INodesListProps {
   storyId: number
@@ -70,13 +72,18 @@ export const NodesList = ({ storyId }: INodesListProps) => {
                 End.
               </div>
             ) : null}
+            {node.start ? (
+              <div className="inline-block px-1 text-xs text-black bg-primary">
+                Start.
+              </div>
+            ) : null}
             <ul>
-              {node.childNodes?.map((node) => (
+              {node.choiceNodes?.map((node) => (
                 <li
                   key={node.id}
                   className="text-xs text-gray decoration-slice"
                 >
-                  {node.title}
+                  {node.choiceText}
                 </li>
               ))}
             </ul>
@@ -88,7 +95,7 @@ export const NodesList = ({ storyId }: INodesListProps) => {
                 alt={node.title}
               />
             ) : null}
-            {node.end ? null : <AddChoicesDialog nodeId={node.id} />}
+            {node.end ? null : <AddChoicesDialog node={node} />}
           </div>
         ))}
       </ShowData>
@@ -108,6 +115,7 @@ export const AddNodesDialog = ({ storyId }: INodesListProps) => {
     handleSubmit,
     reset,
     formState: { errors },
+    resetField,
   } = useFormContext<FormTypeCreateMultipleNodes>()
 
   const { fields, append, remove } = useFieldArray<FormTypeCreateMultipleNodes>(
@@ -161,7 +169,7 @@ export const AddNodesDialog = ({ storyId }: INodesListProps) => {
                 },
               },
               awaitRefetchQueries: true,
-              refetchQueries: [namedOperations.Query.Nodes],
+              refetchQueries: [namedOperations.Query.nodes],
             })
             reset()
             setOpen(false)
@@ -199,73 +207,79 @@ export const AddNodesDialog = ({ storyId }: INodesListProps) => {
               </div>
 
               <div
-                className={`flex gap-2 ${
+                className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 ${
                   hovered === item.id ? 'bg-strip' : null
                 }`}
               >
-                <HtmlLabel
-                  title="Title"
-                  optional
-                  error={errors.nodes?.[nodeIndex]?.title?.message}
-                >
-                  <HtmlInput
-                    placeholder="Enter the title"
-                    {...register(`nodes.${nodeIndex}.title`)}
+                {nodes?.[nodeIndex]?.image ? (
+                  <div className="relative flex items-center justify-center w-full h-full min-h-[12rem]">
+                    <PlainButton
+                      className="flex items-center gap-1 p-2 text-white underline underline-offset-4 bg-black/30"
+                      onClick={() => {
+                        resetField(`nodes.${nodeIndex}.image`)
+                      }}
+                    >
+                      <IconTrash /> Clear
+                    </PlainButton>
+                    <img
+                      className="absolute object-cover h-full z-full -z-10"
+                      alt=""
+                      src={URL.createObjectURL(nodes?.[nodeIndex].image[0])}
+                    />
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center w-full h-full  min-h-[12rem] bg-gray-100">
+                    <Controller
+                      control={control}
+                      name={`nodes.${nodeIndex}.image`}
+                      render={({ field }) => (
+                        <HtmlInput
+                          type="file"
+                          accept="image/*"
+                          multiple={false}
+                          onChange={(e) => field.onChange(e?.target?.files)}
+                        />
+                      )}
+                    />
+                  </div>
+                )}
+                <div className="space-y-2">
+                  <HtmlLabel
+                    title="Title"
+                    error={errors.nodes?.[nodeIndex]?.title?.message}
+                  >
+                    <HtmlInput
+                      placeholder="Enter the title"
+                      {...register(`nodes.${nodeIndex}.title`)}
+                    />
+                  </HtmlLabel>
+
+                  <Switch2
+                    checked={nodes?.[nodeIndex]?.start || false}
+                    onChange={(value) => {
+                      setValue(`nodes.${nodeIndex}.start`, value)
+                    }}
+                    label={'Start?'}
                   />
-                </HtmlLabel>
+                  <Switch2
+                    checked={nodes?.[nodeIndex]?.end || false}
+                    onChange={(value) => {
+                      setValue(`nodes.${nodeIndex}.end`, value)
+                    }}
+                    label={'End?'}
+                  />
+                </div>
                 <HtmlLabel
                   title="Content"
                   optional
                   error={errors.nodes?.[nodeIndex]?.content?.message}
                 >
                   <HtmlTextArea
+                    rows={8}
                     placeholder="Enter the content"
                     {...register(`nodes.${nodeIndex}.content`)}
                   />
                 </HtmlLabel>
-                <HtmlLabel
-                  title="Start?"
-                  optional
-                  error={errors.nodes?.[nodeIndex]?.content?.message}
-                >
-                  <Switch
-                    checked={nodes?.[nodeIndex]?.start}
-                    onChange={(e) => {
-                      setValue(`nodes.${nodeIndex}.start`, e.target.checked)
-                    }}
-                  />
-                </HtmlLabel>
-                <HtmlLabel
-                  title="End?"
-                  optional
-                  error={errors.nodes?.[nodeIndex]?.content?.message}
-                >
-                  <Switch
-                    checked={nodes?.[nodeIndex]?.end}
-                    onChange={(e) => {
-                      setValue(`nodes.${nodeIndex}.end`, e.target.checked)
-                    }}
-                  />
-                </HtmlLabel>
-                <Controller
-                  control={control}
-                  name={`nodes.${nodeIndex}.image`}
-                  render={({ field }) => (
-                    <HtmlLabel
-                      title="Image"
-                      error={errors.nodes?.[
-                        nodeIndex
-                      ]?.image?.message?.toString()}
-                    >
-                      <HtmlInput
-                        type="file"
-                        accept="image/*"
-                        multiple={false}
-                        onChange={(e) => field.onChange(e?.target?.files)}
-                      />
-                    </HtmlLabel>
-                  )}
-                />
               </div>
             </Accordion>
           ))}
@@ -277,7 +291,6 @@ export const AddNodesDialog = ({ storyId }: INodesListProps) => {
               onClick={() =>
                 append({
                   title: '',
-                  choiceText: '',
                   content: '',
                   start: false,
                   end: false,

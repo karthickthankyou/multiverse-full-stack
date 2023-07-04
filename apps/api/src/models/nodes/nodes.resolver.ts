@@ -26,6 +26,7 @@ import { User } from '../users/entities/user.entity'
 import { Story } from '../stories/entities/story.entity'
 import { AggregateCountOutput } from 'src/common/dtos/common.input'
 import { NodeWhereInput } from './dto/where.args'
+import { Choice } from '../choices/entities/choice.entity'
 
 @Resolver(() => Node)
 export class NodesResolver {
@@ -48,31 +49,31 @@ export class NodesResolver {
     return this.nodesService.createMany(args)
   }
 
-  @AllowAuthenticated()
-  @Mutation(() => Node)
-  async addChildNodes(
-    @Args('nodeId') nodeId: number,
-    @Args({ name: 'childrenNodeIds', type: () => [Number] })
-    childrenNodeIds: number[],
-  ): Promise<Node> {
-    const node = await this.prisma.node.findUnique({
-      where: { id: nodeId },
-      include: { childNodes: true },
-    })
+  //   @AllowAuthenticated()
+  //   @Mutation(() => Node)
+  //   async addChildNodes(
+  //     @Args('nodeId') nodeId: number,
+  //     @Args({ name: 'childrenNodeIds', type: () => [Number] })
+  //     childrenNodeIds: number[],
+  //   ): Promise<Node> {
+  //     const node = await this.prisma.node.findUnique({
+  //       where: { id: nodeId },
+  //       include: { childNodes: true },
+  //     })
 
-    // Get the ids of the current child nodes
-    const currentChildNodeIds = node.childNodes.map((childNode) => childNode.id)
+  //     // Get the ids of the current child nodes
+  //     const currentChildNodeIds = node.childNodes.map((childNode) => childNode.id)
 
-    return this.prisma.node.update({
-      where: { id: nodeId },
-      data: {
-        childNodes: {
-          disconnect: currentChildNodeIds.map((id) => ({ id })),
-          connect: childrenNodeIds.map((id) => ({ id })),
-        },
-      },
-    })
-  }
+  //     return this.prisma.node.update({
+  //       where: { id: nodeId },
+  //       data: {
+  //         childNodes: {
+  //           disconnect: currentChildNodeIds.map((id) => ({ id })),
+  //           connect: childrenNodeIds.map((id) => ({ id })),
+  //         },
+  //       },
+  //     })
+  //   }
 
   @Query(() => [Node], { name: 'nodes' })
   findAll(@Args() args: FindManyNodeArgs) {
@@ -134,29 +135,17 @@ export class NodesResolver {
     })
   }
 
-  @ResolveField(() => [Node], { nullable: true })
+  @ResolveField(() => [Choice], { nullable: true })
   parentNodes(@Parent() parent: Node) {
-    return this.prisma.node.findMany({
-      where: {
-        childNodes: {
-          some: {
-            id: parent.id,
-          },
-        },
-      },
+    return this.prisma.choice.findMany({
+      where: { choiceNodeId: parent.id },
     })
   }
 
-  @ResolveField(() => [Node], { nullable: true })
-  childNodes(@Parent() parent: Node) {
-    return this.prisma.node.findMany({
-      where: {
-        parentNodes: {
-          some: {
-            id: parent.id,
-          },
-        },
-      },
+  @ResolveField(() => [Choice], { nullable: true })
+  choiceNodes(@Parent() parent: Node) {
+    return this.prisma.choice.findMany({
+      where: { parentNodeId: parent.id },
     })
   }
 }
