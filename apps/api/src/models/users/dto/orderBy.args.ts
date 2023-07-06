@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 import { NodeOrderByRelationAggregateInput } from 'src/models/nodes/dto/orderBy.args'
 import { StoryOrderByRelationAggregateInput } from 'src/models/stories/dto/orderBy.args'
+import { UserStoryOrderByRelationAggregateInput } from 'src/models/user-stories/dto/orderBy.args'
 
 @InputType()
 export class UserOrderByWithRelationInput
@@ -12,6 +13,8 @@ export class UserOrderByWithRelationInput
       Prisma.UserOrderByWithRelationInput
     >
 {
+  @Field(() => UserStoryOrderByRelationAggregateInput, { nullable: true })
+  userStories: UserStoryOrderByRelationAggregateInput
   @Field(() => Prisma.SortOrder, { nullable: true })
   uid: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })

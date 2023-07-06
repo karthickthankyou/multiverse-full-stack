@@ -13,6 +13,18 @@ export class UsersService {
     })
   }
 
+  async createUserIfAbsent({ uid }: { uid: string }) {
+    const user = await this.prisma.user.findUnique({
+      where: { uid: uid },
+    })
+    if (!user?.uid) {
+      return await this.prisma.user.create({
+        data: { uid },
+      })
+    }
+    return user
+  }
+
   findAll(args: FindManyUserArgs) {
     return this.prisma.user.findMany(args)
   }

@@ -90,6 +90,22 @@ type RefreshTokenOutput {
   project_id: String!
 }
 
+type UserStory {
+  type: UserStoryType
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  uid: String!
+  storyId: Int!
+  user: User
+  story: Story
+}
+
+enum UserStoryType {
+  WISHLISTED
+  IN_CART
+  PURCHASED
+}
+
 type Query {
   nodes(where: NodeWhereInput, orderBy: [NodeOrderByWithRelationInput!], cursor: NodeWhereUniqueInput, take: Int, skip: Int, distinct: [NodeScalarFieldEnum!]): [Node!]!
   node(where: NodeWhereUniqueInput): Node!
@@ -101,6 +117,8 @@ type Query {
   user(where: UserWhereUniqueInput): User
   choices(where: ChoiceWhereInput, orderBy: [ChoiceOrderByWithRelationInput!], cursor: ChoiceWhereUniqueInput, take: Int, skip: Int, distinct: [ChoiceScalarFieldEnum!]): [Choice!]!
   choice(where: ChoiceWhereUniqueInput): Choice!
+  userStories(uid: String!, where: UserStoryWhereInput, orderBy: [UserStoryOrderByWithRelationInput!], cursor: UserStoryWhereUniqueInput, take: Int, skip: Int, distinct: [UserStoryScalarFieldEnum!]): [UserStory!]!
+  userStory(where: UserStoryWhereUniqueInput): UserStory!
 }
 
 input NodeWhereInput {
@@ -200,6 +218,7 @@ input UserRelationFilter {
 }
 
 input UserWhereInput {
+  userStories: UserStoryListRelationFilter
   uid: StringFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -211,13 +230,32 @@ input UserWhereInput {
   NOT: [UserWhereInput!]
 }
 
-input StoryListRelationFilter {
-  every: StoryWhereInput
-  some: StoryWhereInput
-  none: StoryWhereInput
+input UserStoryListRelationFilter {
+  every: UserStoryWhereInput
+  some: UserStoryWhereInput
+  none: UserStoryWhereInput
+}
+
+input UserStoryWhereInput {
+  user: UserRelationFilter
+  story: StoryRelationFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  uid: StringFilter
+  storyId: IntFilter
+  type: EnumUserStoryTypeFilter
+  AND: [UserStoryWhereInput!]
+  OR: [UserStoryWhereInput!]
+  NOT: [UserStoryWhereInput!]
+}
+
+input StoryRelationFilter {
+  is: StoryWhereInput
+  isNot: StoryWhereInput
 }
 
 input StoryWhereInput {
+  userStories: UserStoryListRelationFilter
   description: StringFilter
   image: StringFilter
   id: IntFilter
@@ -238,9 +276,17 @@ input NodeListRelationFilter {
   none: NodeWhereInput
 }
 
-input StoryRelationFilter {
-  is: StoryWhereInput
-  isNot: StoryWhereInput
+input EnumUserStoryTypeFilter {
+  equals: UserStoryType
+  in: [UserStoryType!]
+  notIn: [UserStoryType!]
+  not: UserStoryType
+}
+
+input StoryListRelationFilter {
+  every: StoryWhereInput
+  some: StoryWhereInput
+  none: StoryWhereInput
 }
 
 input NodeOrderByWithRelationInput {
@@ -270,12 +316,17 @@ enum SortOrder {
 }
 
 input UserOrderByWithRelationInput {
+  userStories: UserStoryOrderByRelationAggregateInput
   uid: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   name: SortOrder
   stories: StoryOrderByRelationAggregateInput
   nodes: NodeOrderByRelationAggregateInput
+}
+
+input UserStoryOrderByRelationAggregateInput {
+  _count: SortOrder
 }
 
 input StoryOrderByRelationAggregateInput {
@@ -287,6 +338,7 @@ input NodeOrderByRelationAggregateInput {
 }
 
 input StoryOrderByWithRelationInput {
+  userStories: SortOrder
   description: SortOrder
   image: SortOrder
   id: SortOrder
@@ -370,6 +422,33 @@ enum ChoiceScalarFieldEnum {
   choiceNodeId
 }
 
+input UserStoryOrderByWithRelationInput {
+  user: UserOrderByWithRelationInput
+  story: StoryOrderByWithRelationInput
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  uid: SortOrder
+  storyId: SortOrder
+  type: SortOrder
+}
+
+input UserStoryWhereUniqueInput {
+  uid_storyId: UserStoryUidStoryIdCompoundUniqueInput
+}
+
+input UserStoryUidStoryIdCompoundUniqueInput {
+  uid: String!
+  storyId: Int!
+}
+
+enum UserStoryScalarFieldEnum {
+  createdAt
+  updatedAt
+  uid
+  storyId
+  type
+}
+
 type Mutation {
   login(credentials: LoginInput!): LoginOutput!
   register(credentials: RegisterInput!): RegisterOutput!
@@ -391,6 +470,9 @@ type Mutation {
   createManyChoices(createManyChoiceInput: CreateManyChoiceInput!): [Choice!]!
   updateChoice(updateChoiceInput: UpdateChoiceInput!): Choice!
   removeChoice(where: ChoiceWhereUniqueInput): Choice!
+  createUserStory(createUserStoryInput: CreateUserStoryInput!): UserStory!
+  updateUserStory(updateUserStoryInput: UpdateUserStoryInput!): UserStory!
+  removeUserStory(where: UserStoryWhereUniqueInput): UserStory!
 }
 
 input LoginInput {
@@ -495,4 +577,22 @@ input UpdateChoiceInput {
   parentNodeId: Int
   choiceNodeId: Int
   id: Int!
+}
+
+input CreateUserStoryInput {
+  uid: String!
+  storyId: Int!
+  type: SelectedUserStoryType!
+}
+
+enum SelectedUserStoryType {
+  WISHLISTED
+  IN_CART
+}
+
+input UpdateUserStoryInput {
+  uid: String
+  storyId: Int
+  type: SelectedUserStoryType
+  uid_storyId: UserStoryUidStoryIdCompoundUniqueInput
 }

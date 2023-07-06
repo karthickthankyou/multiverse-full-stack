@@ -17,8 +17,9 @@ model User {
 
     name String?
 
-    stories Story[]
-    nodes   Node[]
+    stories     Story[]
+    nodes       Node[]
+    userStories UserStory[]
 }
 
 model Story {
@@ -29,10 +30,11 @@ model Story {
     title       String
     description String @default("")
 
-    author   User    @relation(fields: [authorId], references: [uid])
-    authorId String
-    image    String?
-    nodes    Node[]
+    author      User        @relation(fields: [authorId], references: [uid])
+    authorId    String
+    image       String?
+    nodes       Node[]
+    userStories UserStory[]
 }
 
 model Node {
@@ -68,4 +70,22 @@ model Choice {
     choiceNodeId Int?
 
     @@unique([parentNodeId, choiceNodeId])
+}
+
+model UserStory {
+    createdAt DateTime      @default(now())
+    updatedAt DateTime      @updatedAt
+    uid       String
+    storyId   Int
+    type      UserStoryType
+    user      User          @relation(fields: [uid], references: [uid])
+    story     Story         @relation(fields: [storyId], references: [id])
+
+    @@id([uid, storyId])
+}
+
+enum UserStoryType {
+    WISHLISTED
+    IN_CART
+    PURCHASED
 }

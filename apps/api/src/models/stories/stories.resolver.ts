@@ -23,6 +23,7 @@ import { Node } from '../nodes/entities/node.entity'
 import { User } from '../users/entities/user.entity'
 import { AggregateCountOutput } from 'src/common/dtos/common.input'
 import { StoryWhereInput } from './dto/where.args'
+import { UsersService } from '../users/users.service'
 
 @Resolver(() => Story)
 export class StoriesResolver {
@@ -30,19 +31,21 @@ export class StoriesResolver {
     private readonly storiesService: StoriesService,
     private readonly meili: MeilisearchService,
     private readonly prisma: PrismaService,
+    private readonly usersService: UsersService,
   ) {}
 
   @AllowAuthenticated()
   @Mutation(() => Story)
-  async createStory(@Args('createStoryInput') args: CreateStoryInput) {
-    const author = await this.prisma.user.findUnique({
-      where: { uid: args.authorId },
+  async createStory(
+    @Args('createStoryInput') args: CreateStoryInput,
+    @GetUser() user: GetUserType,
+  ) {
+    checkRowLevelPermission(user, args.authorId)
+    // Check author
+    const authorData = await this.usersService.createUserIfAbsent({
+      uid: args.authorId,
     })
-    if (!author?.uid) {
-      const newAuthor = await this.prisma.user.create({
-        data: { uid: args.authorId },
-      })
-    }
+
     const story = await this.storiesService.create(args)
     await this.meili.addToIndex([{ id: story.id, name: story.title }])
     return story

@@ -13,6 +13,7 @@ import { FirebaseModule } from './common/firebase/firebase.module'
 import { AuthModule } from './common/auth/auth.module'
 import { MeilisearchModule } from './common/meilisearch/meilisearch.module'
 import { ChoicesModule } from './models/choices/choices.module'
+import { UserStoriesModule } from './models/user-stories/user-stories.module'
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { ChoicesModule } from './models/choices/choices.module'
     StoriesModule,
     UsersModule,
     ChoicesModule,
+    UserStoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

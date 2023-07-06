@@ -7,6 +7,7 @@ import {
   StringFilter,
 } from 'src/common/dtos/common.input'
 import { NodeListRelationFilter } from 'src/models/nodes/dto/relations.args'
+import { UserStoryListRelationFilter } from 'src/models/user-stories/dto/where.args'
 
 import { UserRelationFilter } from 'src/models/users/dto/where.args'
 
@@ -23,6 +24,8 @@ export class StoryWhereUniqueInput
 export class StoryWhereInput
   implements RestrictProperties<StoryWhereInput, Prisma.StoryWhereInput>
 {
+  @Field(() => UserStoryListRelationFilter, { nullable: true })
+  userStories: UserStoryListRelationFilter
   @Field(() => StringFilter, { nullable: true })
   description: StringFilter
   @Field(() => StringFilter, { nullable: true })
