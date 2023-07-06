@@ -22,6 +22,8 @@ import { User } from '../users/entities/user.entity'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Story } from '../stories/entities/story.entity'
 import { BadRequestException } from '@nestjs/common'
+import { AggregateCountOutput } from 'src/common/dtos/common.input'
+import { UserStoryWhereInput } from './dto/where.args'
 
 @Resolver(() => UserStory)
 export class UserStoriesResolver {
@@ -103,17 +105,35 @@ export class UserStoriesResolver {
     return this.userStoriesService.remove(args)
   }
 
-  @ResolveField(() => User, { nullable: true })
+  @ResolveField(() => User)
   user(@Parent() parent: UserStory) {
     return this.prisma.user.findUnique({
       where: { uid: parent.uid },
     })
   }
 
-  @ResolveField(() => Story, { nullable: true })
+  @ResolveField(() => Story)
   story(@Parent() parent: UserStory) {
     return this.prisma.story.findUnique({
       where: { id: parent.storyId },
     })
+  }
+
+  @Query(() => AggregateCountOutput, {
+    name: 'userStoriesCount',
+  })
+  async userStoriesCount(
+    @Args('uid') uid: string,
+    @Args('where', { nullable: true })
+    where: UserStoryWhereInput,
+  ) {
+    const userStories = await this.prisma.userStory.aggregate({
+      _count: { _all: true },
+      where: {
+        ...where,
+        uid: uid,
+      },
+    })
+    return { count: userStories._count._all }
   }
 }

@@ -408,6 +408,7 @@ export type Query = {
   story: Story
   user?: Maybe<User>
   userStories: Array<UserStory>
+  userStoriesCount: AggregateCountOutput
   userStory: UserStory
   users: Array<User>
 }
@@ -470,6 +471,11 @@ export type QueryUserStoriesArgs = {
   orderBy?: InputMaybe<Array<UserStoryOrderByWithRelationInput>>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
+  uid: Scalars['String']
+  where?: InputMaybe<UserStoryWhereInput>
+}
+
+export type QueryUserStoriesCountArgs = {
   uid: Scalars['String']
   where?: InputMaybe<UserStoryWhereInput>
 }
@@ -701,12 +707,12 @@ export enum UserScalarFieldEnum {
 export type UserStory = {
   __typename?: 'UserStory'
   createdAt: Scalars['DateTime']
-  story?: Maybe<Story>
+  story: Story
   storyId: Scalars['Int']
   type?: Maybe<UserStoryType>
   uid: Scalars['String']
   updatedAt: Scalars['DateTime']
-  user?: Maybe<User>
+  user: User
 }
 
 export type UserStoryListRelationFilter = {

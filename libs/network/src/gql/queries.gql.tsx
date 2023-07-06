@@ -217,3 +217,36 @@ export const removeUserStory = gql`
     }
   }
 `
+
+export const userStories = gql`
+  query userStories(
+    $uid: String!
+    $distinct: [UserStoryScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: UserStoryWhereUniqueInput
+    $orderBy: [UserStoryOrderByWithRelationInput!]
+    $where: UserStoryWhereInput
+  ) {
+    userStories(
+      uid: $uid
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      createdAt
+      story {
+        image
+        title
+        id
+      }
+      type
+    }
+    userStoriesCount(where: $where, uid: $uid) {
+      count
+    }
+  }
+`

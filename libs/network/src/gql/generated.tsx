@@ -409,6 +409,7 @@ export type Query = {
   story: Story
   user?: Maybe<User>
   userStories: Array<UserStory>
+  userStoriesCount: AggregateCountOutput
   userStory: UserStory
   users: Array<User>
 }
@@ -471,6 +472,11 @@ export type QueryUserStoriesArgs = {
   orderBy?: InputMaybe<Array<UserStoryOrderByWithRelationInput>>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
+  uid: Scalars['String']
+  where?: InputMaybe<UserStoryWhereInput>
+}
+
+export type QueryUserStoriesCountArgs = {
   uid: Scalars['String']
   where?: InputMaybe<UserStoryWhereInput>
 }
@@ -702,12 +708,12 @@ export enum UserScalarFieldEnum {
 export type UserStory = {
   __typename?: 'UserStory'
   createdAt: Scalars['DateTime']
-  story?: Maybe<Story>
+  story: Story
   storyId: Scalars['Int']
   type?: Maybe<UserStoryType>
   uid: Scalars['String']
   updatedAt: Scalars['DateTime']
-  user?: Maybe<User>
+  user: User
 }
 
 export type UserStoryListRelationFilter = {
@@ -997,6 +1003,31 @@ export type RemoveUserStoryMutation = {
   removeUserStory: { __typename?: 'UserStory'; uid: string; storyId: number }
 }
 
+export type UserStoriesQueryVariables = Exact<{
+  uid: Scalars['String']
+  distinct?: InputMaybe<
+    Array<UserStoryScalarFieldEnum> | UserStoryScalarFieldEnum
+  >
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<UserStoryWhereUniqueInput>
+  orderBy?: InputMaybe<
+    Array<UserStoryOrderByWithRelationInput> | UserStoryOrderByWithRelationInput
+  >
+  where?: InputMaybe<UserStoryWhereInput>
+}>
+
+export type UserStoriesQuery = {
+  __typename?: 'Query'
+  userStories: Array<{
+    __typename?: 'UserStory'
+    createdAt: any
+    type?: UserStoryType | null
+    story: { __typename?: 'Story'; image: string; title: string; id: number }
+  }>
+  userStoriesCount: { __typename?: 'AggregateCountOutput'; count: number }
+}
+
 export const namedOperations = {
   Query: {
     stories: 'stories',
@@ -1004,6 +1035,7 @@ export const namedOperations = {
     nodes: 'nodes',
     node: 'node',
     choices: 'choices',
+    userStories: 'userStories',
   },
   Mutation: {
     Login: 'Login',
@@ -1737,4 +1769,91 @@ export type RemoveUserStoryMutationResult =
 export type RemoveUserStoryMutationOptions = Apollo.BaseMutationOptions<
   RemoveUserStoryMutation,
   RemoveUserStoryMutationVariables
+>
+export const UserStoriesDocument = /*#__PURE__*/ gql`
+  query userStories(
+    $uid: String!
+    $distinct: [UserStoryScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: UserStoryWhereUniqueInput
+    $orderBy: [UserStoryOrderByWithRelationInput!]
+    $where: UserStoryWhereInput
+  ) {
+    userStories(
+      uid: $uid
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      createdAt
+      story {
+        image
+        title
+        id
+      }
+      type
+    }
+    userStoriesCount(where: $where, uid: $uid) {
+      count
+    }
+  }
+`
+
+/**
+ * __useUserStoriesQuery__
+ *
+ * To run a query within a React component, call `useUserStoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserStoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserStoriesQuery({
+ *   variables: {
+ *      uid: // value for 'uid'
+ *      distinct: // value for 'distinct'
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
+ *      cursor: // value for 'cursor'
+ *      orderBy: // value for 'orderBy'
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useUserStoriesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    UserStoriesQuery,
+    UserStoriesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<UserStoriesQuery, UserStoriesQueryVariables>(
+    UserStoriesDocument,
+    options,
+  )
+}
+export function useUserStoriesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    UserStoriesQuery,
+    UserStoriesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<UserStoriesQuery, UserStoriesQueryVariables>(
+    UserStoriesDocument,
+    options,
+  )
+}
+export type UserStoriesQueryHookResult = ReturnType<typeof useUserStoriesQuery>
+export type UserStoriesLazyQueryHookResult = ReturnType<
+  typeof useUserStoriesLazyQuery
+>
+export type UserStoriesQueryResult = Apollo.QueryResult<
+  UserStoriesQuery,
+  UserStoriesQueryVariables
 >

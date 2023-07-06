@@ -67,8 +67,8 @@ type UserStory {
   updatedAt: DateTime!
   uid: String!
   storyId: Int!
-  user: User
-  story: Story
+  user: User!
+  story: Story!
 }
 
 enum UserStoryType {
@@ -120,6 +120,7 @@ type Query {
   choice(where: ChoiceWhereUniqueInput): Choice!
   userStories(uid: String!, where: UserStoryWhereInput, orderBy: [UserStoryOrderByWithRelationInput!], cursor: UserStoryWhereUniqueInput, take: Int, skip: Int, distinct: [UserStoryScalarFieldEnum!]): [UserStory!]!
   userStory(where: UserStoryWhereUniqueInput): UserStory!
+  userStoriesCount(uid: String!, where: UserStoryWhereInput): AggregateCountOutput!
 }
 
 input NodeWhereInput {
