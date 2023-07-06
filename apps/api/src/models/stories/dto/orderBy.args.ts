@@ -14,6 +14,8 @@ export class StoryOrderByWithRelationInput
     >
 {
   @Field(() => Prisma.SortOrder, { nullable: true })
+  price: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder, { nullable: true })
   userStories: UserStoryOrderByRelationAggregateInput
   @Field(() => Prisma.SortOrder, { nullable: true })
   description: Prisma.SortOrder

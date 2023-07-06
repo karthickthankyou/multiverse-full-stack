@@ -37,6 +37,7 @@ type User {
 }
 
 type Story {
+  price: Float
   description: String!
   image: String!
   id: Int!
@@ -75,6 +76,7 @@ enum UserStoryType {
   WISHLISTED
   IN_CART
   PURCHASED
+  SAVE_FOR_LATER
 }
 
 type LoginOutput {
@@ -257,6 +259,7 @@ input StoryRelationFilter {
 }
 
 input StoryWhereInput {
+  price: FloatFilter
   userStories: UserStoryListRelationFilter
   description: StringFilter
   image: StringFilter
@@ -270,6 +273,17 @@ input StoryWhereInput {
   AND: [StoryWhereInput!]
   OR: [StoryWhereInput!]
   NOT: [StoryWhereInput!]
+}
+
+input FloatFilter {
+  equals: Float
+  in: Float
+  notIn: Float
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: Float
 }
 
 input NodeListRelationFilter {
@@ -340,6 +354,7 @@ input NodeOrderByRelationAggregateInput {
 }
 
 input StoryOrderByWithRelationInput {
+  price: SortOrder
   userStories: SortOrder
   description: SortOrder
   image: SortOrder
@@ -381,6 +396,7 @@ enum StoryScalarFieldEnum {
   description
   authorId
   image
+  price
 }
 
 input UserWhereUniqueInput {

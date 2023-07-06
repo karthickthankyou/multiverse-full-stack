@@ -22,6 +22,7 @@ export const stories = gql`
       id
       title
       image
+      price
       userStory {
         type
       }
@@ -43,6 +44,7 @@ export const story = gql`
       createdAt
       id
       image
+      price
       description
       startingNodes {
         title
@@ -240,11 +242,20 @@ export const userStories = gql`
       createdAt
       story {
         image
+        price
         title
         id
       }
       type
     }
+    userStoriesCount(where: $where, uid: $uid) {
+      count
+    }
+  }
+`
+
+export const userStoriesCount = gql`
+  query userStoriesCount($uid: String!, $where: UserStoryWhereInput) {
     userStoriesCount(where: $where, uid: $uid) {
       count
     }

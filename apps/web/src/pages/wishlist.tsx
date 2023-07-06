@@ -14,7 +14,7 @@ export default function WishlistPage() {
       </Head>
       <main>
         <Container>
-          <UserStories type={UserStoryType.InCart} />
+          <UserStories type={UserStoryType.Wishlisted} />
         </Container>
       </main>
     </>

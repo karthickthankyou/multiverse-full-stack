@@ -15,6 +15,7 @@ import {
 } from '@tabler/icons-react'
 import { useUserStore } from '@multiverse-org/store/user'
 import { PlainButton } from '../../atoms/PlainButton'
+import { PriceCard } from '../PriceCard'
 
 export interface IStoryCardProps {
   story: StoriesQuery['stories'][0]
@@ -36,6 +37,7 @@ export const StoryCard = ({ story }: IStoryCardProps) => {
           alt=""
         />
         <div className="font-semibold">{story.title}</div>
+        <PriceCard price={story.price} />
       </Link>
       <UserActions story={story} />
     </div>
@@ -53,12 +55,20 @@ export const UserActions = ({
   })
   const [addToCart, { loading: addingToCart }] = useCreateUserStoryMutation({
     awaitRefetchQueries: true,
-    refetchQueries: [namedOperations.Query.stories],
+    refetchQueries: [
+      namedOperations.Query.stories,
+      namedOperations.Query.userStories,
+      namedOperations.Query.userStoriesCount,
+    ],
   })
   const [removeUserStory, { data: dataRemoveUserStory, loading: removing }] =
     useRemoveUserStoryMutation({
       awaitRefetchQueries: true,
-      refetchQueries: [namedOperations.Query.stories],
+      refetchQueries: [
+        namedOperations.Query.stories,
+        namedOperations.Query.userStories,
+        namedOperations.Query.userStoriesCount,
+      ],
     })
 
   const uid = useUserStore((state) => state.uid)
@@ -66,9 +76,12 @@ export const UserActions = ({
     return null
   }
 
-  console.log(story.userStory?.type)
+  if (!story.price) {
+    return null
+  }
+
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 mt-2">
       {/* No type */}
       {!story.userStory?.type && (
         <PlainButton

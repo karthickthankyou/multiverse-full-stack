@@ -9,6 +9,7 @@ import { Suspense } from 'react'
 import { useUserStore } from '@multiverse-org/store/user'
 import { MenuItem, Role } from '@multiverse-org/types'
 import { IconHeart, IconShoppingBag } from '@tabler/icons-react'
+import { HeaderInfo } from '../HeaderInfo'
 
 export type IHeaderProps = {
   menuItems?: MenuItem[]
@@ -51,12 +52,8 @@ export const Header = ({
                 </>
               ) : null}
 
-              <Link href="/wishlist">
-                <IconHeart />{' '}
-              </Link>
-              <Link href="/cart">
-                <IconShoppingBag />{' '}
-              </Link>
+              <HeaderInfo />
+
               <NavSidebar menuItems={sideMenuItems} />
             </div>
           </div>

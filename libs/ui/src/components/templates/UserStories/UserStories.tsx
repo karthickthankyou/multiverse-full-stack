@@ -53,6 +53,7 @@ export const UserStories = ({ type }: IWishlistProps) => {
             id: story.id,
             title: story.title,
             image: story.image,
+            price: story.price,
             userStory: {
               type,
             },

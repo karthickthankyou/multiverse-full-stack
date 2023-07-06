@@ -1,9 +1,11 @@
-import { ObjectType } from '@nestjs/graphql'
+import { Field, Float, ObjectType } from '@nestjs/graphql'
 import { Story as StoryType } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 
 @ObjectType()
 export class Story implements RestrictProperties<Story, StoryType> {
+  @Field(() => Float, { nullable: true })
+  price: number
   description: string
   image: string
   id: number

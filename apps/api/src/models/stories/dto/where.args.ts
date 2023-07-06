@@ -2,6 +2,7 @@ import { Field, InputType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import {
   DateTimeFilter,
+  FloatFilter,
   IntFilter,
   RestrictProperties,
   StringFilter,
@@ -24,6 +25,8 @@ export class StoryWhereUniqueInput
 export class StoryWhereInput
   implements RestrictProperties<StoryWhereInput, Prisma.StoryWhereInput>
 {
+  @Field(() => FloatFilter, { nullable: true })
+  price: FloatFilter
   @Field(() => UserStoryListRelationFilter, { nullable: true })
   userStories: UserStoryListRelationFilter
   @Field(() => StringFilter, { nullable: true })

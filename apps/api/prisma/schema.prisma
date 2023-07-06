@@ -30,9 +30,11 @@ model Story {
     title       String
     description String @default("")
 
-    author      User        @relation(fields: [authorId], references: [uid])
-    authorId    String
-    image       String?
+    author   User    @relation(fields: [authorId], references: [uid])
+    authorId String
+    image    String?
+    price    Float   @default(0)
+
     nodes       Node[]
     userStories UserStory[]
 }
@@ -88,4 +90,5 @@ enum UserStoryType {
     WISHLISTED
     IN_CART
     PURCHASED
+    SAVE_FOR_LATER
 }

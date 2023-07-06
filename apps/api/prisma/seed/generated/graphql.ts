@@ -167,6 +167,17 @@ export type EnumUserStoryTypeFilter = {
   notIn?: InputMaybe<Array<UserStoryType>>
 }
 
+export type FloatFilter = {
+  equals?: InputMaybe<Scalars['Float']>
+  gt?: InputMaybe<Scalars['Float']>
+  gte?: InputMaybe<Scalars['Float']>
+  in?: InputMaybe<Scalars['Float']>
+  lt?: InputMaybe<Scalars['Float']>
+  lte?: InputMaybe<Scalars['Float']>
+  not?: InputMaybe<Scalars['Float']>
+  notIn?: InputMaybe<Scalars['Float']>
+}
+
 export type IntFilter = {
   equals?: InputMaybe<Scalars['Int']>
   gt?: InputMaybe<Scalars['Int']>
@@ -555,6 +566,7 @@ export type Story = {
   id: Scalars['Int']
   image: Scalars['String']
   nodes?: Maybe<Array<Node>>
+  price: Scalars['Int']
   startingNodes?: Maybe<Array<Node>>
   title: Scalars['String']
   updatedAt: Scalars['DateTime']
@@ -579,6 +591,7 @@ export type StoryOrderByWithRelationInput = {
   id?: InputMaybe<SortOrder>
   image?: InputMaybe<SortOrder>
   nodes?: InputMaybe<NodeOrderByRelationAggregateInput>
+  price?: InputMaybe<SortOrder>
   title?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
   userStories?: InputMaybe<SortOrder>
@@ -595,6 +608,7 @@ export enum StoryScalarFieldEnum {
   Description = 'description',
   Id = 'id',
   Image = 'image',
+  Price = 'price',
   Title = 'title',
   UpdatedAt = 'updatedAt',
 }
@@ -610,6 +624,7 @@ export type StoryWhereInput = {
   id?: InputMaybe<IntFilter>
   image?: InputMaybe<StringFilter>
   nodes?: InputMaybe<NodeListRelationFilter>
+  price?: InputMaybe<FloatFilter>
   title?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
   userStories?: InputMaybe<UserStoryListRelationFilter>
@@ -746,6 +761,7 @@ export enum UserStoryScalarFieldEnum {
 export enum UserStoryType {
   InCart = 'IN_CART',
   Purchased = 'PURCHASED',
+  SaveForLater = 'SAVE_FOR_LATER',
   Wishlisted = 'WISHLISTED',
 }
 

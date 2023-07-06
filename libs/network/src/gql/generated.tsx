@@ -168,6 +168,17 @@ export type EnumUserStoryTypeFilter = {
   notIn?: InputMaybe<Array<UserStoryType>>
 }
 
+export type FloatFilter = {
+  equals?: InputMaybe<Scalars['Float']>
+  gt?: InputMaybe<Scalars['Float']>
+  gte?: InputMaybe<Scalars['Float']>
+  in?: InputMaybe<Scalars['Float']>
+  lt?: InputMaybe<Scalars['Float']>
+  lte?: InputMaybe<Scalars['Float']>
+  not?: InputMaybe<Scalars['Float']>
+  notIn?: InputMaybe<Scalars['Float']>
+}
+
 export type IntFilter = {
   equals?: InputMaybe<Scalars['Int']>
   gt?: InputMaybe<Scalars['Int']>
@@ -556,6 +567,7 @@ export type Story = {
   id: Scalars['Int']
   image: Scalars['String']
   nodes?: Maybe<Array<Node>>
+  price: Scalars['Int']
   startingNodes?: Maybe<Array<Node>>
   title: Scalars['String']
   updatedAt: Scalars['DateTime']
@@ -580,6 +592,7 @@ export type StoryOrderByWithRelationInput = {
   id?: InputMaybe<SortOrder>
   image?: InputMaybe<SortOrder>
   nodes?: InputMaybe<NodeOrderByRelationAggregateInput>
+  price?: InputMaybe<SortOrder>
   title?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
   userStories?: InputMaybe<SortOrder>
@@ -596,6 +609,7 @@ export enum StoryScalarFieldEnum {
   Description = 'description',
   Id = 'id',
   Image = 'image',
+  Price = 'price',
   Title = 'title',
   UpdatedAt = 'updatedAt',
 }
@@ -611,6 +625,7 @@ export type StoryWhereInput = {
   id?: InputMaybe<IntFilter>
   image?: InputMaybe<StringFilter>
   nodes?: InputMaybe<NodeListRelationFilter>
+  price?: InputMaybe<FloatFilter>
   title?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
   userStories?: InputMaybe<UserStoryListRelationFilter>
@@ -747,6 +762,7 @@ export enum UserStoryScalarFieldEnum {
 export enum UserStoryType {
   InCart = 'IN_CART',
   Purchased = 'PURCHASED',
+  SaveForLater = 'SAVE_FOR_LATER',
   Wishlisted = 'WISHLISTED',
 }
 
@@ -808,6 +824,7 @@ export type StoriesQuery = {
     id: number
     title: string
     image: string
+    price: number
     userStory?: { __typename?: 'UserStory'; type?: UserStoryType | null } | null
   }>
   storiesCount: { __typename?: 'AggregateCountOutput'; count: number }
@@ -825,6 +842,7 @@ export type StoryQuery = {
     createdAt: any
     id: number
     image: string
+    price: number
     description: string
     title: string
     updatedAt: any
@@ -1023,8 +1041,24 @@ export type UserStoriesQuery = {
     __typename?: 'UserStory'
     createdAt: any
     type?: UserStoryType | null
-    story: { __typename?: 'Story'; image: string; title: string; id: number }
+    story: {
+      __typename?: 'Story'
+      image: string
+      price: number
+      title: string
+      id: number
+    }
   }>
+  userStoriesCount: { __typename?: 'AggregateCountOutput'; count: number }
+}
+
+export type UserStoriesCountQueryVariables = Exact<{
+  uid: Scalars['String']
+  where?: InputMaybe<UserStoryWhereInput>
+}>
+
+export type UserStoriesCountQuery = {
+  __typename?: 'Query'
   userStoriesCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
 
@@ -1036,6 +1070,7 @@ export const namedOperations = {
     node: 'node',
     choices: 'choices',
     userStories: 'userStories',
+    userStoriesCount: 'userStoriesCount',
   },
   Mutation: {
     Login: 'Login',
@@ -1070,6 +1105,7 @@ export const StoriesDocument = /*#__PURE__*/ gql`
       id
       title
       image
+      price
       userStory {
         type
       }
@@ -1140,6 +1176,7 @@ export const StoryDocument = /*#__PURE__*/ gql`
       createdAt
       id
       image
+      price
       description
       startingNodes {
         title
@@ -1792,6 +1829,7 @@ export const UserStoriesDocument = /*#__PURE__*/ gql`
       createdAt
       story {
         image
+        price
         title
         id
       }
@@ -1856,4 +1894,63 @@ export type UserStoriesLazyQueryHookResult = ReturnType<
 export type UserStoriesQueryResult = Apollo.QueryResult<
   UserStoriesQuery,
   UserStoriesQueryVariables
+>
+export const UserStoriesCountDocument = /*#__PURE__*/ gql`
+  query userStoriesCount($uid: String!, $where: UserStoryWhereInput) {
+    userStoriesCount(where: $where, uid: $uid) {
+      count
+    }
+  }
+`
+
+/**
+ * __useUserStoriesCountQuery__
+ *
+ * To run a query within a React component, call `useUserStoriesCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserStoriesCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserStoriesCountQuery({
+ *   variables: {
+ *      uid: // value for 'uid'
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useUserStoriesCountQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    UserStoriesCountQuery,
+    UserStoriesCountQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<UserStoriesCountQuery, UserStoriesCountQueryVariables>(
+    UserStoriesCountDocument,
+    options,
+  )
+}
+export function useUserStoriesCountLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    UserStoriesCountQuery,
+    UserStoriesCountQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    UserStoriesCountQuery,
+    UserStoriesCountQueryVariables
+  >(UserStoriesCountDocument, options)
+}
+export type UserStoriesCountQueryHookResult = ReturnType<
+  typeof useUserStoriesCountQuery
+>
+export type UserStoriesCountLazyQueryHookResult = ReturnType<
+  typeof useUserStoriesCountLazyQuery
+>
+export type UserStoriesCountQueryResult = Apollo.QueryResult<
+  UserStoriesCountQuery,
+  UserStoriesCountQueryVariables
 >
