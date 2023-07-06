@@ -1,24 +1,22 @@
 import {
   UserStoryType,
   useUserStoriesLazyQuery,
-  useUserStoriesQuery,
 } from '@multiverse-org/network/src/gql/generated'
+import Link from 'next/link'
+
 import { useUserStore } from '@multiverse-org/store/user'
 import { useEffect } from 'react'
-import { ShowData } from '../../organisms/ShowData'
 import { useTakeSkip } from '@multiverse-org/hooks'
-import { StoryCard } from '../../organisms/StoryCard'
 import { CartCard } from '../../organisms/CartCard'
 import { HeaderText } from '../../molecules/HeaderText'
 import { CartSummary } from '../../organisms/CartSummary'
+import { AlertSection } from '../../organisms/AlertSection'
 
 export interface IWishlistProps {}
 
 export const Cart = () => {
   const uid = useUserStore((s) => s.uid)
   const [fetchUserStories, { data, loading }] = useUserStoriesLazyQuery()
-
-  const { setSkip, setTake, skip, take } = useTakeSkip()
 
   useEffect(() => {
     if (uid) {
@@ -36,6 +34,14 @@ export const Cart = () => {
   return (
     <div>
       <HeaderText>Cart</HeaderText>
+      {data?.userStories.length === 0 && (
+        <AlertSection>
+          <div className="text-lg font-semibold">Cart is empty.</div>
+          <Link className="underline underline-offset-4" href={'/'}>
+            Go add some.
+          </Link>
+        </AlertSection>
+      )}
       <div className="flex flex-col gap-4">
         {data?.userStories.map(({ type, story }) => (
           <CartCard key={story.id} story={story} />

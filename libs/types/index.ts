@@ -27,3 +27,10 @@ export type NotificationType = {
 
 export type ArrayElement<ArrayType extends readonly unknown[]> =
   ArrayType[number]
+
+export type StripeItemType = {
+  image: string
+  id: number
+  price: number
+  title: string
+}

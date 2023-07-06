@@ -44,6 +44,15 @@ export class UserStoriesResolver {
     // Check user
     const userData = await this.usersService.createUserIfAbsent(args)
 
+    const userStory = await this.prisma.userStory.findUnique({
+      where: { uid_storyId: { storyId: args.storyId, uid: args.uid } },
+    })
+    if (userStory.type === 'PURCHASED') {
+      throw new BadRequestException(
+        "No. You can not change the purchased item's status.",
+      )
+    }
+
     return this.userStoriesService.create(args)
   }
 

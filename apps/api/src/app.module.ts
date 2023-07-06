@@ -14,6 +14,7 @@ import { AuthModule } from './common/auth/auth.module'
 import { MeilisearchModule } from './common/meilisearch/meilisearch.module'
 import { ChoicesModule } from './models/choices/choices.module'
 import { UserStoriesModule } from './models/user-stories/user-stories.module'
+import { StripeModule } from './common/stripe/stripe.module'
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UserStoriesModule } from './models/user-stories/user-stories.module'
     PrismaModule,
     FirebaseModule,
     MeilisearchModule,
+    StripeModule,
 
     AuthModule,
     NodesModule,

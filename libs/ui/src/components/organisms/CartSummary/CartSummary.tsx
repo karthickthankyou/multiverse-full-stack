@@ -1,6 +1,11 @@
+import axios from 'axios'
 import { UserStoriesQuery } from '@multiverse-org/network/src/gql/generated'
 import React from 'react'
 import { Button } from '../../atoms/Button'
+import { loadStripe } from '@stripe/stripe-js'
+import { StripeItemType } from '@multiverse-org/types'
+import { notification$ } from '@multiverse-org/util/subjects'
+import { useUserStore } from '@multiverse-org/store/user'
 
 interface CartSummaryProps {
   cartItems: UserStoriesQuery['userStories']
@@ -12,6 +17,15 @@ export const CartSummary: React.FC<CartSummaryProps> = ({ cartItems }) => {
     (total, item) => total + item.story.price,
     0,
   )
+
+  const uid = useUserStore((s) => s.uid)
+
+  const items: StripeItemType[] = cartItems.map((item) => ({
+    id: item.story.id,
+    image: item.story.image,
+    title: item.story.title,
+    price: item.story.price,
+  }))
 
   if (!totalItems) {
     return null
@@ -27,8 +41,51 @@ export const CartSummary: React.FC<CartSummaryProps> = ({ cartItems }) => {
         <div className="text-sm font-medium">Total Price</div>
         <span className="font-semibold">${totalPrice.toFixed(2)}</span>
       </p>
-      <Button className="mt-4">Pay ${totalPrice.toFixed(2)} </Button>
+      <Button
+        onClick={async () => {
+          if (!uid) {
+            notification$.next({ message: 'You are not logged in.' })
+            return
+          }
+          const res = await createPaymentSession(
+            uid,
+            'http://localhost:3001',
+            items,
+          )
+          if (res?.error) {
+            notification$.next({ message: 'Booking failed.' })
+            return
+          }
+        }}
+        className="mt-4"
+      >
+        Pay ${totalPrice.toFixed(2)}{' '}
+      </Button>
       <div className="w-full h-0.5 bg-primary my-8"></div>
     </div>
   )
+}
+
+export const createPaymentSession = async (
+  uid: string,
+  redirectUrl: string,
+  items: StripeItemType[],
+) => {
+  const checkoutSession = await axios.post('http://localhost:3000/stripe', {
+    items,
+    redirectUrl,
+    uid,
+  })
+
+  console.log('checkoutSession', checkoutSession)
+
+  const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+
+  const stripePromise = loadStripe(publishableKey || '')
+  const stripe = await stripePromise
+  const result = await stripe?.redirectToCheckout({
+    sessionId: checkoutSession.data.sessionId,
+  })
+
+  return result
 }

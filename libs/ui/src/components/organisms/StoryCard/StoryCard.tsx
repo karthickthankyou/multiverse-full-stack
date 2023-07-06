@@ -121,7 +121,10 @@ export const UserActions = ({
           <IconHeartFilled />
         </PlainButton>
       )}
-      {(!story.userStory?.type || story.userStory?.type !== 'IN_CART') && (
+      {(!story.userStory?.type ||
+        [UserStoryType.Wishlisted, UserStoryType.SaveForLater].includes(
+          story.userStory?.type,
+        )) && (
         <PlainButton
           onClick={async () => {
             await addToCart({
@@ -140,13 +143,16 @@ export const UserActions = ({
           <IconShoppingBag />
         </PlainButton>
       )}
-      {story.userStory?.type === 'IN_CART' && (
+      {story.userStory?.type === UserStoryType.InCart && (
         <Link href="/cart" className="text-xs underline underline-offset-4">
           In cart
         </Link>
       )}
-      {story.userStory?.type === 'PURCHASED' && (
-        <Link href="/cart" className="text-xs underline underline-offset-4">
+      {story.userStory?.type === UserStoryType.Purchased && (
+        <Link
+          href="/purchased"
+          className="text-xs underline underline-offset-4"
+        >
           Purchased
         </Link>
       )}
