@@ -145,6 +145,12 @@ export type CreateUserInput = {
   uid: Scalars['String']
 }
 
+export type CreateUserStoryInput = {
+  storyId: Scalars['Int']
+  type?: InputMaybe<UserStoryType>
+  uid: Scalars['String']
+}
+
 export type DateTimeFilter = {
   equals?: InputMaybe<Scalars['String']>
   gt?: InputMaybe<Scalars['String']>
@@ -153,6 +159,13 @@ export type DateTimeFilter = {
   lt?: InputMaybe<Scalars['String']>
   lte?: InputMaybe<Scalars['String']>
   notIn?: InputMaybe<Array<Scalars['String']>>
+}
+
+export type EnumUserStoryTypeFilter = {
+  equals?: InputMaybe<UserStoryType>
+  in?: InputMaybe<Array<UserStoryType>>
+  not?: InputMaybe<UserStoryType>
+  notIn?: InputMaybe<Array<UserStoryType>>
 }
 
 export type IntFilter = {
@@ -190,6 +203,7 @@ export type Mutation = {
   createNodes: Array<Node>
   createStory: Story
   createUser: User
+  createUserStory: UserStory
   login: LoginOutput
   logout: Scalars['Boolean']
   refreshToken: RefreshTokenOutput
@@ -198,12 +212,14 @@ export type Mutation = {
   removeNode: Node
   removeStory: Story
   removeUser: User
+  removeUserStory: UserStory
   setAdmin: Scalars['Boolean']
   setRole: Scalars['Boolean']
   updateChoice: Choice
   updateNode: Node
   updateStory: Story
   updateUser: User
+  updateUserStory: UserStory
 }
 
 export type MutationCreateChoiceArgs = {
@@ -228,6 +244,10 @@ export type MutationCreateStoryArgs = {
 
 export type MutationCreateUserArgs = {
   createUserInput: CreateUserInput
+}
+
+export type MutationCreateUserStoryArgs = {
+  createUserStoryInput: CreateUserStoryInput
 }
 
 export type MutationLoginArgs = {
@@ -258,6 +278,10 @@ export type MutationRemoveUserArgs = {
   where?: InputMaybe<UserWhereUniqueInput>
 }
 
+export type MutationRemoveUserStoryArgs = {
+  where?: InputMaybe<UserStoryWhereUniqueInput>
+}
+
 export type MutationSetAdminArgs = {
   uid: Scalars['String']
 }
@@ -280,6 +304,10 @@ export type MutationUpdateStoryArgs = {
 
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput
+}
+
+export type MutationUpdateUserStoryArgs = {
+  updateUserStoryInput: UpdateUserStoryInput
 }
 
 export type Node = {
@@ -380,6 +408,8 @@ export type Query = {
   storiesCount: AggregateCountOutput
   story: Story
   user?: Maybe<User>
+  userStories: Array<UserStory>
+  userStory: UserStory
   users: Array<User>
 }
 
@@ -433,6 +463,20 @@ export type QueryStoryArgs = {
 
 export type QueryUserArgs = {
   where?: InputMaybe<UserWhereUniqueInput>
+}
+
+export type QueryUserStoriesArgs = {
+  cursor?: InputMaybe<UserStoryWhereUniqueInput>
+  distinct?: InputMaybe<Array<UserStoryScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<UserStoryOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  uid: Scalars['String']
+  where?: InputMaybe<UserStoryWhereInput>
+}
+
+export type QueryUserStoryArgs = {
+  where?: InputMaybe<UserStoryWhereUniqueInput>
 }
 
 export type QueryUsersArgs = {
@@ -509,6 +553,7 @@ export type Story = {
   startingNodes?: Maybe<Array<Node>>
   title: Scalars['String']
   updatedAt: Scalars['DateTime']
+  userStory?: Maybe<UserStory>
 }
 
 export type StoryListRelationFilter = {
@@ -531,6 +576,7 @@ export type StoryOrderByWithRelationInput = {
   nodes?: InputMaybe<NodeOrderByRelationAggregateInput>
   title?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
+  userStories?: InputMaybe<SortOrder>
 }
 
 export type StoryRelationFilter = {
@@ -561,6 +607,7 @@ export type StoryWhereInput = {
   nodes?: InputMaybe<NodeListRelationFilter>
   title?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
+  userStories?: InputMaybe<UserStoryListRelationFilter>
 }
 
 export type StoryWhereUniqueInput = {
@@ -614,6 +661,13 @@ export type UpdateUserInput = {
   uid: Scalars['String']
 }
 
+export type UpdateUserStoryInput = {
+  storyId?: InputMaybe<Scalars['Int']>
+  type?: InputMaybe<UserStoryType>
+  uid?: InputMaybe<Scalars['String']>
+  uid_storyId?: InputMaybe<UserStoryUidStoryIdCompoundUniqueInput>
+}
+
 export type User = {
   __typename?: 'User'
   createdAt: Scalars['DateTime']
@@ -630,6 +684,7 @@ export type UserOrderByWithRelationInput = {
   stories?: InputMaybe<StoryOrderByRelationAggregateInput>
   uid?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
+  userStories?: InputMaybe<UserStoryOrderByRelationAggregateInput>
 }
 
 export type UserRelationFilter = {
@@ -644,6 +699,73 @@ export enum UserScalarFieldEnum {
   UpdatedAt = 'updatedAt',
 }
 
+export type UserStory = {
+  __typename?: 'UserStory'
+  createdAt: Scalars['DateTime']
+  story?: Maybe<Story>
+  storyId: Scalars['Int']
+  type?: Maybe<UserStoryType>
+  uid: Scalars['String']
+  updatedAt: Scalars['DateTime']
+  user?: Maybe<User>
+}
+
+export type UserStoryListRelationFilter = {
+  every?: InputMaybe<UserStoryWhereInput>
+  none?: InputMaybe<UserStoryWhereInput>
+  some?: InputMaybe<UserStoryWhereInput>
+}
+
+export type UserStoryOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type UserStoryOrderByWithRelationInput = {
+  createdAt?: InputMaybe<SortOrder>
+  story?: InputMaybe<StoryOrderByWithRelationInput>
+  storyId?: InputMaybe<SortOrder>
+  type?: InputMaybe<SortOrder>
+  uid?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+  user?: InputMaybe<UserOrderByWithRelationInput>
+}
+
+export enum UserStoryScalarFieldEnum {
+  CreatedAt = 'createdAt',
+  StoryId = 'storyId',
+  Type = 'type',
+  Uid = 'uid',
+  UpdatedAt = 'updatedAt',
+}
+
+export enum UserStoryType {
+  InCart = 'IN_CART',
+  Purchased = 'PURCHASED',
+  Wishlisted = 'WISHLISTED',
+}
+
+export type UserStoryUidStoryIdCompoundUniqueInput = {
+  storyId: Scalars['Int']
+  uid: Scalars['String']
+}
+
+export type UserStoryWhereInput = {
+  AND?: InputMaybe<Array<UserStoryWhereInput>>
+  NOT?: InputMaybe<Array<UserStoryWhereInput>>
+  OR?: InputMaybe<Array<UserStoryWhereInput>>
+  createdAt?: InputMaybe<DateTimeFilter>
+  story?: InputMaybe<StoryRelationFilter>
+  storyId?: InputMaybe<IntFilter>
+  type?: InputMaybe<EnumUserStoryTypeFilter>
+  uid?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+  user?: InputMaybe<UserRelationFilter>
+}
+
+export type UserStoryWhereUniqueInput = {
+  uid_storyId?: InputMaybe<UserStoryUidStoryIdCompoundUniqueInput>
+}
+
 export type UserWhereInput = {
   AND?: InputMaybe<Array<UserWhereInput>>
   NOT?: InputMaybe<Array<UserWhereInput>>
@@ -654,6 +776,7 @@ export type UserWhereInput = {
   stories?: InputMaybe<StoryListRelationFilter>
   uid?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
+  userStories?: InputMaybe<UserStoryListRelationFilter>
 }
 
 export type UserWhereUniqueInput = {
@@ -679,6 +802,7 @@ export type StoriesQuery = {
     id: number
     title: string
     image: string
+    userStory?: { __typename?: 'UserStory'; type?: UserStoryType | null } | null
   }>
   storiesCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
@@ -855,6 +979,24 @@ export type ChoicesQuery = {
   }>
 }
 
+export type CreateUserStoryMutationVariables = Exact<{
+  createUserStoryInput: CreateUserStoryInput
+}>
+
+export type CreateUserStoryMutation = {
+  __typename?: 'Mutation'
+  createUserStory: { __typename?: 'UserStory'; type?: UserStoryType | null }
+}
+
+export type RemoveUserStoryMutationVariables = Exact<{
+  where?: InputMaybe<UserStoryWhereUniqueInput>
+}>
+
+export type RemoveUserStoryMutation = {
+  __typename?: 'Mutation'
+  removeUserStory: { __typename?: 'UserStory'; uid: string; storyId: number }
+}
+
 export const namedOperations = {
   Query: {
     stories: 'stories',
@@ -869,6 +1011,8 @@ export const namedOperations = {
     createStory: 'createStory',
     createNodes: 'createNodes',
     createManyChoices: 'createManyChoices',
+    createUserStory: 'createUserStory',
+    removeUserStory: 'removeUserStory',
   },
 }
 
@@ -894,6 +1038,9 @@ export const StoriesDocument = /*#__PURE__*/ gql`
       id
       title
       image
+      userStory {
+        type
+      }
     }
     storiesCount(where: $where) {
       count
@@ -1489,4 +1636,105 @@ export type ChoicesLazyQueryHookResult = ReturnType<typeof useChoicesLazyQuery>
 export type ChoicesQueryResult = Apollo.QueryResult<
   ChoicesQuery,
   ChoicesQueryVariables
+>
+export const CreateUserStoryDocument = /*#__PURE__*/ gql`
+  mutation createUserStory($createUserStoryInput: CreateUserStoryInput!) {
+    createUserStory(createUserStoryInput: $createUserStoryInput) {
+      type
+    }
+  }
+`
+export type CreateUserStoryMutationFn = Apollo.MutationFunction<
+  CreateUserStoryMutation,
+  CreateUserStoryMutationVariables
+>
+
+/**
+ * __useCreateUserStoryMutation__
+ *
+ * To run a mutation, you first call `useCreateUserStoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserStoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserStoryMutation, { data, loading, error }] = useCreateUserStoryMutation({
+ *   variables: {
+ *      createUserStoryInput: // value for 'createUserStoryInput'
+ *   },
+ * });
+ */
+export function useCreateUserStoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateUserStoryMutation,
+    CreateUserStoryMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    CreateUserStoryMutation,
+    CreateUserStoryMutationVariables
+  >(CreateUserStoryDocument, options)
+}
+export type CreateUserStoryMutationHookResult = ReturnType<
+  typeof useCreateUserStoryMutation
+>
+export type CreateUserStoryMutationResult =
+  Apollo.MutationResult<CreateUserStoryMutation>
+export type CreateUserStoryMutationOptions = Apollo.BaseMutationOptions<
+  CreateUserStoryMutation,
+  CreateUserStoryMutationVariables
+>
+export const RemoveUserStoryDocument = /*#__PURE__*/ gql`
+  mutation removeUserStory($where: UserStoryWhereUniqueInput) {
+    removeUserStory(where: $where) {
+      uid
+      storyId
+    }
+  }
+`
+export type RemoveUserStoryMutationFn = Apollo.MutationFunction<
+  RemoveUserStoryMutation,
+  RemoveUserStoryMutationVariables
+>
+
+/**
+ * __useRemoveUserStoryMutation__
+ *
+ * To run a mutation, you first call `useRemoveUserStoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveUserStoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeUserStoryMutation, { data, loading, error }] = useRemoveUserStoryMutation({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useRemoveUserStoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveUserStoryMutation,
+    RemoveUserStoryMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    RemoveUserStoryMutation,
+    RemoveUserStoryMutationVariables
+  >(RemoveUserStoryDocument, options)
+}
+export type RemoveUserStoryMutationHookResult = ReturnType<
+  typeof useRemoveUserStoryMutation
+>
+export type RemoveUserStoryMutationResult =
+  Apollo.MutationResult<RemoveUserStoryMutation>
+export type RemoveUserStoryMutationOptions = Apollo.BaseMutationOptions<
+  RemoveUserStoryMutation,
+  RemoveUserStoryMutationVariables
 >

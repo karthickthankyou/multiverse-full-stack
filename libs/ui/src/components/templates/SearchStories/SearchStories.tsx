@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useDebouncedValue } from '@multiverse-org/hooks/src/async'
+import { StoryCard } from '../../organisms/StoryCard'
 
 export interface ISearchStoriesProps {}
 
@@ -16,7 +17,7 @@ export const SearchStories = ({}: ISearchStoriesProps) => {
   })
   const { setSkip, setTake, skip, take } = useTakeSkip()
   return (
-    <div>
+    <div className="space-y-12">
       <div className="flex justify-center my-4">
         <input
           value={searchTerm}
@@ -38,19 +39,7 @@ export const SearchStories = ({}: ISearchStoriesProps) => {
         title={undefined}
       >
         {data?.stories.map((story) => (
-          <Link
-            href={{ pathname: 'play', query: { storyId: story.id } }}
-            key={story.id}
-          >
-            <Image
-              className="object-cover w-full h-full"
-              width={200}
-              height={200}
-              src={story.image}
-              alt=""
-            />
-            <div>{story.title}</div>
-          </Link>
+          <StoryCard story={story} />
         ))}
       </ShowData>
     </div>

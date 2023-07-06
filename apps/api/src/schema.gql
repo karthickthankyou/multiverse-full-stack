@@ -46,6 +46,7 @@ type Story {
   authorId: String!
   nodes: [Node!]
   author: User
+  userStory: UserStory
   startingNodes: [Node!]
 }
 
@@ -58,6 +59,22 @@ type Choice {
   choiceNodeId: Int!
   parentNode: Node!
   choiceNode: Node!
+}
+
+type UserStory {
+  type: UserStoryType
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  uid: String!
+  storyId: Int!
+  user: User
+  story: Story
+}
+
+enum UserStoryType {
+  WISHLISTED
+  IN_CART
+  PURCHASED
 }
 
 type LoginOutput {
@@ -88,22 +105,6 @@ type RefreshTokenOutput {
   id_token: String!
   user_id: String!
   project_id: String!
-}
-
-type UserStory {
-  type: UserStoryType
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  uid: String!
-  storyId: Int!
-  user: User
-  story: Story
-}
-
-enum UserStoryType {
-  WISHLISTED
-  IN_CART
-  PURCHASED
 }
 
 type Query {
@@ -580,19 +581,14 @@ input UpdateChoiceInput {
 }
 
 input CreateUserStoryInput {
+  type: UserStoryType
   uid: String!
   storyId: Int!
-  type: SelectedUserStoryType!
-}
-
-enum SelectedUserStoryType {
-  WISHLISTED
-  IN_CART
 }
 
 input UpdateUserStoryInput {
+  type: UserStoryType
   uid: String
   storyId: Int
-  type: SelectedUserStoryType
   uid_storyId: UserStoryUidStoryIdCompoundUniqueInput
 }

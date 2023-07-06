@@ -21,6 +21,7 @@ import { checkRowLevelPermission } from 'src/common/guards'
 import { User } from '../users/entities/user.entity'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Story } from '../stories/entities/story.entity'
+import { BadRequestException } from '@nestjs/common'
 
 @Resolver(() => UserStory)
 export class UserStoriesResolver {
@@ -90,10 +91,14 @@ export class UserStoriesResolver {
 
   @AllowAuthenticated()
   @Mutation(() => UserStory)
-  removeUserStory(
+  async removeUserStory(
     @Args() args: FindUniqueUserStoryArgs,
     @GetUser() user: GetUserType,
   ) {
+    const userStory = await this.prisma.userStory.findUnique(args)
+    if (userStory.type === 'PURCHASED') {
+      throw new BadRequestException('Can not remove purchased item.')
+    }
     checkRowLevelPermission(user, args.where.uid_storyId.uid)
     return this.userStoriesService.remove(args)
   }

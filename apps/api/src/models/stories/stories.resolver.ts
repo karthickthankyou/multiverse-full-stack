@@ -24,6 +24,7 @@ import { User } from '../users/entities/user.entity'
 import { AggregateCountOutput } from 'src/common/dtos/common.input'
 import { StoryWhereInput } from './dto/where.args'
 import { UsersService } from '../users/users.service'
+import { UserStory } from '../user-stories/entities/user-story.entity'
 
 @Resolver(() => Story)
 export class StoriesResolver {
@@ -97,6 +98,14 @@ export class StoriesResolver {
   author(@Parent() parent: Story) {
     return this.prisma.user.findUnique({
       where: { uid: parent.authorId },
+    })
+  }
+
+  @AllowAuthenticated()
+  @ResolveField(() => UserStory, { nullable: true })
+  userStory(@Parent() parent: Story, @GetUser() user: GetUserType) {
+    return this.prisma.userStory.findUnique({
+      where: { uid_storyId: { storyId: parent.id, uid: user.uid } },
     })
   }
 

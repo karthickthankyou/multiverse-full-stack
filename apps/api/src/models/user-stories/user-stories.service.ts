@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { FindManyUserStoryArgs, FindUniqueUserStoryArgs } from './dto/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { CreateUserStoryInput } from './dto/create-user-story.input'
@@ -9,14 +9,19 @@ import { UserStoryType } from '@prisma/client'
 export class UserStoriesService {
   constructor(private readonly prisma: PrismaService) {}
   create({ storyId, type, uid }: CreateUserStoryInput) {
+    if (type === 'PURCHASED') {
+      throw new BadRequestException(
+        'You can not create a purchased item. Come on!',
+      )
+    }
     return this.prisma.userStory.upsert({
       create: {
         storyId,
         uid,
-        type: type as unknown as UserStoryType,
+        type,
       },
       update: {
-        type: type as unknown as UserStoryType,
+        type,
       },
       where: {
         uid_storyId: {

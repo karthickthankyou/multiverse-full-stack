@@ -22,6 +22,9 @@ export const stories = gql`
       id
       title
       image
+      userStory {
+        type
+      }
     }
     storiesCount(where: $where) {
       count
@@ -194,6 +197,23 @@ export const choices = gql`
         id
         title
       }
+    }
+  }
+`
+
+export const createUserStory = gql`
+  mutation createUserStory($createUserStoryInput: CreateUserStoryInput!) {
+    createUserStory(createUserStoryInput: $createUserStoryInput) {
+      type
+    }
+  }
+`
+
+export const removeUserStory = gql`
+  mutation removeUserStory($where: UserStoryWhereUniqueInput) {
+    removeUserStory(where: $where) {
+      uid
+      storyId
     }
   }
 `

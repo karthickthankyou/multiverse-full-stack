@@ -59,7 +59,7 @@ export const ShowData = ({
         <div>
           <div className="mb-2 text-lg font-semibold">{title}</div>
           <div className={className}>{children}</div>
-          <div className="flex justify-center">
+          <div className="flex justify-center mt-12">
             <Pagination
               count={totalCount || 0}
               page={(skip || 0) / (take || 12)}
