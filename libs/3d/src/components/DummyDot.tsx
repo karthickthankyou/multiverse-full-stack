@@ -8,16 +8,24 @@ export type DummyDotType = {
   id: number
   onTargetReached: (id: number) => void
   initialPosition: THREE.Vector3
+  initialDirection: number
 }
 
 const deathChance = 0.1 // 10% chance to stop every turn
 
 export const DummyDot = React.memo(
-  ({ id, onTargetReached, initialPosition }: DummyDotType) => {
+  ({
+    id,
+    onTargetReached,
+    initialPosition,
+    initialDirection,
+  }: DummyDotType) => {
     // Set initial position and target
 
+    // console.log('DummyDot ', initialPosition, initialDirection)
+
     const [startPosition, setStartPosition] = useState(() => initialPosition)
-    const [rand, setRand] = useState(() => getUniqueRandom(-99))
+    const [rand, setRand] = useState(() => initialDirection)
     const [endPosition, setEndPosition] = useState(() =>
       initialPosition.clone().add(angles[rand]),
     )
@@ -65,18 +73,20 @@ export const DummyDot = React.memo(
     // Render the component
 
     return lerpPosition ? (
-      <Trail
-        attenuation={(w) => w / 4}
-        interval={10}
-        width={5}
-        length={20}
-        decay={5}
-        color={'#808080'}
-      >
-        <Sphere args={[0.2, 8, 4]} position={lerpPosition}>
-          <meshBasicMaterial color={'#808080'} />
-        </Sphere>
-      </Trail>
+      <group renderOrder={0}>
+        <Trail
+          attenuation={(w) => w / 4}
+          interval={10}
+          width={4}
+          length={20}
+          decay={5}
+          color={'white'}
+        >
+          <Sphere args={[0.2, 8, 4]} position={lerpPosition}>
+            <meshBasicMaterial color={'white'} />
+          </Sphere>
+        </Trail>
+      </group>
     ) : null
   },
 )

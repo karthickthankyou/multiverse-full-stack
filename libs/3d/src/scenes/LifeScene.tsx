@@ -21,7 +21,7 @@ export const LifeScene = ({
         zIndex: 0,
         height: `calc(100vh - 4rem)`,
         background:
-          'linear-gradient(to top right, hsl(270, 0%, 80%), hsl(270, 100%, 90%))',
+          'linear-gradient(to top right, hsl(270, 0%, 70%), hsl(270, 20%, 90%))',
       }}
       className={className}
     >

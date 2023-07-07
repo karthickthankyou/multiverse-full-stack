@@ -5,27 +5,28 @@ import * as THREE from 'three'
 import { DummyDot, DummyDotType } from './DummyDot'
 
 // Time to move between positions in seconds
-export const interval = 1
+export const interval = 2
 
 export const distance = 6
 // Define possible movement vectors
 export const angles = [
   new THREE.Vector3(distance, 0, 0),
-  new THREE.Vector3(-distance, 0, 0),
   new THREE.Vector3(0, distance, 0),
-  new THREE.Vector3(0, -distance, 0),
   new THREE.Vector3(0, 0, distance),
+  new THREE.Vector3(-distance, 0, 0),
+  new THREE.Vector3(0, -distance, 0),
   new THREE.Vector3(0, 0, -distance),
 ]
 
-export const getUniqueRandom = (prev: number): number => {
+export const getUniqueRandom = (
+  prevAngle: number,
+  notIn?: number[],
+): number => {
   let rand = -1
   do {
     rand = Math.floor(Math.random() * angles.length)
-  } while (
-    rand === (prev + 1) % angles.length ||
-    rand === (prev - 1 + angles.length) % angles.length
-  )
+  } while (rand === (prevAngle + 3) % angles.length || notIn?.includes(rand))
+
   return rand
 }
 
@@ -40,7 +41,7 @@ export const Dot = React.forwardRef<THREE.Mesh<THREE.BufferGeometry>>(
     const [startPosition, setStartPosition] = useState(
       () => new THREE.Vector3(0, 0, 0),
     )
-    const [rand, setRand] = useState(() => getUniqueRandom(-99))
+    const [rand, setRand] = useState(() => 0)
     const [endPosition, setEndPosition] = useState(() => angles[rand])
     const [lerpValue, setLerpValue] = useState(0)
 
@@ -59,18 +60,30 @@ export const Dot = React.forwardRef<THREE.Mesh<THREE.BufferGeometry>>(
         setLerpValue(0) // Reset lerp value when target changes
         // const newDummyDots = new Array(1 + Math.floor(Math.random() * 2))
         // Create babies
+
+        console.log('-------------')
+        console.log('rand: ', rand)
+
         const newDummyDots = new Array(1 + Math.floor(Math.random() * 2))
           .fill(null)
           .map((_, index) => ({
             id: Date.now() + index,
             initialPosition: newStartPosition.clone(),
+            initialDirection: getUniqueRandom(rand, [newRand]),
+            //  (newRand + (index + 1)) % angles.length
             onTargetReached: (id: number) => {
-              setDummyDots((prevDots) => {
-                const updatedDots = prevDots?.filter((dot) => dot.id !== id)
-                return updatedDots
-              })
+              setDummyDots((prevDots) =>
+                prevDots?.filter((dot) => dot.id !== id),
+              )
             },
           }))
+        console.log(
+          'angles:',
+          newDummyDots.map((dot) => dot.initialDirection),
+        )
+
+        console.log('-------------')
+
         setDummyDots((prevDots) => [...prevDots, ...newDummyDots])
       }, interval * 1000)
 
@@ -96,9 +109,6 @@ export const Dot = React.forwardRef<THREE.Mesh<THREE.BufferGeometry>>(
     })
 
     const [dummyDots, setDummyDots] = useState<DummyDotType[]>([])
-    useEffect(() => {
-      console.log('dummyDots', dummyDots.length)
-    }, [dummyDots.length])
 
     // Render the component
     return (
@@ -109,21 +119,24 @@ export const Dot = React.forwardRef<THREE.Mesh<THREE.BufferGeometry>>(
             key={dot.id}
             onTargetReached={dot.onTargetReached}
             initialPosition={dot.initialPosition}
+            initialDirection={dot.initialDirection}
           />
         ))}
         {lerpPosition ? (
-          <Trail
-            attenuation={(w) => w / 4}
-            interval={4}
-            width={10}
-            length={100}
-            decay={2}
-            color={'#8000ff'}
-          >
-            <Sphere ref={ref} args={[0.3, 8, 4]} position={lerpPosition}>
-              <meshBasicMaterial color={'#8000ff'} />
-            </Sphere>
-          </Trail>
+          <group renderOrder={1}>
+            <Trail
+              attenuation={(w) => w / 4}
+              interval={4}
+              width={10}
+              length={100}
+              decay={2}
+              color={'#8000ff'}
+            >
+              <Sphere ref={ref} args={[0.3, 8, 4]} position={lerpPosition}>
+                <meshBasicMaterial color={'#8000ff'} />
+              </Sphere>
+            </Trail>
+          </group>
         ) : null}
       </group>
     )
