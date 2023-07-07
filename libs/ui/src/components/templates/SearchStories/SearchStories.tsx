@@ -13,7 +13,7 @@ export const SearchStories = ({}: ISearchStoriesProps) => {
   const [searchTerm, setSearchTerm] = useState('')
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 300)
   const { data, loading } = useStoriesQuery({
-    variables: { where: { title: { contains: debouncedSearchTerm } } },
+    variables: { searchTerm: debouncedSearchTerm },
   })
   const { setSkip, setTake, skip, take } = useTakeSkip()
   return (

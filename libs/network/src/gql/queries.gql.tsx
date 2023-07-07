@@ -50,6 +50,9 @@ export const story = gql`
         title
         id
       }
+      userStory {
+        type
+      }
       nodes {
         id
         image
@@ -258,6 +261,15 @@ export const userStoriesCount = gql`
   query userStoriesCount($uid: String!, $where: UserStoryWhereInput) {
     userStoriesCount(where: $where, uid: $uid) {
       count
+    }
+  }
+`
+
+export const userStory = gql`
+  query userStory($where: UserStoryWhereUniqueInput) {
+    userStory(where: $where) {
+      uid
+      type
     }
   }
 `

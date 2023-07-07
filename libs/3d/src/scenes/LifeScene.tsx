@@ -3,6 +3,7 @@ import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import React from 'react'
 import { Dot } from '../components/Dot'
 import { Vector3 } from 'three'
+import { CustomOrbitControls } from '../components/CustomOrbitController'
 
 export const radians = (degrees: number) => degrees * (Math.PI / 180)
 
@@ -35,7 +36,7 @@ export const LifeScene = ({
           position={[10, 10, 10]}
         />
       )}
-      <OrbitControls />
+      <CustomOrbitControls />
       <group position={new Vector3(0.01, 0.01, 0.01)}>
         <Dot />
       </group>

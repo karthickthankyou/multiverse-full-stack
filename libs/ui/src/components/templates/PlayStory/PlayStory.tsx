@@ -2,61 +2,34 @@ import {
   StoryQuery,
   useNodeLazyQuery,
   useNodeQuery,
-  useStoryLazyQuery,
-  useStoryQuery,
 } from '@multiverse-org/network/src/gql/generated'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { StickyLayout } from '../../organisms/StickyLayout'
 import { PlainButton } from '../../atoms/PlainButton'
 import { Button } from '../../atoms/Button'
 import { LoaderPanel } from '../../molecules/Loader'
 
 export interface IPlayStoryProps {
-  storyId: number
+  story: StoryQuery['story']
 }
 
-export const PlayStory = ({ storyId }: IPlayStoryProps) => {
-  const { data, loading } = useStoryQuery({
-    variables: { where: { id: storyId } },
-  })
-
+export const PlayStory = ({ story }: IPlayStoryProps) => {
   const [selectedNodeId, setSelectedNodeId] = useState<number | null>(null)
-  if (loading) return <LoaderPanel />
+
   return (
     <div>
-      <StickyLayout
-        classes={{ sidebarWidth: 'md:max-w-sm' }}
-        sidebarContent={
-          <div>
-            {data?.story.image ? (
-              <Image
-                className="object-cover w-64 h-64 shadow-xl"
-                width={200}
-                height={200}
-                src={data?.story.image || ''}
-                alt=""
-              />
-            ) : null}
-            <div className="mt-1 text-xl font-light">{data?.story.title}</div>
-            <div className="mt-2 text-sm text-gray">
-              {data?.story.description}
-            </div>
-            <PlainButton
-              className="mt-4 text-sm"
-              onClick={() => setSelectedNodeId(null)}
-            >
-              Reset
-            </PlainButton>
-          </div>
-        }
-      >
-        {selectedNodeId ? (
-          <Node nodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId} />
-        ) : (
-          <Launcher story={data?.story} setSelectedNodeId={setSelectedNodeId} />
-        )}
-      </StickyLayout>
+      <div className="flex justify-end">
+        <PlainButton
+          className="mt-4 text-sm"
+          onClick={() => setSelectedNodeId(null)}
+        >
+          Reset
+        </PlainButton>
+      </div>
+      {selectedNodeId ? (
+        <Node nodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId} />
+      ) : (
+        <Launcher story={story} setSelectedNodeId={setSelectedNodeId} />
+      )}
     </div>
   )
 }
@@ -68,7 +41,6 @@ export const Launcher = ({
   story?: StoryQuery['story']
   setSelectedNodeId: (id: number) => void
 }) => {
-  console.log('story?.startingNodes?.length ', story?.startingNodes?.length)
   return (
     <div className="space-y-2">
       {story?.startingNodes?.length || 0 > 1 ? (

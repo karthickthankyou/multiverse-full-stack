@@ -567,7 +567,7 @@ export type Story = {
   id: Scalars['Int']
   image: Scalars['String']
   nodes?: Maybe<Array<Node>>
-  price: Scalars['Int']
+  price?: Maybe<Scalars['Float']>
   startingNodes?: Maybe<Array<Node>>
   title: Scalars['String']
   updatedAt: Scalars['DateTime']
@@ -824,7 +824,7 @@ export type StoriesQuery = {
     id: number
     title: string
     image: string
-    price: number
+    price?: number | null
     userStory?: { __typename?: 'UserStory'; type?: UserStoryType | null } | null
   }>
   storiesCount: { __typename?: 'AggregateCountOutput'; count: number }
@@ -842,7 +842,7 @@ export type StoryQuery = {
     createdAt: any
     id: number
     image: string
-    price: number
+    price?: number | null
     description: string
     title: string
     updatedAt: any
@@ -852,6 +852,7 @@ export type StoryQuery = {
       title: string
       id: number
     }> | null
+    userStory?: { __typename?: 'UserStory'; type?: UserStoryType | null } | null
     nodes?: Array<{
       __typename?: 'Node'
       id: number
@@ -1044,7 +1045,7 @@ export type UserStoriesQuery = {
     story: {
       __typename?: 'Story'
       image: string
-      price: number
+      price?: number | null
       title: string
       id: number
     }
@@ -1062,6 +1063,19 @@ export type UserStoriesCountQuery = {
   userStoriesCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
 
+export type UserStoryQueryVariables = Exact<{
+  where?: InputMaybe<UserStoryWhereUniqueInput>
+}>
+
+export type UserStoryQuery = {
+  __typename?: 'Query'
+  userStory: {
+    __typename?: 'UserStory'
+    uid: string
+    type?: UserStoryType | null
+  }
+}
+
 export const namedOperations = {
   Query: {
     stories: 'stories',
@@ -1071,6 +1085,7 @@ export const namedOperations = {
     choices: 'choices',
     userStories: 'userStories',
     userStoriesCount: 'userStoriesCount',
+    userStory: 'userStory',
   },
   Mutation: {
     Login: 'Login',
@@ -1181,6 +1196,9 @@ export const StoryDocument = /*#__PURE__*/ gql`
       startingNodes {
         title
         id
+      }
+      userStory {
+        type
       }
       nodes {
         id
@@ -1953,4 +1971,61 @@ export type UserStoriesCountLazyQueryHookResult = ReturnType<
 export type UserStoriesCountQueryResult = Apollo.QueryResult<
   UserStoriesCountQuery,
   UserStoriesCountQueryVariables
+>
+export const UserStoryDocument = /*#__PURE__*/ gql`
+  query userStory($where: UserStoryWhereUniqueInput) {
+    userStory(where: $where) {
+      uid
+      type
+    }
+  }
+`
+
+/**
+ * __useUserStoryQuery__
+ *
+ * To run a query within a React component, call `useUserStoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserStoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserStoryQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useUserStoryQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    UserStoryQuery,
+    UserStoryQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<UserStoryQuery, UserStoryQueryVariables>(
+    UserStoryDocument,
+    options,
+  )
+}
+export function useUserStoryLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    UserStoryQuery,
+    UserStoryQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<UserStoryQuery, UserStoryQueryVariables>(
+    UserStoryDocument,
+    options,
+  )
+}
+export type UserStoryQueryHookResult = ReturnType<typeof useUserStoryQuery>
+export type UserStoryLazyQueryHookResult = ReturnType<
+  typeof useUserStoryLazyQuery
+>
+export type UserStoryQueryResult = Apollo.QueryResult<
+  UserStoryQuery,
+  UserStoryQueryVariables
 >

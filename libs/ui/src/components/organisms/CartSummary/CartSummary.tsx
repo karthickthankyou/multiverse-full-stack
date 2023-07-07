@@ -14,7 +14,7 @@ interface CartSummaryProps {
 export const CartSummary: React.FC<CartSummaryProps> = ({ cartItems }) => {
   const totalItems = cartItems.length
   const totalPrice = cartItems.reduce(
-    (total, item) => total + item.story.price,
+    (total, item) => total + (item?.story?.price || 0),
     0,
   )
 
@@ -24,7 +24,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({ cartItems }) => {
     id: item.story.id,
     image: item.story.image,
     title: item.story.title,
-    price: item.story.price,
+    price: item.story.price || 0,
   }))
 
   if (!totalItems) {

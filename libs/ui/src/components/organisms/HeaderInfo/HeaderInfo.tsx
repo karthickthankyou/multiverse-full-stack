@@ -5,7 +5,7 @@ import {
   useUserStoriesQuery,
 } from '@multiverse-org/network/src/gql/generated'
 import { useUserStore } from '@multiverse-org/store/user'
-import { IconHeart, IconShoppingBag } from '@tabler/icons-react'
+import { IconHeart, IconInbox, IconShoppingBag } from '@tabler/icons-react'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { BadgeNumber } from '../BadgeNumber'
@@ -63,6 +63,9 @@ export const HeaderInfo = ({}: IHeaderInfoProps) => {
         <BadgeNumber count={wishlistCount}>
           <IconHeart />
         </BadgeNumber>
+      </Link>
+      <Link href="/purchased">
+        <IconInbox />
       </Link>
     </>
   )

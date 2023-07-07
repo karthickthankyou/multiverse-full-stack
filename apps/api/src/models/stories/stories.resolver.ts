@@ -13,6 +13,7 @@ import { CreateStoryInput } from './dto/create-story.input'
 import { UpdateStoryInput } from './dto/update-story.input'
 import {
   AllowAuthenticated,
+  AllowAuthenticatedOptional,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
 import { MeilisearchService } from 'src/common/meilisearch/meilisearch.service'
@@ -54,10 +55,13 @@ export class StoriesResolver {
 
   @Query(() => [Story], { name: 'stories' })
   findAll(
-    @Args() args: FindManyStoryArgs,
+    @Args() { cursor, distinct, orderBy, skip, take, where }: FindManyStoryArgs,
     @Args('searchTerm', { nullable: true }) searchTerm: string,
   ) {
-    return this.storiesService.findAll(args, searchTerm)
+    return this.storiesService.findAll(
+      { cursor, distinct, orderBy, skip, take, where },
+      searchTerm,
+    )
   }
 
   @Query(() => Story, { name: 'story' })
@@ -101,9 +105,12 @@ export class StoriesResolver {
     })
   }
 
-  @AllowAuthenticated()
+  @AllowAuthenticatedOptional()
   @ResolveField(() => UserStory, { nullable: true })
   userStory(@Parent() parent: Story, @GetUser() user: GetUserType) {
+    if (!user?.uid) {
+      return null
+    }
     return this.prisma.userStory.findUnique({
       where: { uid_storyId: { storyId: parent.id, uid: user.uid } },
     })

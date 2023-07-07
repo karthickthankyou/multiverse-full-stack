@@ -61,9 +61,6 @@ export const Dot = React.forwardRef<THREE.Mesh<THREE.BufferGeometry>>(
         // const newDummyDots = new Array(1 + Math.floor(Math.random() * 2))
         // Create babies
 
-        console.log('-------------')
-        console.log('rand: ', rand)
-
         const newDummyDots = new Array(1 + Math.floor(Math.random() * 2))
           .fill(null)
           .map((_, index) => ({
@@ -77,13 +74,6 @@ export const Dot = React.forwardRef<THREE.Mesh<THREE.BufferGeometry>>(
               )
             },
           }))
-        console.log(
-          'angles:',
-          newDummyDots.map((dot) => dot.initialDirection),
-        )
-
-        console.log('-------------')
-
         setDummyDots((prevDots) => [...prevDots, ...newDummyDots])
       }, interval * 1000)
 

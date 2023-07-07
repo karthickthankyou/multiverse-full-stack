@@ -8,7 +8,6 @@ import { Suspense } from 'react'
 
 import { useUserStore } from '@multiverse-org/store/user'
 import { MenuItem, Role } from '@multiverse-org/types'
-import { IconHeart, IconShoppingBag } from '@tabler/icons-react'
 import { HeaderInfo } from '../HeaderInfo'
 
 export type IHeaderProps = {

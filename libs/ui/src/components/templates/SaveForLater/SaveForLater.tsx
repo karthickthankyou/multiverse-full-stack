@@ -29,6 +29,11 @@ export const SaveForLater = ({}: ISaveForLaterProps) => {
       })
     }
   }, [uid])
+
+  if (data?.userStoriesCount.count === 0) {
+    return null
+  }
+
   return (
     <div>
       <HeaderText>Save for later</HeaderText>

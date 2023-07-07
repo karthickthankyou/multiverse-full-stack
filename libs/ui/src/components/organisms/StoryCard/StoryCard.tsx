@@ -27,19 +27,20 @@ export const StoryCard = ({ story }: IStoryCardProps) => {
       <Link
         href={{ pathname: 'play', query: { storyId: story.id } }}
         key={story.id}
-        className="relative space-y-2"
       >
         <Image
-          className="object-cover w-full h-full"
+          className="object-cover w-full border-2 border-white shadow-lg rounded-xl h-96"
           width={200}
           height={200}
           src={story.image}
           alt=""
         />
+      </Link>
+      <div className="mt-2">
         <div className="font-semibold">{story.title}</div>
         <PriceCard price={story.price} />
-      </Link>
-      <UserActions story={story} />
+        <UserActions story={story} />
+      </div>
     </div>
   )
 }

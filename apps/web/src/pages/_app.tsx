@@ -9,10 +9,12 @@ import { MenuItem } from '@multiverse-org/types'
 const MENUITEMS: MenuItem[] = [
   { label: 'My Stories', href: '/my-stories', loggedIn: true },
   { label: 'Create Story', href: '/create-story', loggedIn: true },
-  { label: 'Settings', href: '/settings', loggedIn: true },
 ]
 const SUBMENUITEMS: MenuItem[] = [
   ...MENUITEMS,
+  { label: 'Cart', href: '/cart', loggedIn: false },
+  { label: 'Wishlist', href: '/wishlist', loggedIn: false },
+  { label: 'Purchased', href: '/purchased', loggedIn: false },
   { label: 'Settings', href: '/settings', loggedIn: false },
 ]
 
