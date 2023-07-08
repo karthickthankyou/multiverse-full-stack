@@ -7,7 +7,7 @@ import {
   split,
 } from '@apollo/client'
 
-import { getMainDefinition } from '@apollo/client/utilities'
+import { Observable, getMainDefinition } from '@apollo/client/utilities'
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { createClient } from 'graphql-ws'
 import { ReactNode, useContext } from 'react'
@@ -21,15 +21,31 @@ export const ApolloProvider = ({ children }: IApolloProviderProps) => {
   const user = useContext(UserContext)
 
   const authMiddleware = new ApolloLink((operation, forward) => {
-    // Get token on each request.
-    const token = user?.getIdToken()
-    // add the authorization to the headers
-    operation.setContext({
-      headers: {
-        authorization: token ? `Bearer ${token}` : '',
-      },
+    return new Observable((observer) => {
+      user
+        ?.getIdToken()
+        .then((token) => {
+          operation.setContext({
+            headers: {
+              authorization: token ? `Bearer ${token}` : '',
+            },
+          })
+
+          const subscriber = {
+            next: observer.next.bind(observer),
+            error: observer.error.bind(observer),
+            complete: observer.complete.bind(observer),
+          }
+
+          // Note: If the promise was rejected, we're not forwarding the operation
+          // and instead sending the error directly to the observer.
+          // In the case you want to forward the operation even when the promise
+          // was rejected, you would move this line into the Promise callback
+          // right after setting the operation context.
+          forward(operation).subscribe(subscriber)
+        })
+        .catch(observer.error.bind(observer))
     })
-    return forward(operation)
   })
 
   const httpLink = new HttpLink({
@@ -41,11 +57,12 @@ export const ApolloProvider = ({ children }: IApolloProviderProps) => {
   const wsLink = new GraphQLWsLink(
     createClient({
       url: 'ws://localhost:3000/graphql',
-      connectionParams: async () => ({
-        headers: {
-          authorization: `Bearer ${await user?.getIdToken()}`,
-        },
-      }),
+      connectionParams: () =>
+        user?.getIdToken().then((token) => ({
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        })),
     }),
   )
 

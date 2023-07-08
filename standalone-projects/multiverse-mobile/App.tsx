@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { HomeScreen } from './screens/Home'
 import { Screen2 } from './screens/Screen2'
-import { Screen3 } from './screens/Screen3'
+import { Wishlist } from './screens/Wishlist'
 import { SignInScreen } from './screens/SignIn'
 import { UserProvider } from './providers/UserProvider'
 import { ProfileScreen } from './screens/Profile'
@@ -24,7 +24,7 @@ export default function App() {
             <Drawer.Screen name="Home" component={HomeScreen} />
             <Drawer.Screen name="Screen2" component={Screen2} />
             <Drawer.Screen name="SignIn" component={SignInScreen} />
-            <Drawer.Screen name="Screen3" component={Screen3} />
+            <Drawer.Screen name="Wishlist" component={Wishlist} />
             <Drawer.Screen name="Profile" component={ProfileScreen} />
           </Drawer.Navigator>
         </NavigationContainer>

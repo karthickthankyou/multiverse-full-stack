@@ -24,6 +24,7 @@ import {
 } from './dto/auth.input'
 import { checkRowLevelPermission } from 'src/common/guards'
 import { GetUserType, Role } from '@multiverse-org/types'
+import { BadRequestException } from '@nestjs/common'
 
 @Resolver(() => LoginOutput)
 export class AuthResolver {
@@ -58,17 +59,17 @@ export class AuthResolver {
   }
 
   @Mutation(() => Boolean)
-  @AllowAuthenticated()
+  @AllowAuthenticated('admin')
   setRole(
     @Args('setRoleInput') args: SetRoleInput,
     @GetUser() user: GetUserType,
   ) {
     const { uid, role } = args
-    // if (role === 'admin') {
-    //   throw new BadRequestException(
-    //     'Can not set admin role. Use setAdmin route.',
-    //   )
-    // }
+    if (role === 'admin') {
+      throw new BadRequestException(
+        'Can not set admin role. Use setAdmin route.',
+      )
+    }
     checkRowLevelPermission(user, uid)
     return this.authService.setRole(user, role as Role)
   }
