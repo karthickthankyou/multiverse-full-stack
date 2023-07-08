@@ -414,6 +414,7 @@ export type Query = {
   node: Node
   nodes: Array<Node>
   nodesCount: AggregateCountOutput
+  sentryTesting: Scalars['String']
   stories: Array<Story>
   storiesCount: AggregateCountOutput
   story: Story

@@ -7,6 +7,7 @@ import { SignInScreen } from './screens/SignIn'
 import { UserProvider } from './providers/UserProvider'
 import { ProfileScreen } from './screens/Profile'
 import { CustomDrawerContent } from './components/DrawerContent'
+import { ApolloProvider } from './config/apollo'
 
 // Create the drawer navigator
 const Drawer = createDrawerNavigator()
@@ -14,18 +15,20 @@ const Drawer = createDrawerNavigator()
 export default function App() {
   return (
     <UserProvider>
-      <NavigationContainer>
-        <Drawer.Navigator
-          drawerContent={(props) => <CustomDrawerContent {...props} />}
-          initialRouteName="Home"
-        >
-          <Drawer.Screen name="Home" component={HomeScreen} />
-          <Drawer.Screen name="Screen2" component={Screen2} />
-          <Drawer.Screen name="SignIn" component={SignInScreen} />
-          <Drawer.Screen name="Screen3" component={Screen3} />
-          <Drawer.Screen name="Profile" component={ProfileScreen} />
-        </Drawer.Navigator>
-      </NavigationContainer>
+      <ApolloProvider>
+        <NavigationContainer>
+          <Drawer.Navigator
+            drawerContent={(props) => <CustomDrawerContent {...props} />}
+            initialRouteName="Home"
+          >
+            <Drawer.Screen name="Home" component={HomeScreen} />
+            <Drawer.Screen name="Screen2" component={Screen2} />
+            <Drawer.Screen name="SignIn" component={SignInScreen} />
+            <Drawer.Screen name="Screen3" component={Screen3} />
+            <Drawer.Screen name="Profile" component={ProfileScreen} />
+          </Drawer.Navigator>
+        </NavigationContainer>
+      </ApolloProvider>
     </UserProvider>
   )
 }

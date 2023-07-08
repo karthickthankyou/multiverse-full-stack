@@ -1,5 +1,13 @@
-import { Text } from 'react-native'
+import { Text, View } from 'react-native'
+import { useStoriesQuery } from '../gql/generated'
 
 export const Screen2 = () => {
-  return <Text>Hello there. Its screen 2.</Text>
+  const { data, loading } = useStoriesQuery()
+  return (
+    <View>
+      {data?.stories.map((story) => (
+        <Text key={story.id}>{story.title}</Text>
+      ))}
+    </View>
+  )
 }
