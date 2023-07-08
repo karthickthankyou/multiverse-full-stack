@@ -27,6 +27,7 @@ import { Story } from '../stories/entities/story.entity'
 import { AggregateCountOutput } from 'src/common/dtos/common.input'
 import { NodeWhereInput } from './dto/where.args'
 import { Choice } from '../choices/entities/choice.entity'
+import { BadRequestException } from '@nestjs/common'
 
 @Resolver(() => Node)
 export class NodesResolver {
@@ -83,6 +84,10 @@ export class NodesResolver {
   @Query(() => Node, { name: 'node' })
   findOne(@Args() args: FindUniqueNodeArgs) {
     return this.nodesService.findOne(args)
+  }
+  @Query(() => String, { name: 'sentryTesting' })
+  sentryTesting() {
+    throw new BadRequestException('Testing sentry')
   }
 
   @AllowAuthenticated()

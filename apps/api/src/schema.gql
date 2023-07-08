@@ -112,6 +112,7 @@ type RefreshTokenOutput {
 type Query {
   nodes(where: NodeWhereInput, orderBy: [NodeOrderByWithRelationInput!], cursor: NodeWhereUniqueInput, take: Int, skip: Int, distinct: [NodeScalarFieldEnum!]): [Node!]!
   node(where: NodeWhereUniqueInput): Node!
+  sentryTesting: String!
   nodesCount(where: NodeWhereInput): AggregateCountOutput!
   stories(where: StoryWhereInput, orderBy: [StoryOrderByWithRelationInput!], cursor: StoryWhereUniqueInput, take: Int, skip: Int, distinct: [StoryScalarFieldEnum!], searchTerm: String): [Story!]!
   story(where: StoryWhereUniqueInput): Story!

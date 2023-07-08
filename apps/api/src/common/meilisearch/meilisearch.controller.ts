@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Controller,
   Get,
   Post,
@@ -23,6 +24,11 @@ export class MeilisearchController {
       offset: offset ? Number(offset) : undefined,
       limit: limit ? Number(limit) : undefined,
     })
+  }
+
+  @Get('sentry-testing')
+  async sentryTesting() {
+    throw new BadRequestException('Sentry testing...')
   }
 
   @Get('is-healthy')
