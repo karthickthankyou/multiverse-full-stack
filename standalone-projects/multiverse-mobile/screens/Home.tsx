@@ -1,5 +1,11 @@
 import { Text } from 'react-native'
+import { View } from '../components'
+import { SearchStories } from '../components/SearchStories'
 
 export const HomeScreen = () => {
-  return <Text>Hello there. Its home.</Text>
+  return (
+    <View>
+      <SearchStories />
+    </View>
+  )
 }

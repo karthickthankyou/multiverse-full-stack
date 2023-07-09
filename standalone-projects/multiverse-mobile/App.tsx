@@ -10,11 +10,16 @@ import { CustomDrawerContent } from './components/DrawerContent'
 import { ApolloProvider } from './config/apollo'
 import { Cart } from './screens/Cart'
 import { Purchased } from './screens/Purchased'
+import { RootDrawerParamList } from './config/navigation'
+import { PlayScreen } from './screens/PlayScreen'
+import { useUserListener } from './hooks'
 
 // Create the drawer navigator
-const Drawer = createDrawerNavigator()
+const Drawer = createDrawerNavigator<RootDrawerParamList>()
 
 export default function App() {
+  useUserListener()
+
   return (
     <UserProvider>
       <ApolloProvider>
@@ -30,6 +35,7 @@ export default function App() {
             <Drawer.Screen name="Cart" component={Cart} />
             <Drawer.Screen name="Purchased" component={Purchased} />
             <Drawer.Screen name="Profile" component={ProfileScreen} />
+            <Drawer.Screen name="Play" component={PlayScreen} />
           </Drawer.Navigator>
         </NavigationContainer>
       </ApolloProvider>

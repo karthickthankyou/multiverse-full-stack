@@ -27,9 +27,6 @@ export const stories = gql`
         type
       }
     }
-    storiesCount(where: $where) {
-      count
-    }
   }
 `
 
@@ -144,9 +141,6 @@ export const nodes = gql`
         }
       }
     }
-    nodesCount(where: $where) {
-      count
-    }
   }
 `
 
@@ -250,9 +244,6 @@ export const userStories = gql`
         id
       }
       type
-    }
-    userStoriesCount(where: $where, uid: $uid) {
-      count
     }
   }
 `
