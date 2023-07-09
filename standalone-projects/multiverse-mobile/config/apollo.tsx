@@ -12,6 +12,7 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { createClient } from 'graphql-ws'
 import { ReactNode, useContext } from 'react'
 import { UserContext } from '../providers/UserProvider'
+import { BACKEND_URL } from '@env'
 
 export interface IApolloProviderProps {
   children: ReactNode
@@ -49,7 +50,7 @@ export const ApolloProvider = ({ children }: IApolloProviderProps) => {
   })
 
   const httpLink = new HttpLink({
-    uri: 'http://localhost:3000/graphql',
+    uri: `${BACKEND_URL}/graphql`,
   })
 
   const httpLinkWithAuth = authMiddleware.concat(httpLink)

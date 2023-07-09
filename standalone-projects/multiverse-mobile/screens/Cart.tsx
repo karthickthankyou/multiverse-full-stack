@@ -3,9 +3,10 @@ import { UserStoryType, useUserStoriesLazyQuery } from '../gql/generated'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { UserContext } from '../providers/UserProvider'
 
-export const Wishlist = () => {
+export const Cart = () => {
   const user = useContext(UserContext)
   const [getUserStories, { data, loading }] = useUserStoriesLazyQuery()
+  console.log('data ', data)
 
   const onRefresh = useCallback(() => {
     if (user?.uid) {
@@ -14,7 +15,7 @@ export const Wishlist = () => {
           uid: user?.uid,
           where: {
             uid: { equals: user?.uid },
-            type: { equals: UserStoryType.Wishlisted },
+            type: { equals: UserStoryType.InCart },
           },
         },
 
@@ -29,7 +30,7 @@ export const Wishlist = () => {
           uid: user.uid,
           where: {
             uid: { equals: user.uid },
-            type: { equals: UserStoryType.Wishlisted },
+            type: { equals: UserStoryType.InCart },
           },
         },
       })
@@ -52,6 +53,12 @@ export const Wishlist = () => {
       {data?.userStories.map((userStory) => (
         <Text key={userStory.story.id}>{userStory.story.title}</Text>
       ))}
+      <View>
+        <Text>
+          Stripe payment for multiverse in mobile apps is temporarily disabled.
+          Please use the web version to execute payment in your cart.
+        </Text>
+      </View>
     </ScrollView>
   )
 }

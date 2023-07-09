@@ -3,7 +3,7 @@ import { UserStoryType, useUserStoriesLazyQuery } from '../gql/generated'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { UserContext } from '../providers/UserProvider'
 
-export const Wishlist = () => {
+export const Purchased = () => {
   const user = useContext(UserContext)
   const [getUserStories, { data, loading }] = useUserStoriesLazyQuery()
 
@@ -13,8 +13,8 @@ export const Wishlist = () => {
         variables: {
           uid: user?.uid,
           where: {
-            uid: { equals: user?.uid },
-            type: { equals: UserStoryType.Wishlisted },
+            uid: { equals: user.uid },
+            type: { equals: UserStoryType.Purchased },
           },
         },
 
@@ -29,7 +29,7 @@ export const Wishlist = () => {
           uid: user.uid,
           where: {
             uid: { equals: user.uid },
-            type: { equals: UserStoryType.Wishlisted },
+            type: { equals: UserStoryType.Purchased },
           },
         },
       })
