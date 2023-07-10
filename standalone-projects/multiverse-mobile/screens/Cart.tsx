@@ -54,7 +54,7 @@ export const Cart = () => {
       {!loading && data?.userStories.length === 0 && <Text>No results.</Text>}
 
       {data?.userStories.map((userStory) => (
-        <StoryCardSimple userStory={userStory} />
+        <StoryCardSimple key={userStory.story.id} userStory={userStory} />
       ))}
       <View className="p-2 mt-6 bg-red-100">
         <Text className="text-xs text-red">

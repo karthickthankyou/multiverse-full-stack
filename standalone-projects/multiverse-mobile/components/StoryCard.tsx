@@ -12,20 +12,15 @@ export interface IStoryCardProps {
 const screenWidth = Dimensions.get('window').width
 
 export const StoryCard = ({ story }: IStoryCardProps) => {
-  const navigation: any = useNavigation()
   return (
     <View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Play', { storyId: story.id })}
-        key={story.id}
-      >
-        <Image
-          className="object-cover w-full border-2 border-white shadow-lg rounded-xl h-96"
-          source={{ uri: story.image }}
-          style={{ width: screenWidth, height: screenWidth }}
-          alt=""
-        />
-      </TouchableOpacity>
+      <Image
+        className="object-cover w-full border-2 border-white shadow-lg rounded-xl h-96"
+        source={{ uri: story.image }}
+        style={{ width: screenWidth, height: screenWidth }}
+        alt=""
+      />
+
       <View className="p-2">
         <View className="flex flex-row items-center justify-between">
           <Text className="text-lg font-medium">{story.title}</Text>

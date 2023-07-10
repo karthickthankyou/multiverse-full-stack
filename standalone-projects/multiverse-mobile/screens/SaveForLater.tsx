@@ -51,7 +51,7 @@ export const SaveForLater = () => {
       {!loading && data?.userStories.length === 0 && <Text>No results.</Text>}
 
       {data?.userStories.map((userStory) => (
-        <StoryCardSimple userStory={userStory} />
+        <StoryCardSimple key={userStory.story.id} userStory={userStory} />
       ))}
     </ScrollView>
   )

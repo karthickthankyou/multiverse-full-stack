@@ -3,6 +3,8 @@ import { UserStoryType, useUserStoriesLazyQuery } from '../gql/generated'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { UserContext } from '../providers/UserProvider'
 import { StoryCardSimple } from '../components/StoryCardSimple'
+import { TouchableOpacity } from '../components'
+import { useNavigation } from '@react-navigation/native'
 
 export const Purchased = () => {
   const user = useContext(UserContext)
@@ -36,6 +38,8 @@ export const Purchased = () => {
       })
     }
   }, [user])
+  const navigation: any = useNavigation()
+
   if (!user?.uid) {
     return <Text>You need to login...</Text>
   }
@@ -51,7 +55,14 @@ export const Purchased = () => {
       {!loading && data?.userStories.length === 0 && <Text>No results.</Text>}
 
       {data?.userStories.map((userStory) => (
-        <StoryCardSimple userStory={userStory} />
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('Play', { storyId: userStory.story.id })
+          }
+          key={userStory.story.id}
+        >
+          <StoryCardSimple userStory={userStory} />
+        </TouchableOpacity>
       ))}
     </ScrollView>
   )

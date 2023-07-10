@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 import { StoryCard } from './StoryCard'
 import { StoriesQuery, useStoriesLazyQuery } from '../gql/generated'
-import { useDebouncedValue, useTakeSkip } from '../hooks'
-import { TextInput, View, Text } from '.'
+import { useDebouncedValue } from '../hooks'
+import { TextInput, View } from '.'
 import { FlatList, RefreshControl } from 'react-native'
-import { useUserStore } from '../store/user'
 
 export interface ISearchStoriesProps {}
 type Story = NonNullable<StoriesQuery['stories']>[0]
@@ -13,8 +12,6 @@ export const SearchStories = ({}: ISearchStoriesProps) => {
   const [searchTerm, setSearchTerm] = useState('')
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 300)
   const [getStories, { data, loading, fetchMore }] = useStoriesLazyQuery()
-
-  const uid = useUserStore((s) => s.uid)
 
   useEffect(() => {
     getStories({
@@ -65,7 +62,7 @@ export const SearchStories = ({}: ISearchStoriesProps) => {
           <RefreshControl refreshing={loading} onRefresh={onRefresh} />
         }
         data={data?.stories}
-        renderItem={({ item }) => <StoryCard story={item} />}
+        renderItem={({ item, index }) => <StoryCard key={index} story={item} />}
         onEndReached={loadMoreTransactions}
       />
     </View>

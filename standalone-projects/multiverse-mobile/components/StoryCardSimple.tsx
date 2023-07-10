@@ -13,18 +13,12 @@ export const StoryCardSimple = ({ userStory }: IStoryCardProps) => {
   const navigation: any = useNavigation()
   return (
     <View className="flex flex-row gap-1">
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('Play', { storyId: userStory.story.id })
-        }
-        key={userStory.story.id}
-      >
-        <Image
-          className="object-cover border-2 border-white shadow-lg rounded-xl h-36 w-36"
-          source={{ uri: userStory.story.image }}
-          alt=""
-        />
-      </TouchableOpacity>
+      <Image
+        className="object-cover border-2 border-white shadow-lg rounded-xl h-36 w-36"
+        source={{ uri: userStory.story.image }}
+        alt=""
+      />
+
       <View>
         <View className="flex flex-col items-start gap-2">
           <Text className="text-lg font-medium">{userStory.story.title}</Text>

@@ -35,7 +35,7 @@ export const SignInScreen = () => {
 
   if (user?.uid) {
     return (
-      <View style={styles.container}>
+      <View>
         <Text>You are already logged in.</Text>
         <SignOutButton />
       </View>
@@ -43,12 +43,11 @@ export const SignInScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View>
       <TextInput
         placeholder="user@email.com"
         value={email}
         onChangeText={setEmail}
-        style={styles.input}
         keyboardType="email-address"
       />
       <TextInput
@@ -56,20 +55,8 @@ export const SignInScreen = () => {
         onChangeText={setPassword}
         secureTextEntry
         placeholder="******"
-        style={styles.input}
       />
       <Button title="Sign in" onPress={handleSignIn} />
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 16,
-  },
-  input: {
-    marginBottom: 16,
-  },
-})
