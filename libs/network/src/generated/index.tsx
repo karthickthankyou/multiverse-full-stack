@@ -568,7 +568,7 @@ export type Story = {
   id: Scalars['Int']
   image: Scalars['String']
   nodes?: Maybe<Array<Node>>
-  price?: Maybe<Scalars['Float']>
+  price: Scalars['Float']
   startingNodes?: Maybe<Array<Node>>
   title: Scalars['String']
   updatedAt: Scalars['DateTime']
@@ -825,7 +825,7 @@ export type StoriesQuery = {
     id: number
     title: string
     image: string
-    price?: number | null
+    price: number
     userStory?: { __typename?: 'UserStory'; type?: UserStoryType | null } | null
   }>
   storiesCount: { __typename?: 'AggregateCountOutput'; count: number }
@@ -843,7 +843,7 @@ export type StoryQuery = {
     createdAt: any
     id: number
     image: string
-    price?: number | null
+    price: number
     description: string
     title: string
     updatedAt: any
@@ -1046,7 +1046,7 @@ export type UserStoriesQuery = {
     story: {
       __typename?: 'Story'
       image: string
-      price?: number | null
+      price: number
       title: string
       id: number
     }

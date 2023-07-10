@@ -1,14 +1,12 @@
-import { RefreshControl } from 'react-native'
+import { Text, ScrollView, RefreshControl } from 'react-native'
 import { UserStoryType, useUserStoriesLazyQuery } from '../gql/generated'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { UserContext } from '../providers/UserProvider'
 import { StoryCardSimple } from '../components/StoryCardSimple'
-import { View, Text, ScrollView } from '../components'
 
-export const Cart = () => {
+export const SaveForLater = () => {
   const user = useContext(UserContext)
   const [getUserStories, { data, loading }] = useUserStoriesLazyQuery()
-  console.log('data ', data)
 
   const onRefresh = useCallback(() => {
     if (user?.uid) {
@@ -17,7 +15,7 @@ export const Cart = () => {
           uid: user?.uid,
           where: {
             uid: { equals: user?.uid },
-            type: { equals: UserStoryType.InCart },
+            type: { equals: UserStoryType.SaveForLater },
           },
         },
 
@@ -32,7 +30,7 @@ export const Cart = () => {
           uid: user.uid,
           where: {
             uid: { equals: user.uid },
-            type: { equals: UserStoryType.InCart },
+            type: { equals: UserStoryType.SaveForLater },
           },
         },
       })
@@ -44,7 +42,6 @@ export const Cart = () => {
 
   return (
     <ScrollView
-      className="space-y-4"
       refreshControl={
         <RefreshControl refreshing={loading} onRefresh={onRefresh} />
       }
@@ -56,12 +53,6 @@ export const Cart = () => {
       {data?.userStories.map((userStory) => (
         <StoryCardSimple userStory={userStory} />
       ))}
-      <View className="p-2 mt-6 bg-red-100">
-        <Text className="text-xs text-red">
-          Stripe payment for multiverse in mobile apps is temporarily disabled.
-          Please use the web version to execute payment in your cart.
-        </Text>
-      </View>
     </ScrollView>
   )
 }

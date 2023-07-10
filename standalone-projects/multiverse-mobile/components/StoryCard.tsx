@@ -31,7 +31,12 @@ export const StoryCard = ({ story }: IStoryCardProps) => {
           <Text className="text-lg font-medium">{story.title}</Text>
           <PriceCard price={story.price} />
         </View>
-        <UserActions story={story} />
+        <UserActions
+          id={story.id}
+          price={story.price}
+          type={story?.userStory?.type}
+          linkInCartToCart
+        />
       </View>
     </View>
   )

@@ -37,7 +37,7 @@ type User {
 }
 
 type Story {
-  price: Float
+  price: Float!
   description: String!
   image: String!
   id: Int!

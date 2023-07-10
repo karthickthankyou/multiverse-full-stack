@@ -1,12 +1,12 @@
 export type RootDrawerParamList = {
-  Home: object | undefined
+  Home: undefined
   Play: { storyId: number }
-  Screen2: undefined
   SignIn: undefined
   Wishlist: undefined
   Cart: undefined
   Purchased: undefined
   Profile: undefined
+  'Save For Later': undefined
 
   // other screens...
 }

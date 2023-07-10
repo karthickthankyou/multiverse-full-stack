@@ -4,7 +4,7 @@ import { RestrictProperties } from 'src/common/dtos/common.input'
 
 @ObjectType()
 export class Story implements RestrictProperties<Story, StoryType> {
-  @Field(() => Float, { nullable: true })
+  @Field(() => Float)
   price: number
   description: string
   image: string

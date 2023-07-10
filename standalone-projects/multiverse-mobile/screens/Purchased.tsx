@@ -2,6 +2,7 @@ import { Text, View, ScrollView, RefreshControl } from 'react-native'
 import { UserStoryType, useUserStoriesLazyQuery } from '../gql/generated'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { UserContext } from '../providers/UserProvider'
+import { StoryCardSimple } from '../components/StoryCardSimple'
 
 export const Purchased = () => {
   const user = useContext(UserContext)
@@ -50,7 +51,7 @@ export const Purchased = () => {
       {!loading && data?.userStories.length === 0 && <Text>No results.</Text>}
 
       {data?.userStories.map((userStory) => (
-        <Text key={userStory.story.id}>{userStory.story.title}</Text>
+        <StoryCardSimple userStory={userStory} />
       ))}
     </ScrollView>
   )

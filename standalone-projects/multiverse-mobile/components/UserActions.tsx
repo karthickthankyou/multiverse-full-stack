@@ -13,16 +13,23 @@ import { useUserStore } from '../store/user'
 import { ActivityIndicator } from 'react-native'
 
 export const UserActions = ({
-  story,
+  id,
+  price,
+  type,
+  linkInCartToCart = false,
 }: {
-  story: StoriesQuery['stories'][0]
+  id: number
+  price: number
+  type?: UserStoryType | null
+  linkInCartToCart?: boolean
 }) => {
   const navigation: any = useNavigation()
 
-  const [wishlist, { loading: wishlisting }] = useCreateUserStoryMutation({
-    awaitRefetchQueries: true,
-    refetchQueries: [namedOperations.Query.stories],
-  })
+  const [saveForLater, { loading: savingForLater }] =
+    useCreateUserStoryMutation({
+      awaitRefetchQueries: true,
+      refetchQueries: [namedOperations.Query.stories],
+    })
   const [addToCart, { loading: addingToCart }] = useCreateUserStoryMutation({
     awaitRefetchQueries: true,
     refetchQueries: [
@@ -30,6 +37,51 @@ export const UserActions = ({
       namedOperations.Query.userStories,
     ],
   })
+
+  const uid = useUserStore((state) => state.uid)
+  console.log('UserActions', uid)
+  if (!uid) {
+    return null
+  }
+
+  if (!price) {
+    return null
+  }
+
+  if (type === UserStoryType.Purchased) {
+    return (
+      <TouchableOpacity onPress={() => navigation.navigate('Purchased')}>
+        <Text className="text-xs">Purchased</Text>
+      </TouchableOpacity>
+    )
+  }
+
+  return (
+    <View className="flex flex-row justify-start gap-1 mt-1">
+      <WishlistButton type={type} id={id} uid={uid} />
+      <CartButton type={type} id={id} uid={uid} />
+      <SaveForLaterButton type={type} id={id} uid={uid} />
+    </View>
+  )
+}
+
+export const WishlistButton = ({
+  id,
+  uid,
+  type,
+}: {
+  id: number
+  uid: string
+  type?: UserStoryType | null
+}) => {
+  const [wishlist, { loading: wishlisting }] = useCreateUserStoryMutation({
+    awaitRefetchQueries: true,
+    refetchQueries: [
+      namedOperations.Query.stories,
+      namedOperations.Query.userStories,
+    ],
+  })
+
   const [removeUserStory, { data: dataRemoveUserStory, loading: removing }] =
     useRemoveUserStoryMutation({
       awaitRefetchQueries: true,
@@ -38,107 +90,189 @@ export const UserActions = ({
         namedOperations.Query.userStories,
       ],
     })
-
-  const uid = useUserStore((state) => state.uid)
-  console.log('UserActions', uid)
-  if (!uid) {
-    return null
-  }
-
-  if (!story.price) {
-    return null
-  }
-
-  return (
-    <View className="flex flex-row justify-start gap-1 mt-1">
-      {/* No type */}
-      {!story.userStory?.type && (
-        <TouchableOpacity
-          disabled={wishlisting}
-          onPress={async () =>
-            await wishlist({
-              variables: {
-                createUserStoryInput: {
-                  storyId: story.id,
-                  uid,
-                  type: UserStoryType.Wishlisted,
-                },
+  return type === 'WISHLISTED' ? (
+    <TouchableOpacity
+      disabled={removing}
+      onPress={async () =>
+        await removeUserStory({
+          variables: {
+            where: {
+              uid_storyId: {
+                storyId: id,
+                uid,
               },
-            })
-          }
-        >
-          {wishlisting ? (
-            <ActivityIndicator size="small" />
-          ) : (
-            <Ionicons size={24} name={'heart-outline'} />
-          )}
-        </TouchableOpacity>
+            },
+          },
+        })
+      }
+    >
+      {removing ? (
+        <ActivityIndicator size="small" />
+      ) : (
+        <Ionicons size={24} name={'heart'} />
       )}
+    </TouchableOpacity>
+  ) : (
+    <TouchableOpacity
+      disabled={wishlisting}
+      onPress={async () =>
+        await wishlist({
+          variables: {
+            createUserStoryInput: {
+              storyId: id,
+              uid,
+              type: UserStoryType.Wishlisted,
+            },
+          },
+        })
+      }
+    >
+      {wishlisting ? (
+        <ActivityIndicator size="small" />
+      ) : (
+        <Ionicons size={24} name={'heart-outline'} />
+      )}
+    </TouchableOpacity>
+  )
+}
 
-      {story.userStory?.type === 'WISHLISTED' && (
-        <TouchableOpacity
-          disabled={removing}
-          onPress={async () =>
-            await removeUserStory({
-              variables: {
-                where: {
-                  uid_storyId: {
-                    storyId: story.id,
-                    uid,
-                  },
-                },
+export const CartButton = ({
+  id,
+  uid,
+  type,
+}: {
+  id: number
+  uid: string
+  type?: UserStoryType | null
+}) => {
+  const [wishlist, { loading: wishlisting }] = useCreateUserStoryMutation({
+    awaitRefetchQueries: true,
+    refetchQueries: [
+      namedOperations.Query.stories,
+      namedOperations.Query.userStories,
+    ],
+  })
+
+  const [removeUserStory, { data: dataRemoveUserStory, loading: removing }] =
+    useRemoveUserStoryMutation({
+      awaitRefetchQueries: true,
+      refetchQueries: [
+        namedOperations.Query.stories,
+        namedOperations.Query.userStories,
+      ],
+    })
+  return type === UserStoryType.InCart ? (
+    <TouchableOpacity
+      disabled={removing}
+      onPress={async () =>
+        await removeUserStory({
+          variables: {
+            where: {
+              uid_storyId: {
+                storyId: id,
+                uid,
               },
-            })
-          }
-        >
-          {removing ? (
-            <ActivityIndicator size="small" />
-          ) : (
-            <Ionicons size={24} name={'heart'} />
-          )}
-        </TouchableOpacity>
+            },
+          },
+        })
+      }
+    >
+      {removing ? (
+        <ActivityIndicator size="small" />
+      ) : (
+        <Ionicons size={24} name={'cart'} />
       )}
-      {(!story.userStory?.type ||
-        [UserStoryType.Wishlisted, UserStoryType.SaveForLater].includes(
-          story.userStory?.type,
-        )) && (
-        <TouchableOpacity
-          onPress={() =>
-            addToCart({
-              variables: {
-                createUserStoryInput: {
-                  storyId: story.id,
-                  uid,
-                  type: UserStoryType.InCart,
-                },
+    </TouchableOpacity>
+  ) : (
+    <TouchableOpacity
+      disabled={wishlisting}
+      onPress={async () =>
+        await wishlist({
+          variables: {
+            createUserStoryInput: {
+              storyId: id,
+              uid,
+              type: UserStoryType.InCart,
+            },
+          },
+        })
+      }
+    >
+      {wishlisting ? (
+        <ActivityIndicator size="small" />
+      ) : (
+        <Ionicons size={24} name={'cart-outline'} />
+      )}
+    </TouchableOpacity>
+  )
+}
+
+export const SaveForLaterButton = ({
+  id,
+  uid,
+  type,
+}: {
+  id: number
+  uid: string
+  type?: UserStoryType | null
+}) => {
+  const [addUserStory, { loading: adding }] = useCreateUserStoryMutation({
+    awaitRefetchQueries: true,
+    refetchQueries: [
+      namedOperations.Query.stories,
+      namedOperations.Query.userStories,
+    ],
+  })
+
+  const [removeUserStory, { loading: removing }] = useRemoveUserStoryMutation({
+    awaitRefetchQueries: true,
+    refetchQueries: [
+      namedOperations.Query.stories,
+      namedOperations.Query.userStories,
+    ],
+  })
+  return type === UserStoryType.SaveForLater ? (
+    <TouchableOpacity
+      disabled={removing}
+      onPress={async () =>
+        await removeUserStory({
+          variables: {
+            where: {
+              uid_storyId: {
+                storyId: id,
+                uid,
               },
-            })
-          }
-          disabled={addingToCart}
-        >
-          {addingToCart ? (
-            <ActivityIndicator size="small" />
-          ) : (
-            <Ionicons size={24} name={'cart-outline'} />
-          )}
-        </TouchableOpacity>
+            },
+          },
+        })
+      }
+    >
+      {removing ? (
+        <ActivityIndicator size="small" />
+      ) : (
+        <Ionicons size={24} name={'save'} />
       )}
-
-      {story.userStory?.type === UserStoryType.InCart && (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Cart', {})
-          }}
-        >
-          <Ionicons size={24} name={'cart'} />
-        </TouchableOpacity>
+    </TouchableOpacity>
+  ) : (
+    <TouchableOpacity
+      disabled={adding}
+      onPress={async () =>
+        await addUserStory({
+          variables: {
+            createUserStoryInput: {
+              storyId: id,
+              uid,
+              type: UserStoryType.InCart,
+            },
+          },
+        })
+      }
+    >
+      {adding ? (
+        <ActivityIndicator size="small" />
+      ) : (
+        <Ionicons size={24} name={'save-outline'} />
       )}
-
-      {story.userStory?.type === UserStoryType.Purchased && (
-        <TouchableOpacity onPress={() => navigation.navigate('Purchased')}>
-          <Text>Purchased</Text>
-        </TouchableOpacity>
-      )}
-    </View>
+    </TouchableOpacity>
   )
 }
