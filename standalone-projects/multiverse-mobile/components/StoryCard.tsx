@@ -15,7 +15,7 @@ export const StoryCard = ({ story }: IStoryCardProps) => {
   return (
     <View>
       <Image
-        className="object-cover w-full border-2 border-white shadow-lg rounded-xl h-96"
+        className="object-cover w-full shadow-lg rounded-xl h-96"
         source={{ uri: story.image }}
         style={{ width: screenWidth, height: screenWidth }}
         alt=""
