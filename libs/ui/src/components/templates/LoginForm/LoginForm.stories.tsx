@@ -1,14 +1,13 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { LoginForm } from './LoginForm'
 
-export default {
-  title: 'templates/LoginForm',
+const meta: Meta<typeof LoginForm> = {
   component: LoginForm,
-} as ComponentMeta<typeof LoginForm>
+}
+export default meta
 
-const Template: ComponentStory<typeof LoginForm> = () => <LoginForm />
+type Story = StoryObj<typeof LoginForm>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => <LoginForm />,
+}

@@ -1,16 +1,30 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { ShowData } from './ShowData'
 
-export default {
-  title: 'src/components/templates/ShowData',
+const meta: Meta<typeof ShowData> = {
   component: ShowData,
-} as ComponentMeta<typeof ShowData>
+}
+export default meta
 
-const Template: ComponentStory<typeof ShowData> = (args) => (
-  <ShowData {...args} />
-)
+type Story = StoryObj<typeof ShowData>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => (
+    <ShowData
+      loading={false}
+      pagination={{
+        skip: undefined,
+        take: undefined,
+        resultCount: undefined,
+        totalCount: undefined,
+        setSkip: function (skip: number): void {
+          throw new Error('Function not implemented.')
+        },
+        setTake: function (take: number): void {
+          throw new Error('Function not implemented.')
+        },
+      }}
+      title={undefined}
+    />
+  ),
+}

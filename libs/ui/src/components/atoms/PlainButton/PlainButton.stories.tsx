@@ -1,16 +1,22 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { PlainButton } from './PlainButton'
 
-export default {
-  title: 'src/components/atoms/PlainButton',
+const meta: Meta<typeof PlainButton> = {
   component: PlainButton,
-} as ComponentMeta<typeof PlainButton>
+}
+export default meta
 
-const Template: ComponentStory<typeof PlainButton> = (args) => (
-  <PlainButton {...args} />
-)
+type Story = StoryObj<typeof PlainButton>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    children: 'Plain button',
+  },
+}
+
+export const Loading: Story = {
+  args: {
+    children: 'Plain button',
+    loading: true,
+  },
+}

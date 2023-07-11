@@ -20,7 +20,7 @@ import {
   IconTrash,
 } from '@tabler/icons-react'
 import { Container } from '../../atoms/Container'
-import { Switch2 } from '../../atoms/Switch2'
+import { Switch } from '../../atoms/Switch'
 import { useRouter } from 'next/router'
 import { useUserStore } from '@multiverse-org/store/user'
 import { notification$ } from '@multiverse-org/util/subjects'
@@ -273,14 +273,14 @@ export const AddNodes = () => {
                 />
               </HtmlLabel>
 
-              <Switch2
+              <Switch
                 checked={nodes?.[nodeIndex]?.start || false}
                 onChange={(value) => {
                   setValue(`nodes.${nodeIndex}.start`, value)
                 }}
                 label={'Start?'}
               />
-              <Switch2
+              <Switch
                 checked={nodes?.[nodeIndex]?.end || false}
                 onChange={(value) => {
                   setValue(`nodes.${nodeIndex}.end`, value)

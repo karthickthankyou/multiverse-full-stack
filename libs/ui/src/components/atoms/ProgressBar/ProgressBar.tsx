@@ -5,8 +5,9 @@ export const ProgressBar = (props: LinearProgressProps) => {
     <LinearProgress
       classes={{
         // bar: 'bg-black/10',
-        colorPrimary: 'bg-black/30',
-        bar1Determinate: 'bg-black/80',
+        colorPrimary: 'bg-primary/30',
+        bar1Determinate: 'bg-primary',
+        bar1Indeterminate: 'bg-primary',
       }}
       {...props}
     />

@@ -1,16 +1,27 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { AddChoicesDialog } from './AddChoicesDialog'
 
-export default {
-  title: 'src/components/organisms/AddChoicesDialog',
+const meta: Meta<typeof AddChoicesDialog> = {
   component: AddChoicesDialog,
-} as ComponentMeta<typeof AddChoicesDialog>
+}
+export default meta
 
-const Template: ComponentStory<typeof AddChoicesDialog> = (args) => (
-  <AddChoicesDialog {...args} />
-)
+type Story = StoryObj<typeof AddChoicesDialog>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => (
+    <AddChoicesDialog
+      node={{
+        __typename: undefined,
+        id: 0,
+        title: '',
+        image: undefined,
+        end: undefined,
+        start: undefined,
+        storyId: 0,
+        content: '',
+        choiceNodes: undefined,
+      }}
+    />
+  ),
+}

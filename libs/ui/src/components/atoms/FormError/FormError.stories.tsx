@@ -1,18 +1,19 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { FormError } from './FormError'
 import { HtmlLabel } from '../HtmlLabel/HtmlLabel'
 
-export default {
-  title: 'atoms/FormError',
+const meta: Meta<typeof FormError> = {
   component: FormError,
-} as ComponentMeta<typeof FormError>
+}
+export default meta
 
-const Template: ComponentStory<typeof FormError> = (args) => (
-  <FormError {...args} />
-)
+type Story = StoryObj<typeof FormError>
 
-export const Primary = Template.bind({})
-Primary.args = {
-  error: 'Sample form error. It makes sense along with an input element.',
+export const Primary: Story = {
+  render: (args) => {
+    return <FormError {...args} />
+  },
+  args: {
+    error: 'Sample error message.',
+  },
 }

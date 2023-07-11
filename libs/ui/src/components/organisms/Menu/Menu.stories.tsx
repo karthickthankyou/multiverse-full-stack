@@ -1,14 +1,17 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Menu } from './Menu'
 
-export default {
-  title: 'src/components/organisms/Menu',
+const meta: Meta<typeof Menu> = {
   component: Menu,
-} as ComponentMeta<typeof Menu>
+}
+export default meta
 
-const Template: ComponentStory<typeof Menu> = (args) => <Menu {...args} />
+type Story = StoryObj<typeof Menu>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => <Menu open={true} />,
+}
+
+export const ClosedMenu: Story = {
+  render: () => <Menu open={false} />,
+}

@@ -1,19 +1,29 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { PulsingDot } from './Dot'
+import { Icon24Hours, IconShoppingBag } from '@tabler/icons-react'
 
-export default {
-  title: 'atoms/Dot',
+const meta: Meta<typeof PulsingDot> = {
   component: PulsingDot,
-} as ComponentMeta<typeof PulsingDot>
+}
+export default meta
 
-const Template: ComponentStory<typeof PulsingDot> = (args) => (
-  <div className="relative inline-block">
-    <PulsingDot />
-    {/* <div>Karthick</div> */}
-  </div>
-)
+type Story = StoryObj<typeof PulsingDot>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => (
+    <div className="relative max-w-lg">
+      <PulsingDot />
+    </div>
+  ),
+}
+
+export const WithIcon: Story = {
+  render: (args) => (
+    <div className="relative max-w-lg">
+      <PulsingDot {...args} />
+    </div>
+  ),
+  args: {
+    children: <IconShoppingBag />,
+  },
+}

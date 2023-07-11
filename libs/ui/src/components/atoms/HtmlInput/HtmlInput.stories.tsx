@@ -1,31 +1,28 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
-
+import type { Meta, StoryObj } from '@storybook/react'
 import { HtmlInput } from './HtmlInput'
 
-export default {
-  title: 'atoms/HtmlInput',
+const meta: Meta<typeof HtmlInput> = {
   component: HtmlInput,
-} as ComponentMeta<typeof HtmlInput>
+}
+export default meta
 
-const Template: ComponentStory<typeof HtmlInput> = (args) => (
-  <label className="flex flex-col items-start" htmlFor="sample-input">
-    <div className="mb-2">Sample input</div>
-    <HtmlInput id="sample-input" {...args} />
-  </label>
-)
+type Story = StoryObj<typeof HtmlInput>
 
-export const Primary = Template.bind({})
-Primary.args = {
-  placeholder: 'Type something...',
+export const Primary: Story = {
+  args: {
+    placeholder: 'Type anything...',
+  },
 }
 
-export const Password = Template.bind({})
-Password.args = {
-  type: 'password',
-  placeholder: '********',
+export const Password: Story = {
+  args: {
+    placeholder: 'Secret...',
+    type: 'password',
+  },
 }
-export const DateTime = Template.bind({})
-DateTime.args = {
-  type: 'datetime-local',
+
+export const DateTime: Story = {
+  args: {
+    type: 'datetime-local',
+  },
 }

@@ -1,16 +1,31 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { PlayStory } from './PlayStory'
 
-export default {
-  title: 'src/components/templates/PlayStory',
+const meta: Meta<typeof PlayStory> = {
   component: PlayStory,
-} as ComponentMeta<typeof PlayStory>
+}
+export default meta
 
-const Template: ComponentStory<typeof PlayStory> = (args) => (
-  <PlayStory {...args} />
-)
+type Story = StoryObj<typeof PlayStory>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => (
+    <PlayStory
+      story={{
+        __typename: undefined,
+        authorId: '',
+        createdAt: undefined,
+        id: 0,
+        image: '',
+        price: undefined,
+        description: '',
+        title: '',
+        updatedAt: undefined,
+        author: undefined,
+        startingNodes: undefined,
+        userStory: undefined,
+        nodes: undefined,
+      }}
+    />
+  ),
+}

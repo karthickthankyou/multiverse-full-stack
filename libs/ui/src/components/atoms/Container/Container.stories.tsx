@@ -1,16 +1,17 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Container } from './Container'
 
-export default {
-  title: 'molecules/Container',
+const meta: Meta<typeof Container> = {
   component: Container,
-} as ComponentMeta<typeof Container>
+}
+export default meta
 
-const Template: ComponentStory<typeof Container> = (args) => (
-  <Container {...args} />
-)
+type Story = StoryObj<typeof Container>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    children: `Hey! Look! I'm inside a container.`,
+    className: 'bg-gray-200 h-64',
+  },
+  render: (args) => <Container {...args} />,
+}

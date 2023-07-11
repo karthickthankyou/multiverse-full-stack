@@ -1,16 +1,13 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { RegisterForm } from './RegisterForm'
 
-export default {
-  title: 'templates/SignupForm',
+const meta: Meta<typeof RegisterForm> = {
   component: RegisterForm,
-} as ComponentMeta<typeof RegisterForm>
+}
+export default meta
 
-const Template: ComponentStory<typeof RegisterForm> = (args) => (
-  <RegisterForm {...args} />
-)
+type Story = StoryObj<typeof RegisterForm>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => <RegisterForm />,
+}

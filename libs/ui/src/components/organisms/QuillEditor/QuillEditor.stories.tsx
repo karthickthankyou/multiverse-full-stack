@@ -1,16 +1,13 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { QuillEditor } from './QuillEditor'
 
-export default {
-  title: 'src/components/organisms/QuillEditor',
+const meta: Meta<typeof QuillEditor> = {
   component: QuillEditor,
-} as ComponentMeta<typeof QuillEditor>
+}
+export default meta
 
-const Template: ComponentStory<typeof QuillEditor> = (args) => (
-  <QuillEditor {...args} />
-)
+type Story = StoryObj<typeof QuillEditor>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => <QuillEditor />,
+}

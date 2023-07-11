@@ -1,16 +1,29 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { ProgressBar } from './ProgressBar'
 
-export default {
-  title: 'atoms/ProgressBar',
+const meta: Meta<typeof ProgressBar> = {
   component: ProgressBar,
-} as ComponentMeta<typeof ProgressBar>
+}
+export default meta
 
-const Template: ComponentStory<typeof ProgressBar> = (args) => (
-  <ProgressBar {...args} />
-)
+type Story = StoryObj<typeof ProgressBar>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const FiftyPercent: Story = {
+  args: {
+    value: 50,
+    variant: 'determinate',
+  },
+}
+
+export const EightyPercent: Story = {
+  args: {
+    value: 80,
+    variant: 'determinate',
+  },
+}
+
+export const Indeterminate: Story = {
+  args: {
+    variant: 'indeterminate',
+  },
+}

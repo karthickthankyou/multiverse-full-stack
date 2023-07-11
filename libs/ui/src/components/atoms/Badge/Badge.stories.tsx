@@ -1,17 +1,21 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import Badge from './Badge'
 
-export default {
-  title: 'atoms/Badge',
+const meta: Meta<typeof Badge> = {
   component: Badge,
-} as ComponentMeta<typeof Badge>
-
-const Template: ComponentStory<typeof Badge> = (args) => <Badge {...args} />
-
-export const Primary = Template.bind({})
-Primary.args = {
-  children: 'Hello World',
-  size: 'sm',
 }
-Primary.parameters = {}
+
+export default meta
+type Story = StoryObj<typeof Badge>
+
+export const Small: Story = {
+  args: { children: 'Small badge', size: 'sm', variant: 'primary' },
+}
+
+export const Medium: Story = {
+  args: { children: 'Medium badge', size: 'md', variant: 'red' },
+}
+
+export const Large: Story = {
+  args: { children: 'Large badge', size: 'lg', variant: 'yellow' },
+}

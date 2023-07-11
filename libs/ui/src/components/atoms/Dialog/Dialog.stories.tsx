@@ -1,14 +1,32 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Dialog } from './Dialog'
+import { useState } from 'react'
 
-export default {
-  title: 'atoms/Dialog2',
+const meta: Meta<typeof Dialog> = {
   component: Dialog,
-} as ComponentMeta<typeof Dialog>
+}
+export default meta
 
-const Template: ComponentStory<typeof Dialog> = (args) => <Dialog {...args} />
+type Story = StoryObj<typeof Dialog>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    children: (
+      <div>
+        <div>Hey! Im inside a dialog.</div>
+        <div>Toggle open/close in the controls tab.</div>
+      </div>
+    ),
+    open: true,
+    title: 'Dialog title',
+  },
+}
+
+export const WideDialog: Story = {
+  args: {
+    children: 'Hey! Im inside a dialog.',
+    open: true,
+    title: 'Dialog title',
+    widthClassName: 'max-w-4xl',
+  },
+}

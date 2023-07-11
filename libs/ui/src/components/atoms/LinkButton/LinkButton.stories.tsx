@@ -1,19 +1,17 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { LinkButton } from './LinkButton'
 
-export default {
-  title: 'atoms/LinkButton',
+const meta: Meta<typeof LinkButton> = {
   component: LinkButton,
-} as ComponentMeta<typeof LinkButton>
-
-const Template: ComponentStory<typeof LinkButton> = (args) => (
-  <LinkButton {...args} />
-)
-
-export const Primary = Template.bind({})
-Primary.args = {
-  href: '/',
-  children: 'LinkButton',
 }
-Primary.parameters = {}
+export default meta
+
+type Story = StoryObj<typeof LinkButton>
+
+export const Primary: Story = {
+  render: (args) => <LinkButton {...args} />,
+  args: {
+    children: 'Link text',
+    href: '/',
+  },
+}

@@ -1,16 +1,31 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { UnPurchasedStory } from './UnPurchasedStory'
 
-export default {
-  title: 'src/components/organisms/UnPurchasedStory',
+const meta: Meta<typeof UnPurchasedStory> = {
   component: UnPurchasedStory,
-} as ComponentMeta<typeof UnPurchasedStory>
+}
+export default meta
 
-const Template: ComponentStory<typeof UnPurchasedStory> = (args) => (
-  <UnPurchasedStory {...args} />
-)
+type Story = StoryObj<typeof UnPurchasedStory>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => (
+    <UnPurchasedStory
+      story={{
+        __typename: undefined,
+        authorId: '',
+        createdAt: undefined,
+        id: 0,
+        image: '',
+        price: undefined,
+        description: '',
+        title: '',
+        updatedAt: undefined,
+        author: undefined,
+        startingNodes: undefined,
+        userStory: undefined,
+        nodes: undefined,
+      }}
+    />
+  ),
+}

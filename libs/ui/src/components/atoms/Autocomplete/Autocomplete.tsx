@@ -32,10 +32,9 @@ const Autocomplete = <
         <div ref={params.InputProps.ref} className="flex items-center">
           <input
             type="text"
-            // eslint-disable-next-line react/jsx-props-no-spreading
+            placeholder={props?.placeholder || 'Search...'}
             {...params.inputProps}
             className="w-full py-2 pl-3 pr-8 rounded-none shadow-none focus:ring-0"
-            placeholder="Search location or city"
           />
           <IconSearch className="w-4 h-4 text-gray-800 stroke-2 -ml-7" />
         </div>

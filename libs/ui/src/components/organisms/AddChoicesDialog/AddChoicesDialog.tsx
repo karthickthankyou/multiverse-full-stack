@@ -17,7 +17,7 @@ import { ShowData } from '../ShowData'
 import { useTakeSkip } from '@multiverse-org/hooks'
 import { notification$ } from '@multiverse-org/util/subjects'
 import { SelectedNode, useStoreSelectedNodesWithChoiceText } from './data'
-import { Switch2 } from '../../atoms/Switch2'
+import { Switch } from '../../atoms/Switch'
 
 export interface IAddChoicesDialogProps {
   node: NodesQuery['nodes'][0]
@@ -106,7 +106,7 @@ const SearchNodes = ({ node }: { node: NodesQuery['nodes'][0] }) => {
           onChange={(e) => setSearchText(e.target.value)}
         />
       </HtmlLabel>
-      <Switch2
+      <Switch
         label={'Search nodes from all stories?'}
         checked={showAllNodes}
         onChange={(v) => {

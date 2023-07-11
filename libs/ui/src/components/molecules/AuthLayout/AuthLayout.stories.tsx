@@ -1,16 +1,24 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { AuthLayout } from './AuthLayout'
 
-export default {
-  title: 'molecules/AuthLayout',
+const meta: Meta<typeof AuthLayout> = {
   component: AuthLayout,
-} as ComponentMeta<typeof AuthLayout>
+}
+export default meta
 
-const Template: ComponentStory<typeof AuthLayout> = (args) => (
-  <AuthLayout {...args} />
-)
+type Story = StoryObj<typeof AuthLayout>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    children: <div className="h-64 bg-gray-50" />,
+    title: 'Layout title',
+  },
+}
+
+export const Reverse: Story = {
+  args: {
+    children: <div className="h-64 bg-gray-50" />,
+    title: 'Layout title',
+    reverse: true,
+  },
+}

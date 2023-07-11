@@ -1,19 +1,28 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { HtmlSelect } from './HtmlSelect'
+import { HtmlLabel } from '../HtmlLabel'
 
-export default {
-  title: 'atoms/HtmlSelect',
+const meta: Meta<typeof HtmlSelect> = {
   component: HtmlSelect,
-} as ComponentMeta<typeof HtmlSelect>
+}
+export default meta
 
-const Template: ComponentStory<typeof HtmlSelect> = (args) => (
-  <label className="flex flex-col items-start" htmlFor="select">
-    <div className="mb-2">Sample select</div>
-    <HtmlSelect {...args} id="select" />
-  </label>
-)
+type Story = StoryObj<typeof HtmlSelect>
+const options = ['One', 'Two', 'Three', 'Four', 'Five']
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    children: options.map((option) => <option key={option}>{option}</option>),
+  },
+}
+
+export const WithLabel: Story = {
+  render: (args) => (
+    <HtmlLabel title="Select a number">
+      <HtmlSelect {...args} />
+    </HtmlLabel>
+  ),
+  args: {
+    children: options.map((option) => <option key={option}>{option}</option>),
+  },
+}

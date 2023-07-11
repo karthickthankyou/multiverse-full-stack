@@ -1,38 +1,85 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Pagination } from './Pagination'
-import { TablePaginationProps } from '@mui/material'
+import { useTakeSkip } from '@multiverse-org/hooks'
 
-export default {
-  title: 'molecules/Pagination',
+const meta: Meta<typeof Pagination> = {
   component: Pagination,
-} as ComponentMeta<typeof Pagination>
-
-const Template: ComponentStory<typeof Pagination> = (
-  args: TablePaginationProps,
-) => <Pagination {...args} />
-
-export const Primary = Template.bind({})
-Primary.args = {
-  count: 120,
-  page: 3,
-  rowsPerPage: 12,
-  rowsPerPageOptions: [12, 24, 36, 48],
 }
-export const CustomRowsPerPage = Template.bind({})
-CustomRowsPerPage.args = {
-  count: 170,
-  page: 3,
-  rowsPerPage: 17,
-  rowsPerPageOptions: [7, 17, 27, 37],
+export default meta
+type Story = StoryObj<typeof Pagination>
+
+export const Primary: Story = {
+  args: {
+    count: 120,
+    page: 3,
+    rowsPerPage: 12,
+    rowsPerPageOptions: [12, 24, 36, 48],
+  },
+  render: (args) => {
+    const { setSkip, setTake, skip, take } = useTakeSkip()
+    return (
+      <Pagination
+        count={args.count || 0}
+        page={(skip || 0) / (take || 12)}
+        rowsPerPage={take || 0}
+        rowsPerPageOptions={args.rowsPerPageOptions}
+        onPageChange={(v, c) => setSkip(c * (take || 12))}
+        onRowsPerPageChange={(v) => {
+          setTake(+v.target.value)
+        }}
+      />
+    )
+  },
 }
 
-export const ShowFirstLastButton = Template.bind({})
-ShowFirstLastButton.args = {
-  count: 3600,
-  page: 3,
-  rowsPerPage: 12,
-  rowsPerPageOptions: [12, 24, 36, 48],
-  showFirstButton: true,
-  showLastButton: true,
+export const CustomRowsPerPage: Story = {
+  args: {
+    count: 170,
+    page: 3,
+    rowsPerPage: 17,
+    rowsPerPageOptions: [7, 17, 27, 37],
+  },
+  render: (args) => {
+    const { setSkip, setTake, skip, take } = useTakeSkip()
+    return (
+      <Pagination
+        count={args.count || 0}
+        page={(skip || 0) / (take || 12)}
+        rowsPerPage={take || 0}
+        rowsPerPageOptions={args.rowsPerPageOptions}
+        onPageChange={(v, c) => setSkip(c * (take || 12))}
+        onRowsPerPageChange={(v) => {
+          setTake(+v.target.value)
+        }}
+      />
+    )
+  },
+}
+
+export const ShowFirstLastButton: Story = {
+  args: {
+    count: 3600,
+    page: 3,
+    rowsPerPage: 12,
+    rowsPerPageOptions: [12, 24, 36, 48],
+    showFirstButton: true,
+    showLastButton: true,
+  },
+  render: (args) => {
+    const { setSkip, setTake, skip, take } = useTakeSkip()
+    return (
+      <Pagination
+        count={args.count || 0}
+        page={(skip || 0) / (take || 12)}
+        rowsPerPage={take || 0}
+        rowsPerPageOptions={args.rowsPerPageOptions}
+        onPageChange={(v, c) => setSkip(c * (take || 12))}
+        onRowsPerPageChange={(v) => {
+          setTake(+v.target.value)
+        }}
+        showFirstButton={args.showFirstButton}
+        showLastButton={args.showLastButton}
+      />
+    )
+  },
 }

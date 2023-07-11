@@ -1,16 +1,13 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { BrandIcon } from './BrandIcon'
 
-export default {
-  title: 'src/components/atoms/BrandIcon',
+const meta: Meta<typeof BrandIcon> = {
   component: BrandIcon,
-} as ComponentMeta<typeof BrandIcon>
+}
+export default meta
 
-const Template: ComponentStory<typeof BrandIcon> = (args) => (
-  <BrandIcon {...args} />
-)
+type Story = StoryObj<typeof BrandIcon>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => <BrandIcon />,
+}

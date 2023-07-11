@@ -1,16 +1,13 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { ResetPassword } from './ResetPassword'
 
-export default {
-  title: 'components/templates/ResetPassword',
+const meta: Meta<typeof ResetPassword> = {
   component: ResetPassword,
-} as ComponentMeta<typeof ResetPassword>
+}
+export default meta
 
-const Template: ComponentStory<typeof ResetPassword> = (args) => (
-  <ResetPassword />
-)
+type Story = StoryObj<typeof ResetPassword>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => <ResetPassword />,
+}

@@ -1,16 +1,17 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Autocomplete } from './Autocomplete'
 
-export default {
-  title: 'atoms/Autocomplete',
+const meta: Meta<typeof Autocomplete> = {
   component: Autocomplete,
-} as ComponentMeta<typeof Autocomplete>
+}
 
-const Template: ComponentStory<typeof Autocomplete> = (args) => (
-  <Autocomplete {...args} />
-)
+const options = ['One', 'Two', 'Three', 'Four', 'Five']
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export default meta
+type Story = StoryObj<typeof Autocomplete>
+
+export const Primary: Story = {
+  render: () => (
+    <Autocomplete placeholder="Start typing..." options={options} />
+  ),
+}

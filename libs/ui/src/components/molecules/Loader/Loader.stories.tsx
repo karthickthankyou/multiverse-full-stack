@@ -1,14 +1,21 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { Loader } from './Loader'
+import type { Meta, StoryObj } from '@storybook/react'
+import { Loader, LoaderPanel } from './Loader'
 
-export default {
-  title: 'src/components/molecules/Loader',
+const meta: Meta<typeof Loader> = {
   component: Loader,
-} as ComponentMeta<typeof Loader>
+}
+export default meta
 
-const Template: ComponentStory<typeof Loader> = () => <Loader />
+type Story = StoryObj<typeof Loader>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => {
+    return <Loader />
+  },
+}
+
+export const Panel: Story = {
+  render: () => {
+    return <LoaderPanel />
+  },
+}

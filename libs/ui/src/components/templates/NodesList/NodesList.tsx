@@ -33,7 +33,6 @@ import { useUserStore } from '@multiverse-org/store/user'
 import { notification$ } from '@multiverse-org/util/subjects'
 import { useImageUpload } from '@multiverse-org/util'
 import { PlainButton } from '../../atoms/PlainButton'
-import { Switch2 } from '../../atoms/Switch2'
 
 export interface INodesListProps {
   storyId: number
@@ -254,14 +253,14 @@ export const AddNodesDialog = ({ storyId }: INodesListProps) => {
                     />
                   </HtmlLabel>
 
-                  <Switch2
+                  <Switch
                     checked={nodes?.[nodeIndex]?.start || false}
                     onChange={(value) => {
                       setValue(`nodes.${nodeIndex}.start`, value)
                     }}
                     label={'Start?'}
                   />
-                  <Switch2
+                  <Switch
                     checked={nodes?.[nodeIndex]?.end || false}
                     onChange={(value) => {
                       setValue(`nodes.${nodeIndex}.end`, value)

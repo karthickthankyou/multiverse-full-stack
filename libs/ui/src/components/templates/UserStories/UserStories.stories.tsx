@@ -1,16 +1,14 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { UserStories } from './UserStories'
+import { UserStoryType } from '@multiverse-org/network/src/gql/generated'
 
-export default {
-  title: 'src/components/templates/UserStories',
+const meta: Meta<typeof UserStories> = {
   component: UserStories,
-} as ComponentMeta<typeof UserStories>
+}
+export default meta
 
-const Template: ComponentStory<typeof UserStories> = (args) => (
-  <UserStories {...args} />
-)
+type Story = StoryObj<typeof UserStories>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => <UserStories type={UserStoryType.InCart} />,
+}

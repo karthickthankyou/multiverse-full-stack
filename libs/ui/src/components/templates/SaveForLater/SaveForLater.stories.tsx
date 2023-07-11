@@ -1,16 +1,13 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { SaveForLater } from './SaveForLater'
 
-export default {
-  title: 'src/components/templates/SaveForLater',
+const meta: Meta<typeof SaveForLater> = {
   component: SaveForLater,
-} as ComponentMeta<typeof SaveForLater>
+}
+export default meta
 
-const Template: ComponentStory<typeof SaveForLater> = (args) => (
-  <SaveForLater {...args} />
-)
+type Story = StoryObj<typeof SaveForLater>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => <SaveForLater />,
+}

@@ -12,16 +12,16 @@ export const ${componentName} = ({}: I${componentName}Props) => {
 export const story = (
   componentName,
   componentType,
-) => `import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+) => `import type { Meta, StoryObj } from '@storybook/react'
 import { ${componentName} } from './${componentName}'
 
-export default {
-  title: '${componentType}',
+const meta: Meta<typeof ${componentName}> = {
   component: ${componentName},
-} as ComponentMeta<typeof ${componentName}>
+}
+export default meta
 
-const Template: ComponentStory<typeof ${componentName}> = (args) => <${componentName} {...args} />
+
+type Story = StoryObj<typeof ${componentName}>
 
 export const Primary = Template.bind({})
 Primary.args = {}

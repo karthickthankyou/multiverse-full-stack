@@ -4,7 +4,7 @@ export interface IDotProps {
   children?: ReactNode
 }
 
-const PulsingDot = ({ children }: IDotProps) => {
+export const PulsingDot = ({ children }: IDotProps) => {
   if (children)
     return (
       <div className="absolute top-0 px-2 bg-yellow-500 rounded-full left-full animate-pulse">
@@ -17,5 +17,3 @@ const PulsingDot = ({ children }: IDotProps) => {
     </div>
   )
 }
-
-export { PulsingDot }

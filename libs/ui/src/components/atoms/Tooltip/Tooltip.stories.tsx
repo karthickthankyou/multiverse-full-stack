@@ -1,25 +1,25 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import Tooltip from './Tooltip'
 
-export default {
-  title: 'atoms/Tooltip',
+const meta: Meta<typeof Tooltip> = {
   component: Tooltip,
-} as ComponentMeta<typeof Tooltip>
+}
+export default meta
+type Story = StoryObj<typeof Tooltip>
 
-const Template: ComponentStory<typeof Tooltip> = (args) => <Tooltip {...args} />
-
-export const Primary = Template.bind({})
-Primary.args = {
-  title: 'Hello World',
-  arrow: true,
-  children: <div className="inline">Hover over me.</div>,
+export const Primary: Story = {
+  args: {
+    title: 'Hello World',
+    arrow: true,
+    children: <div className="inline">Hover over me.</div>,
+  },
 }
 
-export const Right = Template.bind({})
-Right.args = {
-  title: 'Hello World',
-  arrow: true,
-  placement: 'right',
-  children: <div className="inline">Hover over me.</div>,
+export const Right: Story = {
+  args: {
+    title: 'Hello World',
+    arrow: true,
+    placement: 'right',
+    children: <div className="inline">Hover over me.</div>,
+  },
 }

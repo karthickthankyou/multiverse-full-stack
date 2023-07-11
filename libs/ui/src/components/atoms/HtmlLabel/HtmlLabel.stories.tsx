@@ -1,18 +1,29 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { HtmlLabel } from './HtmlLabel'
+import { HtmlInput } from '../HtmlInput'
 
-export default {
-  title: 'atoms/HtmlLabel',
+const meta: Meta<typeof HtmlLabel> = {
   component: HtmlLabel,
-} as ComponentMeta<typeof HtmlLabel>
+}
+export default meta
 
-const Template: ComponentStory<typeof HtmlLabel> = (args) => (
-  <HtmlLabel {...args} className="flex flex-col items-start">
-    Color picker
-    <input type="color" className="mt-2 " />
-  </HtmlLabel>
-)
+type Story = StoryObj<typeof HtmlLabel>
 
-export const Primary = Template.bind({})
-Primary.args = {}
+export const Primary: Story = {
+  args: {
+    title: 'Username',
+    error: 'Your username is invalid.',
+  },
+}
+
+export const WithInput: Story = {
+  render: (args) => (
+    <HtmlLabel {...args}>
+      <HtmlInput placeholder="Enter that invalid username." />
+    </HtmlLabel>
+  ),
+  args: {
+    title: 'Username',
+    error: 'Your username is invalid.',
+  },
+}

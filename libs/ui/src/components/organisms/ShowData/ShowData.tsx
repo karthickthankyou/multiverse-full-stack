@@ -47,7 +47,6 @@ export const ShowData = ({
     <div>
       {error && (
         <AlertSection>
-          {' '}
           Oops. Something went wrong.{' '}
           <span className="text-xs">Psst. {error}</span>
         </AlertSection>

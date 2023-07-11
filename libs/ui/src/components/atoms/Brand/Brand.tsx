@@ -16,7 +16,7 @@ export const Brand = ({
     <div className={`grid place-items-center ${className}`}>
       <div className="text-xl ">
         {shortForm ? (
-          <div className="flex gap-1">
+          <div className="flex gap-1 font-medium">
             <BrandIcon /> M.
           </div>
         ) : (

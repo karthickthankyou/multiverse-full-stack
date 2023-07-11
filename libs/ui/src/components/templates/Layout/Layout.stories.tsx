@@ -1,19 +1,17 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Layout } from './Layout'
 
-export default {
-  title: 'templates/Layout',
+const meta: Meta<typeof Layout> = {
   component: Layout,
-} as ComponentMeta<typeof Layout>
+}
+export default meta
 
-const Template: ComponentStory<typeof Layout> = (args) => <Layout {...args} />
+type Story = StoryObj<typeof Layout>
 
-export const Primary = Template.bind({})
-Primary.args = {
-  children: (
+export const Primary: Story = {
+  render: () => (
     <div className="flex items-center justify-center italic text-gray-700 h-screen50 outline-dashed outline-gray-200">
       Body content
     </div>
   ),
 }
-Primary.parameters = {}

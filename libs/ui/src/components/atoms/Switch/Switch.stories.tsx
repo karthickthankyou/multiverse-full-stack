@@ -1,14 +1,35 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Switch } from './Switch'
+import { useState } from 'react'
 
-export default {
-  title: 'atoms/Switch',
+const meta: Meta<typeof Switch> = {
   component: Switch,
-} as ComponentMeta<typeof Switch>
+}
+export default meta
 
-const Template: ComponentStory<typeof Switch> = (args) => <Switch {...args} />
+type Story = StoryObj<typeof Switch>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Checked: Story = {
+  args: {
+    label: 'Checked switch',
+    checked: true,
+  },
+}
+
+export const UnChecked: Story = {
+  args: {
+    label: 'Unchecked switch',
+    checked: false,
+  },
+}
+
+export const Interactive: Story = {
+  args: {
+    label: 'Interactive switch',
+    checked: false,
+  },
+  render: (args) => {
+    const [check, setCheck] = useState(args.checked)
+    return <Switch {...args} checked={check} onChange={setCheck} />
+  },
+}

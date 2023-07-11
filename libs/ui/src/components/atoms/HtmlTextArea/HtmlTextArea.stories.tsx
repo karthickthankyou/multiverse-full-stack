@@ -1,28 +1,42 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { HtmlTextArea } from './HtmlTextArea'
+import { HtmlLabel } from '../HtmlLabel'
 
-export default {
-  title: 'atoms/HtmlTextArea',
+const meta: Meta<typeof HtmlTextArea> = {
   component: HtmlTextArea,
-} as ComponentMeta<typeof HtmlTextArea>
+}
+export default meta
 
-const Template: ComponentStory<typeof HtmlTextArea> = (args) => (
-  <label className="flex flex-col items-start" htmlFor="textarea">
-    <div className="mb-2">Sample textarea</div>
-    <HtmlTextArea {...args} id="textarea" />
-  </label>
-)
+type Story = StoryObj<typeof HtmlTextArea>
 
-export const TwoRows = Template.bind({})
-TwoRows.args = {
-  rows: 2,
-  placeholder:
-    'This component gets all props that you can pass to a vanilla HTML text area component.',
+export const Primary: Story = {
+  render: (args) => {
+    return <HtmlTextArea {...args} />
+  },
+  args: {
+    rows: 2,
+    placeholder: 'Type something. It does not matter.',
+  },
 }
 
-export const FiveRows = Template.bind({})
-FiveRows.args = {
-  rows: 5,
-  placeholder: '5 rows...',
+export const FiveRows: Story = {
+  render: (args) => {
+    return <HtmlTextArea {...args} />
+  },
+  args: {
+    rows: 5,
+    placeholder: 'Type something longer.',
+  },
+}
+
+export const WithLabel: Story = {
+  render: (args) => (
+    <HtmlLabel title="Label text">
+      <HtmlTextArea {...args} />
+    </HtmlLabel>
+  ),
+  args: {
+    rows: 5,
+    placeholder: 'Type something longer.',
+  },
 }

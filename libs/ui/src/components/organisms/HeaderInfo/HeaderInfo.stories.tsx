@@ -1,16 +1,13 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { HeaderInfo } from './HeaderInfo'
 
-export default {
-  title: 'src/components/organisms/HeaderInfo',
+const meta: Meta<typeof HeaderInfo> = {
   component: HeaderInfo,
-} as ComponentMeta<typeof HeaderInfo>
+}
+export default meta
 
-const Template: ComponentStory<typeof HeaderInfo> = (args) => (
-  <HeaderInfo {...args} />
-)
+type Story = StoryObj<typeof HeaderInfo>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => <HeaderInfo />,
+}
