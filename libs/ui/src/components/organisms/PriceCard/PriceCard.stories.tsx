@@ -9,5 +9,11 @@ export default meta
 type Story = StoryObj<typeof PriceCard>
 
 export const Primary: Story = {
-  render: () => <PriceCard price={120} />,
+  args: {
+    price: 2.99,
+  },
+}
+
+export const Free: Story = {
+  args: {},
 }

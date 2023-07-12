@@ -58,6 +58,7 @@ export const AddChoicesDialog = ({ node }: IAddChoicesDialogProps) => {
           <div>{node.title}</div>
           <div className="text-sm text-gray">{node.content}</div>
         </div>
+
         <SearchNodes node={node} />
       </Dialog>
     </div>
@@ -98,7 +99,7 @@ const SearchNodes = ({ node }: { node: NodesQuery['nodes'][0] }) => {
         removeNode={(id) => removeSelectedNode(id)}
       />
       <UpdateChoicesButton selectedNodes={selectedNodes} nodeId={node.id} />
-
+      <div className="my-3" />
       <HtmlLabel title="Search">
         <HtmlInput
           placeholder="Search node titles"

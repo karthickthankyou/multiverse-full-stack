@@ -9,5 +9,26 @@ export default meta
 type Story = StoryObj<typeof Header>
 
 export const Primary: Story = {
-  render: () => <Header />,
+  args: {
+    menuItems: [],
+    sideMenuItems: [],
+    type: 'admin',
+  },
+}
+
+export const SignedIn: Story = {
+  args: {
+    menuItems: [],
+    sideMenuItems: [],
+    uid: 'some_string',
+  },
+}
+
+export const SignedInAdmin: Story = {
+  args: {
+    menuItems: [],
+    sideMenuItems: [],
+    type: 'admin',
+    uid: 'some_string',
+  },
 }

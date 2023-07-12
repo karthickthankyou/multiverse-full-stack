@@ -4,62 +4,76 @@ import {
   namedOperations,
   useCreateUserStoryMutation,
   useRemoveUserStoryMutation,
-} from '../gql/generated'
-import { Ionicons } from '@expo/vector-icons'
+} from '@multiverse-org/network/src/gql/generated'
+import Link from 'next/link'
+import { LoaderPanel } from '../../molecules/Loader'
+import {
+  IconBasket,
+  IconBasketFilled,
+  IconDisc,
+  IconDiscOff,
+  IconHeart,
+  IconHeartFilled,
+} from '@tabler/icons-react'
+import { PlainButton } from '../../atoms/PlainButton'
 
-import { TouchableOpacity, Text, View } from '.'
-import { useNavigation } from '@react-navigation/native'
-import { useUserStore } from '../store/user'
-import { ActivityIndicator } from 'react-native'
+export interface IUserActionsProps {}
 
 export const UserActions = ({
-  id,
-  price,
-  type,
+  story,
+  uid,
 }: {
-  id: number
-  price: number
-  type?: UserStoryType | null
+  story: StoriesQuery['stories'][0]
+  uid?: string
 }) => {
-  const navigation: any = useNavigation()
-
-  const [saveForLater, { loading: savingForLater }] =
-    useCreateUserStoryMutation({
-      awaitRefetchQueries: true,
-      refetchQueries: [namedOperations.Query.stories],
-    })
+  const [wishlist, { loading: wishlisting }] = useCreateUserStoryMutation({
+    awaitRefetchQueries: true,
+    refetchQueries: [namedOperations.Query.stories],
+  })
   const [addToCart, { loading: addingToCart }] = useCreateUserStoryMutation({
     awaitRefetchQueries: true,
     refetchQueries: [
       namedOperations.Query.stories,
       namedOperations.Query.userStories,
+      namedOperations.Query.userStoriesCount,
     ],
   })
+  const [removeUserStory, { data: dataRemoveUserStory, loading: removing }] =
+    useRemoveUserStoryMutation({
+      awaitRefetchQueries: true,
+      refetchQueries: [
+        namedOperations.Query.stories,
+        namedOperations.Query.userStories,
+        namedOperations.Query.userStoriesCount,
+      ],
+    })
 
-  const uid = useUserStore((state) => state.uid)
-  console.log('UserActions', uid)
   if (!uid) {
     return null
   }
 
-  if (!price) {
+  if (!story.price) {
     return null
   }
 
-  if (type === UserStoryType.Purchased) {
+  if (story.userStory?.type === UserStoryType.Purchased) {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate('Purchased')}>
-        <Text className="text-xs">Purchased</Text>
-      </TouchableOpacity>
+      <Link href="/purchased">
+        <div className="text-xs">Purchased</div>
+      </Link>
     )
   }
 
   return (
-    <View className="flex flex-row justify-start gap-1 mt-1">
-      <WishlistButton type={type} id={id} uid={uid} />
-      <CartButton type={type} id={id} uid={uid} />
-      <SaveForLaterButton type={type} id={id} uid={uid} />
-    </View>
+    <div className="flex justify-start gap-1 mt-1">
+      <WishlistButton type={story.userStory?.type} id={story.id} uid={uid} />
+      <CartButton type={story.userStory?.type} id={story.id} uid={uid} />
+      <SaveForLaterButton
+        type={story.userStory?.type}
+        id={story.id}
+        uid={uid}
+      />
+    </div>
   )
 }
 
@@ -89,9 +103,9 @@ export const WishlistButton = ({
       ],
     })
   return type === 'WISHLISTED' ? (
-    <TouchableOpacity
+    <PlainButton
       disabled={removing}
-      onPress={async () =>
+      onClick={async () =>
         await removeUserStory({
           variables: {
             where: {
@@ -104,16 +118,12 @@ export const WishlistButton = ({
         })
       }
     >
-      {removing ? (
-        <ActivityIndicator size="small" />
-      ) : (
-        <Ionicons size={24} name={'heart'} />
-      )}
-    </TouchableOpacity>
+      {removing ? <LoaderPanel /> : <IconHeartFilled />}
+    </PlainButton>
   ) : (
-    <TouchableOpacity
+    <PlainButton
       disabled={wishlisting}
-      onPress={async () =>
+      onClick={async () =>
         await wishlist({
           variables: {
             createUserStoryInput: {
@@ -125,12 +135,8 @@ export const WishlistButton = ({
         })
       }
     >
-      {wishlisting ? (
-        <ActivityIndicator size="small" />
-      ) : (
-        <Ionicons size={24} name={'heart-outline'} />
-      )}
-    </TouchableOpacity>
+      {wishlisting ? <LoaderPanel /> : <IconHeart />}
+    </PlainButton>
   )
 }
 
@@ -160,9 +166,9 @@ export const CartButton = ({
       ],
     })
   return type === UserStoryType.InCart ? (
-    <TouchableOpacity
+    <PlainButton
       disabled={removing}
-      onPress={async () =>
+      onClick={async () =>
         await removeUserStory({
           variables: {
             where: {
@@ -176,15 +182,15 @@ export const CartButton = ({
       }
     >
       {removing ? (
-        <ActivityIndicator size="small" />
+        <LoaderPanel />
       ) : (
-        <Ionicons size={24} name={'cart'} />
+        <IconBasketFilled size={24} name={'cart'} />
       )}
-    </TouchableOpacity>
+    </PlainButton>
   ) : (
-    <TouchableOpacity
+    <PlainButton
       disabled={wishlisting}
-      onPress={async () =>
+      onClick={async () =>
         await wishlist({
           variables: {
             createUserStoryInput: {
@@ -196,12 +202,8 @@ export const CartButton = ({
         })
       }
     >
-      {wishlisting ? (
-        <ActivityIndicator size="small" />
-      ) : (
-        <Ionicons size={24} name={'cart-outline'} />
-      )}
-    </TouchableOpacity>
+      {wishlisting ? <LoaderPanel /> : <IconBasket />}
+    </PlainButton>
   )
 }
 
@@ -230,9 +232,9 @@ export const SaveForLaterButton = ({
     ],
   })
   return type === UserStoryType.SaveForLater ? (
-    <TouchableOpacity
+    <PlainButton
       disabled={removing}
-      onPress={async () =>
+      onClick={async () =>
         await removeUserStory({
           variables: {
             where: {
@@ -245,16 +247,12 @@ export const SaveForLaterButton = ({
         })
       }
     >
-      {removing ? (
-        <ActivityIndicator size="small" />
-      ) : (
-        <Ionicons size={24} name={'save'} />
-      )}
-    </TouchableOpacity>
+      {removing ? <LoaderPanel /> : <IconDiscOff />}
+    </PlainButton>
   ) : (
-    <TouchableOpacity
+    <PlainButton
       disabled={adding}
-      onPress={async () =>
+      onClick={async () =>
         await addUserStory({
           variables: {
             createUserStoryInput: {
@@ -266,11 +264,7 @@ export const SaveForLaterButton = ({
         })
       }
     >
-      {adding ? (
-        <ActivityIndicator size="small" />
-      ) : (
-        <Ionicons size={24} name={'save-outline'} />
-      )}
-    </TouchableOpacity>
+      {adding ? <LoaderPanel /> : <IconDisc />}
+    </PlainButton>
   )
 }

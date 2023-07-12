@@ -9,15 +9,22 @@ export default meta
 type Story = StoryObj<typeof CartCard>
 
 export const Primary: Story = {
-  render: () => (
-    <CartCard
-      story={{
-        __typename: undefined,
-        image: '',
-        price: undefined,
-        title: '',
-        id: 0,
-      }}
-    />
-  ),
+  args: {
+    story: {
+      id: 1,
+      image: 'https://placehold.co/400',
+      title: 'This is the way',
+      price: 2.99,
+    },
+  },
+}
+
+export const Free: Story = {
+  args: {
+    story: {
+      id: 1,
+      image: 'https://placehold.co/400',
+      title: 'This is the way',
+    },
+  },
 }

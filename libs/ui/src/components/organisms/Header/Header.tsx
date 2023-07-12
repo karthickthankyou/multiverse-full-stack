@@ -14,15 +14,15 @@ export type IHeaderProps = {
   menuItems?: MenuItem[]
   sideMenuItems?: MenuItem[]
   type?: Role
+  uid?: string
 }
 
 export const Header = ({
   menuItems = [],
   sideMenuItems = [],
   type,
+  uid,
 }: IHeaderProps) => {
-  const uid = useUserStore((state) => state.uid)
-
   return (
     <header className="relative z-40">
       <nav className="fixed top-0 w-full shadow-md shadow-gray-300/10 bg-white/50 backdrop-blur-md">
@@ -49,9 +49,9 @@ export const Header = ({
                     <Button>Log in</Button>
                   </Link>
                 </>
-              ) : null}
-
-              <HeaderInfo />
+              ) : (
+                <HeaderInfo />
+              )}
 
               <NavSidebar menuItems={sideMenuItems} />
             </div>

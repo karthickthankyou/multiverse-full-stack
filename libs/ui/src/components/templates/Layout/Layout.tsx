@@ -3,6 +3,7 @@ import { Footer } from '@multiverse-org/ui/src/components/organisms/Footer'
 import { usePathname } from 'next/navigation'
 import { Header } from '../../organisms/Header'
 import { MenuItem, Role } from '@multiverse-org/types'
+import { useUserStore } from '@multiverse-org/store/user'
 
 interface ILayoutProps {
   children: ReactElement | ReactElement[]
@@ -21,6 +22,7 @@ export const Layout = ({
 }: ILayoutProps) => {
   const url = usePathname()
   const [pathname, setPathname] = useState<string>('')
+  const uid = useUserStore((state) => state.uid)
 
   useEffect(() => {
     setPathname(url)
@@ -30,7 +32,12 @@ export const Layout = ({
     <main>{children}</main>
   ) : (
     <>
-      <Header type={type} menuItems={menuItems} sideMenuItems={sideMenuItems} />
+      <Header
+        uid={uid}
+        type={type}
+        menuItems={menuItems}
+        sideMenuItems={sideMenuItems}
+      />
       <main>{children}</main>
       <Footer />
     </>

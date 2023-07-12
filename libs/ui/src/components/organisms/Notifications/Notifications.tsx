@@ -2,9 +2,16 @@ import { useNotificationStore } from '@multiverse-org/store/utils'
 import { NotificationType } from '@multiverse-org/types'
 import { AnimatePresence, motion } from 'framer-motion'
 
-export const Notifications = () => {
+export const NotificationWrapper = () => {
   const notifications = useNotificationStore((state) => state.notifications)
+  return <Notifications notifications={notifications} />
+}
 
+export const Notifications = ({
+  notifications,
+}: {
+  notifications: NotificationType[]
+}) => {
   const getTextColor = (type: NotificationType['type']) => {
     switch (type) {
       case 'success':

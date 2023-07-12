@@ -9,15 +9,13 @@ export default meta
 type Story = StoryObj<typeof SaveForLaterCard>
 
 export const Primary: Story = {
-  render: () => (
-    <SaveForLaterCard
-      story={{
-        __typename: undefined,
-        image: '',
-        price: undefined,
-        title: '',
-        id: 0,
-      }}
-    />
-  ),
+  args: {
+    story: {
+      id: 2,
+      image: 'https://placehold.co/400',
+      title: 'Sample title',
+      __typename: 'Story',
+      price: 2.99,
+    },
+  },
 }

@@ -47,6 +47,7 @@ export const UserStories = ({ type }: IWishlistProps) => {
     >
       {data?.userStories.map(({ type, story }) => (
         <StoryCard
+          uid={uid}
           key={story.id}
           story={{
             __typename: undefined,

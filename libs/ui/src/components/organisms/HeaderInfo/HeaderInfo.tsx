@@ -12,11 +12,6 @@ import { BadgeNumber } from '../BadgeNumber'
 
 export interface IHeaderInfoProps {}
 
-const returnDisplayNumber = (num?: number) => {
-  if (!num) return
-  return (num || 0) > 9 ? '9+' : num
-}
-
 export const HeaderInfo = ({}: IHeaderInfoProps) => {
   const uid = useUserStore((s) => s.uid)
   const [fetchCartCount, { data: cartData, loading: cartCountLoading }] =
@@ -47,20 +42,15 @@ export const HeaderInfo = ({}: IHeaderInfoProps) => {
     }
   }, [uid])
 
-  const cartCount = returnDisplayNumber(cartData?.userStoriesCount.count)
-  const wishlistCount = returnDisplayNumber(
-    wishlistData?.userStoriesCount.count,
-  )
-
   return (
     <>
       <Link href="/cart">
-        <BadgeNumber count={cartCount}>
+        <BadgeNumber count={cartData?.userStoriesCount.count}>
           <IconShoppingBag />
         </BadgeNumber>
       </Link>
       <Link href="/wishlist">
-        <BadgeNumber count={wishlistCount}>
+        <BadgeNumber count={wishlistData?.userStoriesCount.count}>
           <IconHeart />
         </BadgeNumber>
       </Link>
