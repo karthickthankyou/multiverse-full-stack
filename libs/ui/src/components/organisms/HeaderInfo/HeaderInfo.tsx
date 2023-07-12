@@ -1,10 +1,9 @@
 import {
   UserStoryType,
   useUserStoriesCountLazyQuery,
-  useUserStoriesLazyQuery,
-  useUserStoriesQuery,
 } from '@multiverse-org/network/src/gql/generated'
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUid, selectUser } from '@multiverse-org/store/user'
+import { useAppSelector } from '@multiverse-org/store'
 import { IconHeart, IconInbox, IconShoppingBag } from '@tabler/icons-react'
 import Link from 'next/link'
 import { useEffect } from 'react'
@@ -13,13 +12,10 @@ import { BadgeNumber } from '../BadgeNumber'
 export interface IHeaderInfoProps {}
 
 export const HeaderInfo = ({}: IHeaderInfoProps) => {
-  const uid = useUserStore((s) => s.uid)
-  const [fetchCartCount, { data: cartData, loading: cartCountLoading }] =
+  const uid = useAppSelector(selectUid)
+  const [fetchCartCount, { data: cartData }] = useUserStoriesCountLazyQuery()
+  const [fetchWishlistCount, { data: wishlistData }] =
     useUserStoriesCountLazyQuery()
-  const [
-    fetchWishlistCount,
-    { data: wishlistData, loading: wishlistCountLoading },
-  ] = useUserStoriesCountLazyQuery()
 
   useEffect(() => {
     if (uid) {

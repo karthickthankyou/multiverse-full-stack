@@ -5,7 +5,8 @@ import { Button } from '../../atoms/Button'
 import { loadStripe } from '@stripe/stripe-js'
 import { StripeItemType } from '@multiverse-org/types'
 import { notification$ } from '@multiverse-org/util/subjects'
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUid, selectUser } from '@multiverse-org/store/user'
+import { useAppSelector } from '@multiverse-org/store'
 
 interface CartSummaryProps {
   cartItems: UserStoriesQuery['userStories']
@@ -18,7 +19,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({ cartItems }) => {
     0,
   )
 
-  const uid = useUserStore((s) => s.uid)
+  const uid = useAppSelector(selectUid)
 
   const items: StripeItemType[] = cartItems.map((item) => ({
     id: item.story.id,
@@ -33,14 +34,14 @@ export const CartSummary: React.FC<CartSummaryProps> = ({ cartItems }) => {
   return (
     <div className="flex flex-col items-end">
       <h2 className="mb-2 font-semibold">Cart Summary</h2>
-      <p className="flex flex-col items-end">
+      <div className="flex flex-col items-end">
         <div className="text-sm font-medium">Total Items</div>
         <span className="font-semibold">{totalItems}</span>
-      </p>
-      <p className="flex flex-col items-end">
+      </div>
+      <div className="flex flex-col items-end">
         <div className="text-sm font-medium">Total Price</div>
         <span className="font-semibold">${totalPrice.toFixed(2)}</span>
-      </p>
+      </div>
       <Button
         onClick={async () => {
           if (!uid) {

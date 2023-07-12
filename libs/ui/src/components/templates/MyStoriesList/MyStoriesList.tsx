@@ -1,12 +1,13 @@
 import { useStoriesQuery } from '@multiverse-org/network/src/gql/generated'
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUid, selectUser } from '@multiverse-org/store/user'
+import { useAppSelector } from '@multiverse-org/store'
 import { Loader } from '../../molecules/Loader'
 import Link from 'next/link'
 
 export interface IMyStoriesListProps {}
 
 export const MyStoriesList = ({}: IMyStoriesListProps) => {
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUid)
   const { data, loading } = useStoriesQuery({
     variables: { where: { authorId: { equals: uid } } },
   })

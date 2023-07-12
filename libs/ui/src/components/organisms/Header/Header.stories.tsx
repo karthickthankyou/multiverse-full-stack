@@ -20,7 +20,6 @@ export const SignedIn: Story = {
   args: {
     menuItems: [],
     sideMenuItems: [],
-    uid: 'some_string',
   },
 }
 
@@ -29,6 +28,5 @@ export const SignedInAdmin: Story = {
     menuItems: [],
     sideMenuItems: [],
     type: 'admin',
-    uid: 'some_string',
   },
 }

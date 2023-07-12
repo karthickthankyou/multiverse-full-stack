@@ -6,23 +6,23 @@ import { Container } from '../../atoms/Container'
 import { NavSidebar, ShowMenuItems } from '../NavSidebar/NavSidebar'
 import { Suspense } from 'react'
 
-import { useUserStore } from '@multiverse-org/store/user'
 import { MenuItem, Role } from '@multiverse-org/types'
 import { HeaderInfo } from '../HeaderInfo'
+import { useAppSelector } from '@multiverse-org/store'
+import { selectUid } from '@multiverse-org/store/user'
 
 export type IHeaderProps = {
   menuItems?: MenuItem[]
   sideMenuItems?: MenuItem[]
   type?: Role
-  uid?: string
 }
 
 export const Header = ({
   menuItems = [],
   sideMenuItems = [],
   type,
-  uid,
 }: IHeaderProps) => {
+  const uid = useAppSelector(selectUid)
   return (
     <header className="relative z-40">
       <nav className="fixed top-0 w-full shadow-md shadow-gray-300/10 bg-white/50 backdrop-blur-md">

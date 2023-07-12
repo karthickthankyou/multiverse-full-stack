@@ -5,7 +5,8 @@ import {
   useCreateUserStoryMutation,
 } from '@multiverse-org/network/src/gql/generated'
 import { IconShoppingBag } from '@tabler/icons-react'
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUid, selectUser } from '@multiverse-org/store/user'
+import { useAppSelector } from '@multiverse-org/store'
 import { notification$ } from '@multiverse-org/util/subjects'
 import { Button } from '../../atoms/Button'
 
@@ -19,7 +20,7 @@ export const UnPurchasedStory = ({ story }: IUnPurchasedStoryProps) => {
     refetchQueries: [namedOperations.Query.story],
   })
 
-  const uid = useUserStore((s) => s.uid)
+  const uid = useAppSelector(selectUid)
 
   return (
     <div>

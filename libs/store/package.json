@@ -13,7 +13,8 @@
   "devDependencies": {
     "@multiverse-org/network": "*",
     "@multiverse-org/types": "*",
-    "@redux-devtools/extension": "^3.2.5"
+    "@redux-devtools/extension": "^3.2.5",
+    "redux-devtools-extension": "^2.13.9"
   },
   "scripts": {
     "lint": "echo 'No lint script for type library.'",

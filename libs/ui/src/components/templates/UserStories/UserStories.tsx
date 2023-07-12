@@ -3,7 +3,8 @@ import {
   useUserStoriesLazyQuery,
   useUserStoriesQuery,
 } from '@multiverse-org/network/src/gql/generated'
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUid, selectUser } from '@multiverse-org/store/user'
+import { useAppSelector } from '@multiverse-org/store'
 import { useEffect } from 'react'
 import { ShowData } from '../../organisms/ShowData'
 import { useTakeSkip } from '@multiverse-org/hooks'
@@ -14,7 +15,7 @@ export interface IWishlistProps {
 }
 
 export const UserStories = ({ type }: IWishlistProps) => {
-  const uid = useUserStore((s) => s.uid)
+  const uid = useAppSelector(selectUid)
   const [fetchUserStories, { data, loading }] = useUserStoriesLazyQuery()
 
   const { setSkip, setTake, skip, take } = useTakeSkip()

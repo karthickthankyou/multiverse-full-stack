@@ -31,7 +31,7 @@ export default function App() {
             <Drawer.Screen name="Home" component={HomeScreen} />
             <Drawer.Screen name="Purchased" component={Purchased} />
             <Drawer.Screen name="Wishlist" component={Wishlist} />
-            <Drawer.Screen name="Save For Later" component={SaveForLater} />
+            <Drawer.Screen name="Saved For Later" component={SaveForLater} />
             <Drawer.Screen name="Cart" component={Cart} />
             <Drawer.Screen name="Profile" component={ProfileScreen} />
             <Drawer.Screen name="Play" component={PlayScreen} />

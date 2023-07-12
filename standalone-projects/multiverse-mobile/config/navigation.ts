@@ -6,7 +6,7 @@ export type RootDrawerParamList = {
   Cart: undefined
   Purchased: undefined
   Profile: undefined
-  'Save For Later': undefined
+  'Saved For Later': undefined
 
   // other screens...
 }

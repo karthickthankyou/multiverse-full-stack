@@ -29,7 +29,8 @@ import { HtmlInput } from '../../atoms/HtmlInput'
 import { HtmlTextArea } from '../../atoms/HtmlTextArea'
 import { Dialog } from '../../atoms/Dialog'
 import { Form } from '../../atoms/Form'
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUid, selectUser } from '@multiverse-org/store/user'
+import { useAppSelector } from '@multiverse-org/store'
 import { notification$ } from '@multiverse-org/util/subjects'
 import { useImageUpload } from '@multiverse-org/util'
 import { PlainButton } from '../../atoms/PlainButton'
@@ -130,7 +131,7 @@ export const AddNodesDialog = ({ storyId }: INodesListProps) => {
   const [createNodes, { loading, data }] = useCreateNodesMutation()
   const [{ percent, uploading }, uploadImages] = useImageUpload()
 
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUid)
   return (
     <div>
       <Button onClick={() => setOpen(true)}>New nodes</Button>

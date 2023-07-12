@@ -7,7 +7,8 @@ import {
 import { setContext } from '@apollo/client/link/context'
 
 import { ReactNode } from 'react'
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUser, setUser } from '@multiverse-org/store/user'
+import { useAppDispatch, useAppSelector } from '@multiverse-org/store'
 import jwtDecode from 'jwt-decode'
 import { auth } from './firebase'
 
@@ -44,11 +45,8 @@ export const getLatestToken = async ({ token }: { token: string }) => {
 }
 
 export const ApolloProvider = ({ children }: IApolloProviderProps) => {
-  const { setUser, token, uid } = useUserStore((state) => ({
-    uid: state.uid,
-    token: state.token,
-    setUser: state.setUser,
-  }))
+  const { token, uid } = useAppSelector(selectUser)
+  const dispatch = useAppDispatch()
 
   //   Create an http link
   const httpLink = createHttpLink({
@@ -63,10 +61,9 @@ export const ApolloProvider = ({ children }: IApolloProviderProps) => {
     }
 
     const authToken = await getLatestToken({ token })
-    console.log('getLatestToken', authToken)
 
     if (authToken !== token) {
-      setUser({ uid, token: authToken })
+      dispatch(setUser({ uid, token: authToken }))
     }
 
     return {
@@ -78,7 +75,6 @@ export const ApolloProvider = ({ children }: IApolloProviderProps) => {
   })
   // Create an Apollo Client instance
   const apolloClient = new ApolloClient({
-    uri: 'http://localhost:3001/graphql',
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
     connectToDevTools: true,

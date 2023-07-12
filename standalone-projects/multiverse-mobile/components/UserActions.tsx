@@ -36,7 +36,7 @@ export const UserActions = ({
     ],
   })
 
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUser)
   console.log('UserActions', uid)
   if (!uid) {
     return null

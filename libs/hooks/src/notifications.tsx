@@ -1,4 +1,8 @@
-import { useNotificationStore } from '@multiverse-org/store/utils'
+import {
+  selectNotifications,
+  addNotification,
+  removeNotification,
+} from '@multiverse-org/store/utils'
 
 import { notification$ } from '@multiverse-org/util/subjects'
 import { makeId } from '@multiverse-org/util'
@@ -12,14 +16,10 @@ import {
   catchError,
   EMPTY,
 } from 'rxjs'
+import { useAppDispatch } from '@multiverse-org/store'
 
 export const useNotification = () => {
-  const { addNotification, removeNotification } = useNotificationStore(
-    (state) => ({
-      addNotification: state.addNotification,
-      removeNotification: state.removeNotification,
-    }),
-  )
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     const subscription = notification$
@@ -28,11 +28,11 @@ export const useNotification = () => {
         distinctUntilChanged(),
         map((v) => ({ ...v, id: makeId(12) })),
         tap((v) => {
-          addNotification(v)
+          dispatch(addNotification(v))
         }),
         delay(4000),
         tap((v) => {
-          removeNotification(v.id)
+          dispatch(removeNotification(v.id))
         }),
         catchError((e) => {
           return EMPTY

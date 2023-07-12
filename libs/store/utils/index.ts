@@ -1,27 +1,45 @@
-import { create } from 'zustand'
+/* eslint-disable no-param-reassign */
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { NotificationType } from '@multiverse-org/types'
 
-type State = {
+import { RootState } from '..'
+
+export type UtilSliceType = {
   notifications: NotificationType[]
-  addNotification: (notification: NotificationType) => void
-  removeNotification: (id: NotificationType['id']) => void
-  resetNotification: () => void
 }
 
-export const useNotificationStore = create<State>((set) => ({
+const initialState: UtilSliceType = {
   notifications: [],
+}
 
-  addNotification: (notification) =>
-    set((state) => ({
-      ...state,
-      notifications: [...state.notifications, notification],
-    })),
+const utilsSlice = createSlice({
+  name: 'utils',
+  initialState,
+  reducers: {
+    addNotification: (
+      state,
+      action: PayloadAction<UtilSliceType['notifications'][number]>,
+    ) => {
+      state.notifications = [...state.notifications, action.payload]
+    },
+    removeNotification: (
+      state,
+      action: PayloadAction<UtilSliceType['notifications'][number]['id']>,
+    ) => {
+      state.notifications = state.notifications.filter(
+        (item) => item.id !== action.payload,
+      )
+    },
+    resetNotification: (state) => {
+      state.notifications = []
+    },
+  },
+})
 
-  removeNotification: (id) =>
-    set((state) => ({
-      ...state,
-      notifications: state.notifications.filter((item) => item.id !== id),
-    })),
+export const { addNotification, removeNotification, resetNotification } =
+  utilsSlice.actions
 
-  resetNotification: () => set({ notifications: [] }),
-}))
+export const selectNotifications = (state: RootState) =>
+  state.utils.notifications
+
+export const utilsReducer = utilsSlice.reducer

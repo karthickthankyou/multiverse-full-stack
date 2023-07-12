@@ -1,11 +1,12 @@
 import { notification$ } from '@multiverse-org/util/subjects'
 import { useRouter } from 'next/router'
 import { RefObject, useEffect, useRef, useState } from 'react'
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUser } from '@multiverse-org/store/user'
+import { useAppSelector } from '@multiverse-org/store'
 import { usePathname } from 'next/navigation'
 
 export const useRedirectLoggedInUsers = () => {
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUser)
   const router = useRouter()
   if (uid) {
     notification$.next({

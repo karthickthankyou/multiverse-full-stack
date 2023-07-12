@@ -3,14 +3,6 @@ import { StoryMain } from '@multiverse-org/ui/src/components/templates/StoryMain
 import { useRouter } from 'next/router'
 import { AlertSection } from '@multiverse-org/ui/src/components/organisms/AlertSection'
 import { Container } from '@multiverse-org/ui/src/components/atoms/Container'
-import {
-  UserStoryType,
-  useUserStoryLazyQuery,
-  useUserStoryQuery,
-} from '@multiverse-org/network/src/gql/generated'
-import { useUserStore } from '@multiverse-org/store/user'
-import { useEffect } from 'react'
-import { Button } from '@multiverse-org/ui/src/components/atoms/Button'
 
 export default function PlayPage() {
   const { query } = useRouter()

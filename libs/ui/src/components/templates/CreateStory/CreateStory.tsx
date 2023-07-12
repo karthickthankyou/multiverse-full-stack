@@ -22,25 +22,30 @@ import {
 import { Container } from '../../atoms/Container'
 import { Switch } from '../../atoms/Switch'
 import { useRouter } from 'next/router'
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUid, selectUser } from '@multiverse-org/store/user'
+import { useAppSelector } from '@multiverse-org/store'
 import { notification$ } from '@multiverse-org/util/subjects'
 import { HeaderText } from '../../molecules/HeaderText'
 import { PlainButton } from '../../atoms/PlainButton'
 import { StickyLayout } from '../../organisms/StickyLayout'
 
-export interface ICreateStoryProps {}
+export interface ICreateStoryProps {
+  uid?: string
+}
 
 export const CreateStory = () => {
+  const uid = useAppSelector(selectUid)
+
   return (
     <Container>
       <FormProviderCreateStory>
-        <CreateStoryContent />
+        <CreateStoryContent uid={uid} />
       </FormProviderCreateStory>
     </Container>
   )
 }
 
-export const CreateStoryContent = ({}: ICreateStoryProps) => {
+export const CreateStoryContent = ({ uid }: ICreateStoryProps) => {
   const {
     register,
     control,
@@ -54,7 +59,6 @@ export const CreateStoryContent = ({}: ICreateStoryProps) => {
   const storyData = useWatch<FormTypeCreateStory>()
 
   const [{ percent, uploading }, uploadImages] = useImageUpload()
-  const uid = useUserStore((state) => state.uid)
 
   const [createStory, { data, loading }] = useCreateStoryMutation()
 

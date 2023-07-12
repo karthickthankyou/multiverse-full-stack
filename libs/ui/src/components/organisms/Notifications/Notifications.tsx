@@ -1,9 +1,10 @@
-import { useNotificationStore } from '@multiverse-org/store/utils'
+import { useAppSelector } from '@multiverse-org/store'
+import { selectNotifications } from '@multiverse-org/store/utils'
 import { NotificationType } from '@multiverse-org/types'
 import { AnimatePresence, motion } from 'framer-motion'
 
 export const NotificationWrapper = () => {
-  const notifications = useNotificationStore((state) => state.notifications)
+  const notifications = useAppSelector(selectNotifications)
   return <Notifications notifications={notifications} />
 }
 

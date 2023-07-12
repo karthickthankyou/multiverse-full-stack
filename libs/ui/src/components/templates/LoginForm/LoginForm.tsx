@@ -8,7 +8,8 @@ import { FormError } from '../../atoms/FormError'
 import { Form } from '../../atoms/Form'
 
 import { useRouter } from 'next/navigation'
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUid, selectUser } from '@multiverse-org/store/user'
+import { useAppSelector } from '@multiverse-org/store'
 import { useAsync } from '@multiverse-org/hooks/src/fetcher'
 import { login } from '@multiverse-org/network/src/auth'
 import { notification$ } from '@multiverse-org/util/subjects'
@@ -38,7 +39,7 @@ const LoginForm = ({ className }: ILoginFormProps) => {
 
   const router = useRouter()
 
-  const uid = useUserStore((store) => store.uid)
+  const uid = useAppSelector(selectUid)
   if (uid) {
     notification$.next({ message: 'Logged in. Redirecting...' })
     router.push('/')

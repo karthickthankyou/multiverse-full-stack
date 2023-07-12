@@ -9,7 +9,8 @@ import {
   FormTypeRegister,
   useFormRegister,
 } from '@multiverse-org/forms/src/register'
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUser } from '@multiverse-org/store/user'
+import { useAppSelector } from '@multiverse-org/store'
 import { notification$ } from '@multiverse-org/util/subjects'
 import { useRouter } from 'next/navigation'
 import { register as registerFirebase } from '@multiverse-org/network/src/auth'
@@ -39,7 +40,7 @@ export const RegisterForm = ({ className }: { className?: string }) => {
 
   const router = useRouter()
 
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUser)
 
   if (uid) {
     notification$.next({ message: 'Registered. Redirecting...' })

@@ -3,7 +3,8 @@ import {
   useUserStoriesLazyQuery,
   UserStoryType,
 } from '@multiverse-org/network/src/gql/generated'
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUid, selectUser } from '@multiverse-org/store/user'
+import { useAppSelector } from '@multiverse-org/store'
 import { useEffect } from 'react'
 import { ShowData } from '../../organisms/ShowData'
 import { SaveForLaterCard } from '../../organisms/SaveForLaterCard'
@@ -12,7 +13,7 @@ import { HeaderText } from '../../molecules/HeaderText'
 export interface ISaveForLaterProps {}
 
 export const SaveForLater = ({}: ISaveForLaterProps) => {
-  const uid = useUserStore((s) => s.uid)
+  const uid = useAppSelector(selectUid)
   const [fetchUserStories, { data, loading }] = useUserStoriesLazyQuery()
 
   const { setSkip, setTake, skip, take } = useTakeSkip()
@@ -36,7 +37,7 @@ export const SaveForLater = ({}: ISaveForLaterProps) => {
 
   return (
     <div>
-      <HeaderText>Save for later</HeaderText>
+      <HeaderText>Saved for later</HeaderText>
       <ShowData
         loading={loading}
         pagination={{

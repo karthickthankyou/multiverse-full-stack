@@ -1,17 +1,18 @@
 import { auth } from '@multiverse-org/network/src/config/firebase'
 
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUser, resetUser, setUser } from '@multiverse-org/store/user'
+import { useAppDispatch, useAppSelector } from '@multiverse-org/store'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useEffect } from 'react'
 
 export const useUserListener = () => {
-  const { resetUser, setUser } = useUserStore((state) => state)
+  const dispatch = useAppDispatch()
 
   useEffect(
     () =>
       onAuthStateChanged(auth, async (user) => {
         if (!user) {
-          resetUser()
+          dispatch(resetUser())
           return
         }
 
@@ -19,13 +20,15 @@ export const useUserListener = () => {
         const roles = tokenResult?.claims.roles || []
         const { displayName, email, uid } = user
 
-        setUser({
-          uid,
-          email: email || '',
-          displayName: displayName || '',
-          roles,
-          token: tokenResult?.token,
-        })
+        dispatch(
+          setUser({
+            uid,
+            email: email || '',
+            displayName: displayName || '',
+            roles,
+            token: tokenResult?.token,
+          }),
+        )
       }),
     [],
   )

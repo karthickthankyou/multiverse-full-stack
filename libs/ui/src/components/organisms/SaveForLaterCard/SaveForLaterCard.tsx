@@ -7,7 +7,8 @@ import {
 import Image from 'next/image'
 import { PriceCard } from '../PriceCard'
 import { PlainButton } from '../../atoms/PlainButton'
-import { useUserStore } from '@multiverse-org/store/user'
+import { selectUid, selectUser } from '@multiverse-org/store/user'
+import { useAppSelector } from '@multiverse-org/store'
 import { notification$ } from '@multiverse-org/util/subjects'
 
 export interface ICartCardProps {
@@ -29,7 +30,7 @@ export const SaveForLaterCard = ({ story }: ICartCardProps) => {
     },
   )
 
-  const uid = useUserStore((s) => s.uid)
+  const uid = useAppSelector(selectUid)
   return (
     <div className="flex gap-2">
       <Image
