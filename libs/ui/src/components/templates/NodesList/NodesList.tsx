@@ -40,19 +40,17 @@ export interface INodesListProps {
 }
 
 export const NodesList = ({ storyId }: INodesListProps) => {
-  const { data, loading } = useNodesQuery({
+  const { data, loading, error } = useNodesQuery({
     variables: { where: { storyId: { equals: storyId } } },
   })
 
   const { setSkip, setTake, skip, take } = useTakeSkip()
 
-  //   if (loading) {
-  //     return <LoaderPanel />
-  //   }
   return (
     <FormProviderCreateMultipleNodes>
       <AddNodesDialog storyId={storyId} />
       <ShowData
+        error={error?.message}
         loading={loading}
         pagination={{
           resultCount: data?.nodes?.length,

@@ -71,6 +71,7 @@ export const Node = ({
   const { data, loading } = useNodeQuery({
     variables: { where: { id: nodeId } },
   })
+  console.log('data ', data)
   const [prefetchNodes] = useNodeLazyQuery()
   useEffect(() => {
     if (data?.node?.choiceNodes?.length || 0 > 0) {

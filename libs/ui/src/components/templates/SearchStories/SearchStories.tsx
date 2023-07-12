@@ -1,8 +1,6 @@
 import { useStoriesQuery } from '@multiverse-org/network/src/gql/generated'
 import { ShowData } from '../../organisms/ShowData'
 import { useTakeSkip } from '@multiverse-org/hooks'
-import Image from 'next/image'
-import Link from 'next/link'
 import { useState } from 'react'
 import { useDebouncedValue } from '@multiverse-org/hooks/src/async'
 import { StoryCard } from '../../organisms/StoryCard'

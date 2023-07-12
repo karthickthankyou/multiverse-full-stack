@@ -12,8 +12,7 @@ import {
 import { selectUser } from '@multiverse-org/store/user'
 import { useAppSelector } from '@multiverse-org/store'
 import { notification$ } from '@multiverse-org/util/subjects'
-import { useRouter } from 'next/navigation'
-import { register as registerFirebase } from '@multiverse-org/network/src/auth'
+import { useRouter } from 'next/router'
 
 import { useAsync } from '@multiverse-org/hooks/src/fetcher'
 

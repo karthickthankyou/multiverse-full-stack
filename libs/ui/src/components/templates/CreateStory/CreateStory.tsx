@@ -2,6 +2,7 @@ import {
   FormProviderCreateStory,
   FormTypeCreateStory,
 } from '@multiverse-org/forms/src/createStory'
+import Link from 'next/link'
 import { Form } from '../../atoms/Form'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { HtmlInput } from '../../atoms/HtmlInput'
@@ -28,24 +29,21 @@ import { notification$ } from '@multiverse-org/util/subjects'
 import { HeaderText } from '../../molecules/HeaderText'
 import { PlainButton } from '../../atoms/PlainButton'
 import { StickyLayout } from '../../organisms/StickyLayout'
+import { AlertSection } from '../../organisms/AlertSection'
 
-export interface ICreateStoryProps {
-  uid?: string
-}
+export interface ICreateStoryProps {}
 
 export const CreateStory = () => {
-  const uid = useAppSelector(selectUid)
-
   return (
     <Container>
       <FormProviderCreateStory>
-        <CreateStoryContent uid={uid} />
+        <CreateStoryContent />
       </FormProviderCreateStory>
     </Container>
   )
 }
 
-export const CreateStoryContent = ({ uid }: ICreateStoryProps) => {
+export const CreateStoryContent = ({}: ICreateStoryProps) => {
   const {
     register,
     control,
@@ -53,9 +51,7 @@ export const CreateStoryContent = ({ uid }: ICreateStoryProps) => {
     resetField,
     formState: { errors },
   } = useFormContext<FormTypeCreateStory>()
-
-  console.log('errors ', errors)
-
+  const uid = useAppSelector(selectUid)
   const storyData = useWatch<FormTypeCreateStory>()
 
   const [{ percent, uploading }, uploadImages] = useImageUpload()
@@ -63,6 +59,16 @@ export const CreateStoryContent = ({ uid }: ICreateStoryProps) => {
   const [createStory, { data, loading }] = useCreateStoryMutation()
 
   const router = useRouter()
+
+  if (!uid) {
+    return (
+      <AlertSection title="You are not logged in">
+        <Link className="underline underline-offset-4" href="/login">
+          Login to continue.
+        </Link>
+      </AlertSection>
+    )
+  }
 
   return (
     <div>

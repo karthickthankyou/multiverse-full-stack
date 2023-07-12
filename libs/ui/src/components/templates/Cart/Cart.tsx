@@ -34,14 +34,11 @@ export const Cart = () => {
   return (
     <div>
       <HeaderText>Cart</HeaderText>
-      {(!data?.userStories || data?.userStories?.length === 0) && (
-        <AlertSection>
-          <div className="text-lg font-semibold">Cart is empty.</div>
-          <Link className="underline underline-offset-4" href={'/'}>
-            Go add some.
-          </Link>
-        </AlertSection>
-      )}
+      <CartAlert
+        uid={uid}
+        itemsAvailable={data?.userStories && data?.userStories?.length > 0}
+      />
+
       <div className="flex flex-col gap-4">
         {data?.userStories.map(({ type, story }) => (
           <CartCard key={story.id} story={story} />
@@ -50,4 +47,34 @@ export const Cart = () => {
       <CartSummary cartItems={data?.userStories || []} />
     </div>
   )
+}
+
+export const CartAlert = ({
+  uid,
+  itemsAvailable,
+}: {
+  uid?: string
+  itemsAvailable?: boolean
+}) => {
+  if (!uid) {
+    return (
+      <AlertSection>
+        <div className="text-lg font-semibold">You are not logged in.</div>
+        <Link className="underline underline-offset-4" href={'/login'}>
+          Login.
+        </Link>
+      </AlertSection>
+    )
+  }
+  if (!itemsAvailable) {
+    return (
+      <AlertSection>
+        <div className="text-lg font-semibold">Cart is empty.</div>
+        <Link className="underline underline-offset-4" href={'/'}>
+          Go add some.
+        </Link>
+      </AlertSection>
+    )
+  }
+  return null
 }

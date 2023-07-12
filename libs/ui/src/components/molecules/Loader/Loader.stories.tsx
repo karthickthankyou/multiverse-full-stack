@@ -19,3 +19,9 @@ export const Panel: Story = {
     return <LoaderPanel />
   },
 }
+
+export const PanelWithText: Story = {
+  render: () => {
+    return <LoaderPanel text="Loading..." />
+  },
+}

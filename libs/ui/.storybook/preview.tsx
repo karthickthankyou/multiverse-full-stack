@@ -6,7 +6,7 @@ import * as NextImage from 'next/image'
 import type { Preview } from '@storybook/react'
 import { ApolloProvider } from '@multiverse-org/network/src/config/apollo'
 import { ReduxProvider } from '@multiverse-org/store/Provider'
-
+import { RouterContext } from 'next/dist/shared/lib/router-context'
 // Initialize MSW
 initialize()
 
@@ -18,6 +18,9 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/,
       },
+    },
+    nextRouter: {
+      Provider: RouterContext.Provider, // next 13 (using next/router) / next < 12
     },
   },
   decorators: [

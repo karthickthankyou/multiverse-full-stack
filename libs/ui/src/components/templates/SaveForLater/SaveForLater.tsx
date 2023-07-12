@@ -9,6 +9,8 @@ import { useEffect } from 'react'
 import { ShowData } from '../../organisms/ShowData'
 import { SaveForLaterCard } from '../../organisms/SaveForLaterCard'
 import { HeaderText } from '../../molecules/HeaderText'
+import { AlertSection } from '../../organisms/AlertSection'
+import Link from 'next/link'
 
 export interface ISaveForLaterProps {}
 
@@ -30,6 +32,14 @@ export const SaveForLater = ({}: ISaveForLaterProps) => {
       })
     }
   }, [uid])
+
+  if (!uid) {
+    return (
+      <AlertSection>
+        You are not logged in.<Link href="/login">Login</Link>{' '}
+      </AlertSection>
+    )
+  }
 
   if (data?.userStoriesCount.count === 0) {
     return null

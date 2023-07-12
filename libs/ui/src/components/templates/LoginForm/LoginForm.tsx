@@ -7,7 +7,7 @@ import { FormTypeLogin, useFormLogin } from '@multiverse-org/forms/src/login'
 import { FormError } from '../../atoms/FormError'
 import { Form } from '../../atoms/Form'
 
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { selectUid, selectUser } from '@multiverse-org/store/user'
 import { useAppSelector } from '@multiverse-org/store'
 import { useAsync } from '@multiverse-org/hooks/src/fetcher'
