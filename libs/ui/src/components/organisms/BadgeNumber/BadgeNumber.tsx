@@ -12,9 +12,10 @@ const returnDisplayNumber = (num?: number) => {
 
 export const BadgeNumber: React.FC<BadgeProps> = ({ count, children }) => {
   const displayCount = returnDisplayNumber(count)
+  console.log('displayCount: ', displayCount)
 
   return (
-    <div className="relative">
+    <div className="relative inline-block">
       {children}
       <div className="absolute px-2 py-1 text-xs font-bold -translate-x-1/2 translate-y-1/2 rounded-full bottom-full left-full">
         {displayCount}

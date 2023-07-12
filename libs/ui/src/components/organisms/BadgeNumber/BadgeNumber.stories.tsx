@@ -4,7 +4,6 @@ import { IconShoppingBag } from '@tabler/icons-react'
 
 const meta: Meta<typeof BadgeNumber> = {
   component: BadgeNumber,
-  decorators: [(Story) => <div className="w-6">{Story()}</div>],
 }
 export default meta
 

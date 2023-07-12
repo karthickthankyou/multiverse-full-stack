@@ -5,6 +5,7 @@ import * as NextImage from 'next/image'
 
 import type { Preview } from '@storybook/react'
 import { ApolloProvider } from '@multiverse-org/network/src/config/apollo'
+import { ReduxProvider } from '@multiverse-org/store/Provider'
 
 // Initialize MSW
 initialize()
@@ -21,9 +22,11 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <ApolloProvider>
-        <Story />
-      </ApolloProvider>
+      <ReduxProvider>
+        <ApolloProvider>
+          <Story />
+        </ApolloProvider>
+      </ReduxProvider>
     ),
   ],
   loaders: [mswLoader],

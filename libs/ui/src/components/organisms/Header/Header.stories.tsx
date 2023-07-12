@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Header } from './Header'
+import { ReduxAddUid } from '@multiverse-org/store/Provider'
 
 const meta: Meta<typeof Header> = {
   component: Header,
@@ -21,6 +22,7 @@ export const SignedIn: Story = {
     menuItems: [],
     sideMenuItems: [],
   },
+  decorators: [(Story) => <ReduxAddUid>{Story()}</ReduxAddUid>],
 }
 
 export const SignedInAdmin: Story = {
@@ -29,4 +31,5 @@ export const SignedInAdmin: Story = {
     sideMenuItems: [],
     type: 'admin',
   },
+  decorators: [(Story) => <ReduxAddUid>{Story()}</ReduxAddUid>],
 }

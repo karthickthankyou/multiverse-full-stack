@@ -17,6 +17,8 @@ export const HeaderInfo = ({}: IHeaderInfoProps) => {
   const [fetchWishlistCount, { data: wishlistData }] =
     useUserStoriesCountLazyQuery()
 
+  console.log(cartData, wishlistData)
+
   useEffect(() => {
     if (uid) {
       fetchCartCount({
@@ -51,7 +53,9 @@ export const HeaderInfo = ({}: IHeaderInfoProps) => {
         </BadgeNumber>
       </Link>
       <Link href="/purchased">
-        <IconInbox />
+        <BadgeNumber>
+          <IconInbox />
+        </BadgeNumber>
       </Link>
     </>
   )
