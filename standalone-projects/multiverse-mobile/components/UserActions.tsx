@@ -1,5 +1,4 @@
 import {
-  StoriesQuery,
   UserStoryType,
   namedOperations,
   useCreateUserStoryMutation,
@@ -36,7 +35,7 @@ export const UserActions = ({
     ],
   })
 
-  const uid = useAppSelector(selectUser)
+  const uid = useUserStore((s) => s.uid)
   console.log('UserActions', uid)
   if (!uid) {
     return null

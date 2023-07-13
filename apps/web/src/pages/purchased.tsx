@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { UserStories } from '@multiverse-org/ui/src/components/templates/UserStories'
-import { UserStoryType } from '@multiverse-org/network/src/gql/generated'
+import { UserStoryType } from '@multiverse-org/network/src/generated'
 import { Container } from '@multiverse-org/ui/src/components/atoms/Container'
 
 export default function PurchasedPage() {

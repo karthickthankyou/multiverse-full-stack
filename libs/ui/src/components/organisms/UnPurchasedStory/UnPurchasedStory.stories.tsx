@@ -17,7 +17,7 @@ export const Primary: Story = {
         createdAt: undefined,
         id: 0,
         image: '',
-        price: undefined,
+        price: 0,
         description: '',
         title: '',
         updatedAt: undefined,

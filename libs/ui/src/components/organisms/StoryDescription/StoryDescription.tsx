@@ -1,4 +1,4 @@
-import { StoryQuery } from '@multiverse-org/network/src/gql/generated'
+import { StoryQuery } from '@multiverse-org/network/src/generated'
 import Image from 'next/image'
 
 export interface IStoryDescriptionProps {
@@ -8,18 +8,18 @@ export interface IStoryDescriptionProps {
 export const StoryDescription = ({ story }: IStoryDescriptionProps) => {
   if (!story) return null
   return (
-    <div>
+    <div className="space-y-2">
       {story.image ? (
         <Image
-          className="object-cover w-64 h-64 shadow-xl"
+          className="object-cover w-full shadow-xl aspect-square"
           width={200}
           height={200}
           src={story.image || ''}
           alt=""
         />
       ) : null}
-      <div className="mt-1 text-xl font-light">{story.title}</div>
-      <div className="mt-2 text-sm text-gray">{story.description}</div>
+      <div className="mt-1 text-2xl font-light">{story.title}</div>
+      <div className="mt-2 text-xs text-gray">{story.description}</div>
     </div>
   )
 }

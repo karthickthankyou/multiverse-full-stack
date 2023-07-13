@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { UserStoriesQuery } from '@multiverse-org/network/src/gql/generated'
+import { UserStoriesQuery } from '@multiverse-org/network/src/generated'
 import React from 'react'
 import { Button } from '../../atoms/Button'
 import { loadStripe } from '@stripe/stripe-js'

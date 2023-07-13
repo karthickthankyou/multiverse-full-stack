@@ -3,7 +3,7 @@ import {
   namedOperations,
   useCreateNodesMutation,
   useNodesQuery,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 import Image from 'next/image'
 import { LoaderPanel } from '../../molecules/Loader'
 import { ShowData } from '../../organisms/ShowData'
@@ -40,11 +40,10 @@ export interface INodesListProps {
 }
 
 export const NodesList = ({ storyId }: INodesListProps) => {
-  const { data, loading, error } = useNodesQuery({
-    variables: { where: { storyId: { equals: storyId } } },
-  })
-
   const { setSkip, setTake, skip, take } = useTakeSkip()
+  const { data, loading, error } = useNodesQuery({
+    variables: { where: { storyId: { equals: storyId } }, skip, take },
+  })
 
   return (
     <FormProviderCreateMultipleNodes>
@@ -60,7 +59,7 @@ export const NodesList = ({ storyId }: INodesListProps) => {
           skip,
           take,
         }}
-        title={undefined}
+        title={'Connect nodes'}
       >
         {data?.nodes?.map((node) => (
           <div key={node.id}>
@@ -75,16 +74,7 @@ export const NodesList = ({ storyId }: INodesListProps) => {
                 Start.
               </div>
             ) : null}
-            <ul>
-              {node.choiceNodes?.map((node) => (
-                <li
-                  key={node.id}
-                  className="text-xs text-gray decoration-slice"
-                >
-                  {node.choiceText}
-                </li>
-              ))}
-            </ul>
+
             {node.image ? (
               <Image
                 width={200}
@@ -93,6 +83,16 @@ export const NodesList = ({ storyId }: INodesListProps) => {
                 alt={node.title}
               />
             ) : null}
+            <ul className="my-2 list-disc">
+              {node.choices?.map((choice) => (
+                <li
+                  key={node.id}
+                  className="text-xs text-gray decoration-slice"
+                >
+                  {choice.choiceText}
+                </li>
+              ))}
+            </ul>
             {node.end ? null : <AddChoicesDialog node={node} />}
           </div>
         ))}

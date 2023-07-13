@@ -1,7 +1,7 @@
 import {
   UserStoryType,
   useUserStoriesCountLazyQuery,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 import { selectUid, selectUser } from '@multiverse-org/store/user'
 import { useAppSelector } from '@multiverse-org/store'
 import { IconHeart, IconInbox, IconShoppingBag } from '@tabler/icons-react'

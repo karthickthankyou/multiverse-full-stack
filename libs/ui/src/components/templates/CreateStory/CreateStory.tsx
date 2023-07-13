@@ -9,7 +9,7 @@ import { HtmlInput } from '../../atoms/HtmlInput'
 import { Controller } from 'react-hook-form'
 import { Button } from '../../atoms/Button'
 import { useImageUpload } from '@multiverse-org/util'
-import { useCreateStoryMutation } from '@multiverse-org/network/src/gql/generated'
+import { useCreateStoryMutation } from '@multiverse-org/network/src/generated'
 import { useFormContext, useWatch, useFieldArray } from 'react-hook-form'
 import { useState } from 'react'
 import { Accordion } from '../../molecules/Accordion'
@@ -105,6 +105,7 @@ export const CreateStoryContent = ({}: ICreateStoryProps) => {
                 title: data.title,
                 nodes: nodesWithImage,
                 description: data.description,
+                price: data.price,
               },
             },
           })
@@ -151,7 +152,6 @@ export const CreateStoryContent = ({}: ICreateStoryProps) => {
                   />
                 </div>
               )}
-
               <HtmlLabel title="Title">
                 <HtmlInput
                   placeholder="Title of the story..."
@@ -162,6 +162,12 @@ export const CreateStoryContent = ({}: ICreateStoryProps) => {
                 <HtmlTextArea
                   placeholder="Describe..."
                   {...register('description')}
+                />
+              </HtmlLabel>{' '}
+              <HtmlLabel title="Price">
+                <HtmlInput
+                  placeholder="In USD"
+                  {...register('price', { valueAsNumber: true })}
                 />
               </HtmlLabel>
               <Button loading={loading || uploading} type="submit">

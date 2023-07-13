@@ -5,7 +5,7 @@ import { graphql } from 'msw'
 import {
   UserStoriesQuery,
   namedOperations,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 
 const meta: Meta<typeof SaveForLater> = {
   component: SaveForLater,

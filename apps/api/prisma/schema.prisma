@@ -70,8 +70,6 @@ model Choice {
     parentNodeId Int?
     choiceNode   Node? @relation("choiceNodes", fields: [choiceNodeId], references: [id])
     choiceNodeId Int?
-
-    @@unique([parentNodeId, choiceNodeId])
 }
 
 model UserStory {

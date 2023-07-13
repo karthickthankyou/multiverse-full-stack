@@ -25,6 +25,7 @@ export const Free: Story = {
       id: 1,
       image: 'https://placehold.co/400',
       title: 'This is the way',
+      price: 0,
     },
   },
 }

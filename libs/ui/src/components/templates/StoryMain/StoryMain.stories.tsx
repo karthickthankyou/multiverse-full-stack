@@ -6,7 +6,7 @@ import {
   StoryQuery,
   UserStoryType,
   namedOperations,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 
 const meta: Meta<typeof StoryMain> = {
   component: StoryMain,
@@ -25,6 +25,7 @@ export const PrimaryUnPurchased: Story = {
             return res(
               ctx.data({
                 story: {
+                  price: 0,
                   authorId: '1',
                   createdAt: '',
                   description: 'Description of sample story',
@@ -66,6 +67,7 @@ export const PrimaryPurchased: Story = {
               ctx.data({
                 story: {
                   authorId: '1',
+                  price: 0,
                   createdAt: '',
                   description: 'Description of sample story',
                   id: 1,

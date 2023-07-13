@@ -6,7 +6,7 @@ import {
   ChoicesQuery,
   NodesQuery,
   namedOperations,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 
 const meta: Meta<typeof AddChoicesDialog> = {
   component: AddChoicesDialog,
@@ -27,7 +27,7 @@ export const Primary: Story = {
         start: undefined,
         storyId: 0,
         content: '',
-        choiceNodes: undefined,
+        choices: undefined,
       }}
     />
   ),
@@ -58,7 +58,7 @@ export const Primary: Story = {
                     storyId: 1,
                     title: 'Fine me.',
                     __typename: 'Node',
-                    choiceNodes: [],
+                    choices: [],
                     end: true,
                   },
                   {
@@ -67,7 +67,7 @@ export const Primary: Story = {
                     storyId: 1,
                     title: 'Fine me 2.',
                     __typename: 'Node',
-                    choiceNodes: [],
+                    choices: [],
                   },
                 ],
               }),

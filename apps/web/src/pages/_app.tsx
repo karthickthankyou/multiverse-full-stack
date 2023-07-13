@@ -7,16 +7,14 @@ import { NotificationWrapper } from '@multiverse-org/ui/src/components/organisms
 import { Header } from '@multiverse-org/ui/src/components/organisms/Header'
 import { MenuItem } from '@multiverse-org/types'
 import { ReduxProvider } from '@multiverse-org/store/Provider'
+import { HeaderInfo } from '@multiverse-org/ui/src/components/organisms/HeaderInfo'
 
-const MENUITEMS: MenuItem[] = [
-  { label: 'My Stories', href: '/my-stories', loggedIn: true },
-  { label: 'Create Story', href: '/create-story', loggedIn: true },
-]
+const MENUITEMS: MenuItem[] = []
 const SUBMENUITEMS: MenuItem[] = [
   ...MENUITEMS,
   { label: 'Cart', href: '/cart', loggedIn: false },
   { label: 'Wishlist', href: '/wishlist', loggedIn: false },
-  { label: 'Purchased', href: '/purchased', loggedIn: false },
+  { label: 'Purchased', href: '/purchased', loggedIn: true },
   { label: 'Settings', href: '/settings', loggedIn: false },
 ]
 
@@ -25,7 +23,12 @@ export default function App({ Component, pageProps }: AppProps) {
     <ReduxProvider>
       <ApolloProvider>
         <AppLevelListeners />
-        <Header type="" menuItems={MENUITEMS} sideMenuItems={SUBMENUITEMS} />
+        <Header
+          type=""
+          menuItems={MENUITEMS}
+          sideMenuItems={SUBMENUITEMS}
+          HeaderIcons={<HeaderInfo />}
+        />
         <Component {...pageProps} />
         <NotificationWrapper />
       </ApolloProvider>

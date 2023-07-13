@@ -1,4 +1,4 @@
-import { useStoriesQuery } from '@multiverse-org/network/src/gql/generated'
+import { useStoriesQuery } from '@multiverse-org/network/src/generated'
 import { ShowData } from '../../organisms/ShowData'
 import { useTakeSkip } from '@multiverse-org/hooks'
 import { useState } from 'react'

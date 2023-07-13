@@ -8,7 +8,7 @@ import { graphql } from 'msw'
 import {
   StoriesQuery,
   namedOperations,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 
 const meta: Meta<typeof MyStories> = {
   component: MyStories,
@@ -100,11 +100,13 @@ export const LoggedInWithContent: Story = {
                     id: 1,
                     image: 'https://placehold.co/400',
                     title: 'The story in my stories list.',
+                    price: 0,
                   },
                   {
                     id: 2,
                     image: 'https://placehold.co/400',
                     title: 'Another story in my stories list.',
+                    price: 0,
                   },
                 ],
               }),

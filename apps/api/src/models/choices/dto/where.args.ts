@@ -9,20 +9,10 @@ import {
 import { NodeRelationFilter } from 'src/models/nodes/dto/relations.args'
 
 @InputType()
-export class ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput {
-  parentNodeId: number
-  choiceNodeId: number
-}
-
-@InputType()
 export class ChoiceWhereUniqueInput
   implements
     RestrictProperties<ChoiceWhereUniqueInput, Prisma.ChoiceWhereUniqueInput>
 {
-  @Field(() => ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput, {
-    nullable: true,
-  })
-  parentNodeId_choiceNodeId: ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput
   @Field(() => Number, { nullable: true })
   id: number
 }

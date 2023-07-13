@@ -140,15 +140,15 @@ export class NodesResolver {
     })
   }
 
-  @ResolveField(() => [Choice], { nullable: true })
-  parentNodes(@Parent() parent: Node) {
-    return this.prisma.choice.findMany({
-      where: { choiceNodeId: parent.id },
-    })
-  }
+  //   @ResolveField(() => [Choice], { nullable: true })
+  //   parentNodes(@Parent() parent: Node) {
+  //     return this.prisma.choice.findMany({
+  //       where: { choiceNodeId: parent.id },
+  //     })
+  //   }
 
   @ResolveField(() => [Choice], { nullable: true })
-  choiceNodes(@Parent() parent: Node) {
+  choices(@Parent() parent: Node) {
     return this.prisma.choice.findMany({
       where: { parentNodeId: parent.id },
     })

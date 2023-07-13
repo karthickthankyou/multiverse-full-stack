@@ -9,7 +9,7 @@ import {
   FormTypeRegister,
   useFormRegister,
 } from '@multiverse-org/forms/src/register'
-import { selectUser } from '@multiverse-org/store/user'
+import { selectUid, selectUser } from '@multiverse-org/store/user'
 import { useAppSelector } from '@multiverse-org/store'
 import { notification$ } from '@multiverse-org/util/subjects'
 import { useRouter } from 'next/router'
@@ -37,13 +37,13 @@ export const RegisterForm = ({ className }: { className?: string }) => {
     },
   )
 
-  const router = useRouter()
+  //   const router = useRouter()
 
-  const uid = useAppSelector(selectUser)
+  const uid = useAppSelector(selectUid)
 
   if (uid) {
     notification$.next({ message: 'Registered. Redirecting...' })
-    router.push('/')
+    // router.push('/')
   }
 
   return (

@@ -1,7 +1,7 @@
 import {
   UserStoryType,
   useUserStoriesLazyQuery,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 import Link from 'next/link'
 
 import { selectUid, selectUser } from '@multiverse-org/store/user'

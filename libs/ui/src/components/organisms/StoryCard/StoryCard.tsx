@@ -1,4 +1,4 @@
-import { StoriesQuery } from '@multiverse-org/network/src/gql/generated'
+import { StoriesQuery } from '@multiverse-org/network/src/generated'
 import Image from 'next/image'
 import Link from 'next/link'
 

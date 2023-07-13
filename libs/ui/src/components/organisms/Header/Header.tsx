@@ -4,7 +4,7 @@ import { Button } from '../../atoms/Button'
 import { Container } from '../../atoms/Container'
 
 import { NavSidebar, ShowMenuItems } from '../NavSidebar/NavSidebar'
-import { Suspense } from 'react'
+import { ReactNode, Suspense } from 'react'
 
 import { MenuItem, Role } from '@multiverse-org/types'
 import { HeaderInfo } from '../HeaderInfo'
@@ -15,14 +15,17 @@ export type IHeaderProps = {
   menuItems?: MenuItem[]
   sideMenuItems?: MenuItem[]
   type?: Role
+  HeaderIcons?: ReactNode
 }
 
 export const Header = ({
   menuItems = [],
   sideMenuItems = [],
   type,
+  HeaderIcons,
 }: IHeaderProps) => {
   const uid = useAppSelector(selectUid)
+  console.log('uid', uid)
   return (
     <header className="relative z-40">
       <nav className="fixed top-0 w-full shadow-md shadow-gray-300/10 bg-white/50 backdrop-blur-md">
@@ -50,7 +53,7 @@ export const Header = ({
                   </Link>
                 </>
               ) : (
-                <HeaderInfo />
+                HeaderIcons
               )}
 
               <NavSidebar menuItems={sideMenuItems} />

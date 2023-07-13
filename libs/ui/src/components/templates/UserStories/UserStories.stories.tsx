@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { UserStories } from './UserStories'
-import { UserStoryType } from '@multiverse-org/network/src/gql/generated'
+import { UserStoryType } from '@multiverse-org/network/src/generated'
 import { LoggedInNoItems, LoggedInWithResults } from '../Cart/Cart.stories'
 
 const meta: Meta<typeof UserStories> = {

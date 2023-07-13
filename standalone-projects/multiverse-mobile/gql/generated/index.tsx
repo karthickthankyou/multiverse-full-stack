@@ -60,11 +60,6 @@ export type ChoiceOrderByWithRelationInput = {
   updatedAt?: InputMaybe<SortOrder>;
 };
 
-export type ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput = {
-  choiceNodeId: Scalars['Int'];
-  parentNodeId: Scalars['Int'];
-};
-
 export enum ChoiceScalarFieldEnum {
   ChoiceNodeId = 'choiceNodeId',
   ChoiceText = 'choiceText',
@@ -90,7 +85,6 @@ export type ChoiceWhereInput = {
 
 export type ChoiceWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>;
-  parentNodeId_choiceNodeId?: InputMaybe<ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput>;
 };
 
 export type CreateChoiceInput = {
@@ -131,6 +125,7 @@ export type CreateStoryInput = {
   description: Scalars['String'];
   image: Scalars['String'];
   nodes: Array<CreateNodeInputWithoutStory>;
+  price: Scalars['Float'];
   title: Scalars['String'];
 };
 
@@ -341,13 +336,12 @@ export type Node = {
   __typename?: 'Node';
   author?: Maybe<User>;
   authorId: Scalars['String'];
-  choiceNodes?: Maybe<Array<Choice>>;
+  choices?: Maybe<Array<Choice>>;
   content: Scalars['String'];
   createdAt: Scalars['DateTime'];
   end?: Maybe<Scalars['Boolean']>;
   id: Scalars['Int'];
   image?: Maybe<Scalars['String']>;
-  parentNodes?: Maybe<Array<Choice>>;
   start?: Maybe<Scalars['Boolean']>;
   story?: Maybe<Story>;
   storyId: Scalars['Int'];
@@ -704,6 +698,7 @@ export type UpdateStoryInput = {
   id: Scalars['Int'];
   image?: InputMaybe<Scalars['String']>;
   nodes?: InputMaybe<Array<CreateNodeInputWithoutStory>>;
+  price?: InputMaybe<Scalars['Float']>;
   title?: InputMaybe<Scalars['String']>;
 };
 
@@ -893,14 +888,14 @@ export type NodesQueryVariables = Exact<{
 }>;
 
 
-export type NodesQuery = { __typename?: 'Query', nodes: Array<{ __typename?: 'Node', id: number, title: string, image?: string | null, end?: boolean | null, start?: boolean | null, storyId: number, content: string, choiceNodes?: Array<{ __typename?: 'Choice', id: number, choiceText: string, choiceNode: { __typename?: 'Node', id: number, title: string } }> | null }> };
+export type NodesQuery = { __typename?: 'Query', nodes: Array<{ __typename?: 'Node', id: number, title: string, image?: string | null, end?: boolean | null, start?: boolean | null, storyId: number, content: string, choices?: Array<{ __typename?: 'Choice', id: number, choiceText: string, choiceNode: { __typename?: 'Node', id: number, title: string } }> | null }> };
 
 export type NodeQueryVariables = Exact<{
   where?: InputMaybe<NodeWhereUniqueInput>;
 }>;
 
 
-export type NodeQuery = { __typename?: 'Query', node: { __typename?: 'Node', id: number, title: string, image?: string | null, end?: boolean | null, start?: boolean | null, content: string, choiceNodes?: Array<{ __typename?: 'Choice', id: number, choiceText: string, choiceNode: { __typename?: 'Node', id: number, title: string } }> | null } };
+export type NodeQuery = { __typename?: 'Query', node: { __typename?: 'Node', id: number, title: string, image?: string | null, end?: boolean | null, start?: boolean | null, content: string, choices?: Array<{ __typename?: 'Choice', id: number, choiceText: string, choiceNode: { __typename?: 'Node', id: number, title: string } }> | null } };
 
 export type CreateManyChoicesMutationVariables = Exact<{
   createManyChoiceInput: CreateManyChoiceInput;
@@ -1262,7 +1257,7 @@ export const NodesDocument = /*#__PURE__*/ gql`
     start
     storyId
     content
-    choiceNodes {
+    choices {
       id
       choiceText
       choiceNode {
@@ -1315,7 +1310,7 @@ export const NodeDocument = /*#__PURE__*/ gql`
     end
     start
     content
-    choiceNodes {
+    choices {
       id
       choiceText
       choiceNode {

@@ -76,7 +76,7 @@ export class ChoicesResolver {
     const choices = await Promise.all(
       args.choices.map((choice) => this.prisma.choice.create({ data: choice })),
     )
-    console.log(' choices ', choices)
+
     return choices
   }
 

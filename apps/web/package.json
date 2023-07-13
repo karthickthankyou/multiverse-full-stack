@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@multiverse-org/3d": "*",
+    "@multiverse-org/types": "*",
+    "@multiverse-org/ui": "*",
     "@sentry/nextjs": "^7.57.0",
     "@types/node": "20.3.3",
     "@types/react": "18.2.14",

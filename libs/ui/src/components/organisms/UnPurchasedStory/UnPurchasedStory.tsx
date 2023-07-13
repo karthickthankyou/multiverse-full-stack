@@ -3,7 +3,7 @@ import {
   UserStoryType,
   namedOperations,
   useCreateUserStoryMutation,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 import { IconShoppingBag } from '@tabler/icons-react'
 import { selectUid, selectUser } from '@multiverse-org/store/user'
 import { useAppSelector } from '@multiverse-org/store'

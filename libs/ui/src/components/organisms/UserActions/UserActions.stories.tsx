@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { UserActions } from './UserActions'
-import { UserStoryType } from '@multiverse-org/network/src/gql/generated'
+import { UserStoryType } from '@multiverse-org/network/src/generated'
 
 const meta: Meta<typeof UserActions> = {
   component: UserActions,

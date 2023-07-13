@@ -3,8 +3,11 @@ import { useAppSelector } from '@multiverse-org/store'
 import { Loader, LoaderPanel } from '../../molecules/Loader'
 import { AlertSection } from '../../organisms/AlertSection'
 import Link from 'next/link'
-import { useStoriesQuery } from '@multiverse-org/network/src/gql/generated'
+import { useStoriesQuery } from '@multiverse-org/network/src/generated'
 import { IconMoodSad } from '@tabler/icons-react'
+import { MyStoryCard } from '../../organisms/MyStoryCard'
+import { useTakeSkip } from '@multiverse-org/hooks'
+import { ShowData } from '../../organisms/ShowData'
 
 export interface IMyStoriesProps {}
 
@@ -36,6 +39,8 @@ export const MyStories = ({}: IMyStoriesProps) => {
 
 export const MyStoriesList = () => {
   const uid = useAppSelector(selectUid)
+  const { setSkip, setTake, skip, take } = useTakeSkip()
+
   const { data, loading, error } = useStoriesQuery({
     variables: { where: { authorId: { equals: uid } } },
   })
@@ -56,14 +61,21 @@ export const MyStoriesList = () => {
   }
 
   return (
-    <div>
+    <ShowData
+      loading={false}
+      pagination={{
+        setSkip,
+        setTake,
+        skip,
+        take,
+        resultCount: data?.stories.length,
+        totalCount: data?.storiesCount.count,
+      }}
+      title={undefined}
+    >
       {data?.stories.map((story) => (
-        <div key={story.id}>
-          <div>{story.id}</div>
-          <div>{story.title}</div>
-          <Link href={`/connect-nodes?storyId=${story.id}`}>Modify</Link>
-        </div>
+        <MyStoryCard key={story.id} story={story} />
       ))}
-    </div>
+    </ShowData>
   )
 }

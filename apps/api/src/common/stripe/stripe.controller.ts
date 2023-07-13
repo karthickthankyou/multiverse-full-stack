@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Get, Query, Res } from '@nestjs/common'
 import { CreateStripeDto } from './dto/create-stripe-session.dto'
 import StripeService from './stripe.service'
-import { Prisma, UserStoryType } from '@prisma/client'
+import { UserStoryType } from '@prisma/client'
 import { PrismaService } from '../prisma/prisma.service'
 import { StripeItemType } from '@multiverse-org/types'
 import { Response } from 'express'
@@ -42,7 +42,6 @@ export class StripeController {
     })
     await Promise.all(dataPromises)
 
-    console.log('Success: ', uid, items)
     res.redirect('http://localhost:3001/purchased')
   }
 }

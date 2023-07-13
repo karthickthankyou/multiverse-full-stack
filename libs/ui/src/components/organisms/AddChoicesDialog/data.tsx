@@ -1,7 +1,8 @@
 import create from 'zustand'
 
 export type SelectedNode = {
-  id: number
+  id: string
+  nodeId: number
   title: string
   choiceText?: string
 }
@@ -10,8 +11,8 @@ export type StoreSelectedNodesState = {
   selectedNodes: SelectedNode[]
   setSelectedNodes: (nodes: SelectedNode[]) => void
   addSelectedNode: (node: SelectedNode) => void
-  removeSelectedNode: (id: number) => void
-  updateChoiceTextForNodeId: (id: number, choiceText: string) => void
+  removeSelectedNode: (id: string) => void
+  updateChoiceTextForNodeId: (id: string, choiceText: string) => void
   resetSelectedNodes: () => void
 }
 

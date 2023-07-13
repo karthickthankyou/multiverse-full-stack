@@ -4,7 +4,7 @@ import { graphql } from 'msw'
 import {
   StoriesQuery,
   namedOperations,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 
 const meta: Meta<typeof SearchStories> = {
   component: SearchStories,

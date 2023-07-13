@@ -6,6 +6,7 @@ export interface Switch2Props {
   children?: ReactNode
   checked: boolean
   onChange: (checked: boolean) => void
+  className?: string
 }
 
 export const Switch = ({
@@ -13,11 +14,12 @@ export const Switch = ({
   children,
   checked,
   onChange,
+  className,
 }: Switch2Props) => {
   return (
     <HUISwitch.Group>
-      <div className="flex items-center">
-        <HUISwitch.Label className="mr-2">{label}</HUISwitch.Label>
+      <div className={`flex items-center ${className}`}>
+        <HUISwitch.Label className="mr-2 text-sm">{label}</HUISwitch.Label>
         <HUISwitch
           checked={checked}
           onChange={onChange}

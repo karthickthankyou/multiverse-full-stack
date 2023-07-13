@@ -108,14 +108,6 @@ export const Node = ({
   const { data, loading } = useNodeQuery({
     variables: { where: { id: nodeId } },
   })
-  const [prefetchNodes] = useNodeLazyQuery()
-  useEffect(() => {
-    if (data?.node?.choiceNodes?.length || 0 > 0) {
-      data?.node.choiceNodes?.forEach((node) => {
-        prefetchNodes({ variables: { where: { id: node.id } } })
-      })
-    }
-  }, [data?.node?.choiceNodes])
 
   if (loading) return <ActivityIndicator />
   return (
@@ -123,7 +115,7 @@ export const Node = ({
       <Text className="font-black">{data?.node.title}</Text>
       <Text className="mt-2">{data?.node.content}</Text>
       <View className="flex gap-2 mt-8 text-lg">
-        {data?.node?.choiceNodes?.map((choice) => (
+        {data?.node?.choices?.map((choice) => (
           <TouchableOpacity
             key={choice.id}
             onPress={() => setSelectedNodeId(choice.choiceNode.id)}

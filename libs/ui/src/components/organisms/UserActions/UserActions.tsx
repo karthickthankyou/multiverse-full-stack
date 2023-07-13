@@ -4,7 +4,7 @@ import {
   namedOperations,
   useCreateUserStoryMutation,
   useRemoveUserStoryMutation,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 import Link from 'next/link'
 import { LoaderPanel } from '../../molecules/Loader'
 import {

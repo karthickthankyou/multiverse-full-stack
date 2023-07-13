@@ -1,7 +1,7 @@
 import {
   UserStoryType,
   useStoryQuery,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 import Link from 'next/link'
 import { PlayStory } from '../PlayStory'
 import { StickyLayout } from '../../organisms/StickyLayout'
@@ -29,7 +29,8 @@ export const StoryMain = ({ storyId }: IStoryMainProps) => {
         classes={{ sidebarWidth: 'md:max-w-sm' }}
         sidebarContent={<StoryDescription story={data?.story} />}
       >
-        {data.story.userStory?.type === UserStoryType.Purchased ? (
+        {data.story.userStory?.type === UserStoryType.Purchased ||
+        !data.story.price ? (
           <PlayStory story={data.story} />
         ) : data.story.userStory?.type === UserStoryType.InCart ? (
           <Link

@@ -4,7 +4,7 @@ import { graphql } from 'msw'
 import {
   UserStoriesCountQuery,
   namedOperations,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 import { ReduxAddUid } from '@multiverse-org/store/Provider'
 
 const meta: Meta<typeof HeaderInfo> = {

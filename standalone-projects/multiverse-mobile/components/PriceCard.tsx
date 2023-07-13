@@ -1,4 +1,4 @@
-import { Story } from '@multiverse-org/network/src/gql/generated'
+import { Story } from '@multiverse-org/network/src/generated'
 import { View, Text } from '.'
 
 export interface IPriceCardProps {

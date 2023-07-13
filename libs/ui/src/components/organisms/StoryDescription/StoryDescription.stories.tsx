@@ -11,6 +11,7 @@ type Story = StoryObj<typeof StoryDescription>
 export const Primary: Story = {
   args: {
     story: {
+      price: 0,
       authorId: '23',
       createdAt: new Date(),
       description:

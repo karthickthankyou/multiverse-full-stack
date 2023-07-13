@@ -9,7 +9,6 @@ import {
 } from 'src/common/dtos/common.input'
 import { StoryRelationFilter } from 'src/models/stories/dto/where.args'
 import { UserRelationFilter } from 'src/models/users/dto/where.args'
-import { NodeListRelationFilter, NodeRelationFilter } from './relations.args'
 import { ChoiceListRelationFilter } from 'src/models/choices/dto/where.args'
 
 @InputType()

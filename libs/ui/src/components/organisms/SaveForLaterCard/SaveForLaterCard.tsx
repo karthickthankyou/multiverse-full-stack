@@ -3,7 +3,7 @@ import {
   UserStoryType,
   namedOperations,
   useCreateUserStoryMutation,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 import Image from 'next/image'
 import { PriceCard } from '../PriceCard'
 import { PlainButton } from '../../atoms/PlainButton'

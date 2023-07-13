@@ -4,7 +4,7 @@ import { graphql } from 'msw'
 import {
   NodeQuery,
   namedOperations,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 
 const meta: Meta<typeof PlayStory> = {
   component: PlayStory,
@@ -21,7 +21,7 @@ export const Primary: Story = {
       createdAt: undefined,
       id: 0,
       image: 'https://placehold.co/400',
-      price: undefined,
+      price: 0,
       description: '',
       title: 'The sample story in the play',
       updatedAt: undefined,

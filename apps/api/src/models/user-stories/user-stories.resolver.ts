@@ -53,8 +53,6 @@ export class UserStoriesResolver {
       )
     }
 
-    console.log('args ', args)
-
     return this.userStoriesService.create(args)
   }
 

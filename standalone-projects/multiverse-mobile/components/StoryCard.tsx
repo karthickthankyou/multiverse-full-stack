@@ -30,7 +30,6 @@ export const StoryCard = ({ story }: IStoryCardProps) => {
           id={story.id}
           price={story.price}
           type={story?.userStory?.type}
-          linkInCartToCart
         />
       </View>
     </View>

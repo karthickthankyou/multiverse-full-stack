@@ -15,8 +15,7 @@ type Node {
   storyId: Int!
   author: User
   story: Story
-  parentNodes: [Choice!]
-  choiceNodes: [Choice!]
+  choices: [Choice!]
 }
 
 """
@@ -423,13 +422,7 @@ input ChoiceOrderByWithRelationInput {
 }
 
 input ChoiceWhereUniqueInput {
-  parentNodeId_choiceNodeId: ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput
   id: Int
-}
-
-input ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput {
-  parentNodeId: Int!
-  choiceNodeId: Int!
 }
 
 enum ChoiceScalarFieldEnum {
@@ -546,6 +539,7 @@ input UpdateNodeInput {
 }
 
 input CreateStoryInput {
+  price: Float!
   description: String!
   image: String!
   title: String!
@@ -563,6 +557,7 @@ input CreateNodeInputWithoutStory {
 }
 
 input UpdateStoryInput {
+  price: Float
   description: String
   image: String
   title: String

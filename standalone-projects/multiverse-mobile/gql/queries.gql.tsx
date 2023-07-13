@@ -132,7 +132,7 @@ export const nodes = gql`
       start
       storyId
       content
-      choiceNodes {
+      choices {
         id
         choiceText
         choiceNode {
@@ -153,7 +153,7 @@ export const node = gql`
       end
       start
       content
-      choiceNodes {
+      choices {
         id
         choiceText
         choiceNode {

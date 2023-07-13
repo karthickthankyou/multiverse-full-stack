@@ -66,11 +66,6 @@ export type ChoiceOrderByWithRelationInput = {
   updatedAt?: InputMaybe<SortOrder>
 }
 
-export type ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput = {
-  choiceNodeId: Scalars['Int']
-  parentNodeId: Scalars['Int']
-}
-
 export enum ChoiceScalarFieldEnum {
   ChoiceNodeId = 'choiceNodeId',
   ChoiceText = 'choiceText',
@@ -96,7 +91,6 @@ export type ChoiceWhereInput = {
 
 export type ChoiceWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>
-  parentNodeId_choiceNodeId?: InputMaybe<ChoiceParentNodeIdChoiceNodeIdCompoundUniqueInput>
 }
 
 export type CreateChoiceInput = {
@@ -137,6 +131,7 @@ export type CreateStoryInput = {
   description: Scalars['String']
   image: Scalars['String']
   nodes: Array<CreateNodeInputWithoutStory>
+  price: Scalars['Float']
   title: Scalars['String']
 }
 
@@ -325,13 +320,12 @@ export type Node = {
   __typename?: 'Node'
   author?: Maybe<User>
   authorId: Scalars['String']
-  choiceNodes?: Maybe<Array<Choice>>
+  choices?: Maybe<Array<Choice>>
   content: Scalars['String']
   createdAt: Scalars['DateTime']
   end?: Maybe<Scalars['Boolean']>
   id: Scalars['Int']
   image?: Maybe<Scalars['String']>
-  parentNodes?: Maybe<Array<Choice>>
   start?: Maybe<Scalars['Boolean']>
   story?: Maybe<Story>
   storyId: Scalars['Int']
@@ -675,6 +669,7 @@ export type UpdateStoryInput = {
   id: Scalars['Int']
   image?: InputMaybe<Scalars['String']>
   nodes?: InputMaybe<Array<CreateNodeInputWithoutStory>>
+  price?: InputMaybe<Scalars['Float']>
   title?: InputMaybe<Scalars['String']>
 }
 
@@ -942,7 +937,7 @@ export type NodesQuery = {
     start?: boolean | null
     storyId: number
     content: string
-    choiceNodes?: Array<{
+    choices?: Array<{
       __typename?: 'Choice'
       id: number
       choiceText: string
@@ -966,7 +961,7 @@ export type NodeQuery = {
     end?: boolean | null
     start?: boolean | null
     content: string
-    choiceNodes?: Array<{
+    choices?: Array<{
       __typename?: 'Choice'
       id: number
       choiceText: string
@@ -1485,7 +1480,7 @@ export const NodesDocument = /*#__PURE__*/ gql`
       start
       storyId
       content
-      choiceNodes {
+      choices {
         id
         choiceText
         choiceNode {
@@ -1554,7 +1549,7 @@ export const NodeDocument = /*#__PURE__*/ gql`
       end
       start
       content
-      choiceNodes {
+      choices {
         id
         choiceText
         choiceNode {

@@ -4,7 +4,7 @@ import { graphql } from 'msw'
 import {
   NodesQuery,
   namedOperations,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 
 const meta: Meta<typeof NodesList> = {
   component: NodesList,
@@ -33,7 +33,7 @@ export const Primary: Story = {
                     storyId: 0,
                     title: 'Story in my nodes list',
                     __typename: 'Node',
-                    choiceNodes: [
+                    choices: [
                       {
                         choiceText: 'Choice text',
                         choiceNode: { id: 1, title: 'Choice' },

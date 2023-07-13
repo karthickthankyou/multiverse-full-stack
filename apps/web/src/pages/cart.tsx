@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { Cart } from '@multiverse-org/ui/src/components/templates/Cart'
 import { SaveForLater } from '@multiverse-org/ui/src/components/templates/SaveForLater'
-import { UserStoryType } from '@multiverse-org/network/src/gql/generated'
+import { UserStoryType } from '@multiverse-org/network/src/generated'
 import { Container } from '@multiverse-org/ui/src/components/atoms/Container'
 import { HeaderText } from '@multiverse-org/ui/src/components/molecules/HeaderText'
 

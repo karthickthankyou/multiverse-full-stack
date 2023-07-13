@@ -39,3 +39,25 @@ export const AuthLayout = ({
     </Container>
   )
 }
+
+export const AuthLayoutSimple = ({
+  title,
+  children,
+  reverse = false,
+}: IAuthLayoutProps) => {
+  return (
+    <div className="flex items-center justify-center h-[calc(100vh-4rem)] bg-gray-50">
+      <div className="w-full max-w-lg p-3 bg-white">
+        <h1 className="flex items-end gap-2 mb-2 text-2xl">
+          <BrandIcon /> <div>{title}</div>
+        </h1>
+        {children}
+        <div className="mt-4 text-sm text-gray-300">
+          <Link href="/" className="flex items-center gap-2 ">
+            <IconArrowBack className="w-4 h-4" /> Back to home
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}

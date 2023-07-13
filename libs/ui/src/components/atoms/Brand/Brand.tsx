@@ -24,7 +24,7 @@ export const Brand = ({
             <BrandIcon />
             <div>
               <div className="flex gap-1">
-                <div>Multiverse</div>
+                <div>Multiverse Tales</div>
                 <span className="text-xs">{type}</span>
               </div>
               <div className="text-xs text-gray">Karthick Ragavendran</div>

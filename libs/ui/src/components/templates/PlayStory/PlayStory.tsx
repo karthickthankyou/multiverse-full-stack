@@ -2,7 +2,7 @@ import {
   StoryQuery,
   useNodeLazyQuery,
   useNodeQuery,
-} from '@multiverse-org/network/src/gql/generated'
+} from '@multiverse-org/network/src/generated'
 import { useEffect, useState } from 'react'
 import { PlainButton } from '../../atoms/PlainButton'
 import { Button } from '../../atoms/Button'
@@ -16,7 +16,7 @@ export const PlayStory = ({ story }: IPlayStoryProps) => {
   const [selectedNodeId, setSelectedNodeId] = useState<number | null>(null)
 
   return (
-    <div>
+    <div className="mb-24 ">
       <div className="flex justify-end">
         <PlainButton
           className="mt-4 text-sm"
@@ -48,15 +48,17 @@ export const Launcher = ({
           Pick one of the below beginnings.
         </div>
       ) : null}
-      {story?.startingNodes?.map((node) => (
-        <Button
-          variant={'outlined'}
-          key={node.id}
-          onClick={() => setSelectedNodeId(node.id)}
-        >
-          {node.title}
-        </Button>
-      ))}
+      <div className="flex flex-col items-start gap-3">
+        {story?.startingNodes?.map((node) => (
+          <PlainButton
+            className="py-1 transition-all hover:underline hover:underline-offset-4 hover:font-bold hover:shadow-lg"
+            key={node.id}
+            onClick={() => setSelectedNodeId(node.id)}
+          >
+            {node.title}
+          </PlainButton>
+        ))}
+      </div>
     </div>
   )
 }
@@ -71,30 +73,24 @@ export const Node = ({
   const { data, loading } = useNodeQuery({
     variables: { where: { id: nodeId } },
   })
-  console.log('data ', data)
-  const [prefetchNodes] = useNodeLazyQuery()
-  useEffect(() => {
-    if (data?.node?.choiceNodes?.length || 0 > 0) {
-      data?.node.choiceNodes?.forEach((node) => {
-        prefetchNodes({ variables: { where: { id: node.id } } })
-      })
-    }
-  }, [data?.node?.choiceNodes])
 
   if (loading) return <LoaderPanel />
   return (
     <div>
-      <div className="font-black">{data?.node.title}</div>
-      <div className="mt-2">{data?.node.content}</div>
-      <div className="flex gap-2 mt-8 text-lg">
-        {data?.node?.choiceNodes?.map((choice) => (
-          <Button
-            variant={'outlined'}
+      <div className="max-w-md font-black">{data?.node.title}</div>
+      <div className="max-w-md mt-2">{data?.node.content}</div>
+      <div className="flex flex-col items-start gap-2 mt-8 text-lg">
+        {data?.node?.choices?.map((choice) => (
+          <PlainButton
+            className="py-1 transition-all hover:underline hover:underline-offset-4 hover:font-bold hover:shadow-lg"
             key={choice.id}
-            onClick={() => setSelectedNodeId(choice.choiceNode.id)}
+            onClick={() => {
+              console.log('choice.choiceNode.id ', choice.choiceNode.id)
+              setSelectedNodeId(choice.choiceNode.id)
+            }}
           >
             {choice.choiceText}
-          </Button>
+          </PlainButton>
         ))}
       </div>
       {data?.node.end ? (
