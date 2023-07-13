@@ -15,7 +15,7 @@ import { MeilisearchModule } from './common/meilisearch/meilisearch.module'
 import { ChoicesModule } from './models/choices/choices.module'
 import { UserStoriesModule } from './models/user-stories/user-stories.module'
 import { StripeModule } from './common/stripe/stripe.module'
-import { SentryModule } from './common/sentry/sentry.MODULE'
+import { SentryModule } from './common/sentry/sentry.module'
 
 @Module({
   imports: [
