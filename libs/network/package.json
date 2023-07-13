@@ -6,6 +6,7 @@
   "dependencies": {
     "@apollo/client": "3.7.10",
     "@multiverse-org/store": "*",
+    "dotenv": "^16.3.1",
     "firebase": "9.19.0",
     "graphql": "^16.7.1",
     "graphql-request": "5.2.0",
