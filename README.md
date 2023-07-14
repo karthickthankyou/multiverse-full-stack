@@ -169,6 +169,7 @@ By adopting a monorepo approach, the project leverages code reuse and maintainab
   - [@mui/material](https://mui.com/)
   - [@headlessui/react](https://headlessui.dev/)
   - [Storybook](https://storybook.js.org/)
+  - [ThreeJS](https://threejs.org/)
 
 - Code Quality:
 
@@ -176,6 +177,7 @@ By adopting a monorepo approach, the project leverages code reuse and maintainab
   - [Prettier](https://prettier.io/)
   - [Husky](https://typicode.github.io/husky/)
   - [Lint Staged](https://github.com/okonet/lint-staged)
+  - [Sentry](https://sentry.io/)
 
 - Databases & ORM
 
