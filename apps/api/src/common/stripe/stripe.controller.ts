@@ -42,6 +42,6 @@ export class StripeController {
     })
     await Promise.all(dataPromises)
 
-    res.redirect('http://localhost:3001/purchased')
+    res.redirect(process.env.PURCHASED_REDIRECT_URL)
   }
 }
