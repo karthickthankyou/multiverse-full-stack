@@ -157,9 +157,10 @@ By adopting a monorepo approach, the project leverages code reuse and maintainab
 - Core Technologies
 
   - [React](https://reactjs.org/)
-  - [Next.js](https://nextjs.org/)
+  - [NextJs](https://nextjs.org/)
   - [NestJS](https://nestjs.com/)
   - [GraphQL](https://graphql.org/)
+  - [Typescript](https://www.typescriptlang.org/)
   - [Apollo Client](https://www.apollographql.com/docs/react/)
   - [React Native](https://reactnative.dev/)
 
