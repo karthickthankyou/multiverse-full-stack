@@ -14,6 +14,10 @@ export class MeilisearchService implements OnModuleInit {
   public client: MeiliSearch
 
   onModuleInit() {
+    console.log({
+      host: process.env.MEILI_URL,
+      apiKey: process.env.MEILI_MASTER_KEY,
+    })
     this.client = new MeiliSearch({
       host: process.env.MEILI_URL,
       apiKey: process.env.MEILI_MASTER_KEY,
