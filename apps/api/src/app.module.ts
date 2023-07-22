@@ -26,6 +26,7 @@ import { SentryModule } from './common/sentry/sentry.module'
       buildSchemaOptions: {
         numberScalarMode: 'integer',
       },
+      introspection: true,
     }),
     ConfigModule.forRoot(),
 
