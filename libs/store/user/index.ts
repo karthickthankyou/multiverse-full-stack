@@ -23,7 +23,7 @@ export const userSlice = createSlice({
       ...action.payload,
       loaded: true,
     }),
-    resetUser: () => userInitialState,
+    resetUser: () => ({ loaded: true }),
   },
 })
 

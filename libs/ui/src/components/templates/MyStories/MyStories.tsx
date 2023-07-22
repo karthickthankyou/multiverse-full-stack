@@ -42,7 +42,7 @@ export const MyStoriesList = () => {
   const { setSkip, setTake, skip, take } = useTakeSkip()
 
   const { data, loading, error } = useStoriesQuery({
-    variables: { where: { authorId: { equals: uid } } },
+    variables: { where: { authorId: { equals: uid } }, skip, take },
   })
   if (loading) {
     return <LoaderPanel text="Fetching your stories..." />
