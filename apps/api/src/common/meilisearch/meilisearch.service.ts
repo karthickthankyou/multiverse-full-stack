@@ -1,5 +1,5 @@
 // meilisearch.service.ts
-import { Injectable } from '@nestjs/common'
+import { Injectable, OnModuleInit } from '@nestjs/common'
 import { MeiliSearch } from 'meilisearch'
 
 export type Product = {
@@ -10,20 +10,16 @@ export type Product = {
 export const INDEX_NAME = 'search'
 
 @Injectable()
-export class MeilisearchService {
+export class MeilisearchService implements OnModuleInit {
   public client: MeiliSearch
 
-  constructor() {
+  onModuleInit() {
     this.client = new MeiliSearch({
       host: process.env.MEILI_URL,
       apiKey: process.env.MEILI_MASTER_KEY,
     })
 
     this.createIndex(INDEX_NAME)
-  }
-
-  async deleteIndex(indexName: string): Promise<void> {
-    await this.client.deleteIndex(indexName)
   }
 
   async createIndex(indexName: string): Promise<void> {
@@ -36,7 +32,9 @@ export class MeilisearchService {
       this.setSearchableAttributes(indexName)
     }
   }
-
+  async deleteIndex(indexName: string): Promise<void> {
+    await this.client.deleteIndex(indexName)
+  }
   async setSearchableAttributes(indexName: string): Promise<void> {
     const index = await this.client.getIndex(indexName)
     const settings = {
