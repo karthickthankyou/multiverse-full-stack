@@ -17,7 +17,7 @@ import {
 } from 'src/common/decorators/auth/auth.decorator'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Story } from '../stories/entities/story.entity'
-import { GetUserType } from '@multiverse-org/types'
+import { GetUserType } from '../../common/types'
 import { checkRowLevelPermission } from 'src/common/guards'
 
 @Resolver(() => User)

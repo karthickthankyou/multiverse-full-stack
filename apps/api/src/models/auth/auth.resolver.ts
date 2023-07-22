@@ -23,7 +23,7 @@ import {
   SetRoleInput,
 } from './dto/auth.input'
 import { checkRowLevelPermission } from 'src/common/guards'
-import { GetUserType, Role } from '@multiverse-org/types'
+import { GetUserType, Role } from '../../common/types'
 
 @Resolver(() => LoginOutput)
 export class AuthResolver {

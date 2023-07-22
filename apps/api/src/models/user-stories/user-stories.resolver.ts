@@ -16,7 +16,7 @@ import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { GetUserType } from '@multiverse-org/types'
+import { GetUserType } from '../../common/types'
 import { checkRowLevelPermission } from 'src/common/guards'
 import { User } from '../users/entities/user.entity'
 import { PrismaService } from 'src/common/prisma/prisma.service'

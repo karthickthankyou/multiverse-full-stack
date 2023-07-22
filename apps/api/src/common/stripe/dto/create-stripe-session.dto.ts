@@ -1,4 +1,4 @@
-import { StripeItemType } from '@multiverse-org/types'
+import { StripeItemType } from '../../types'
 
 export class CreateStripeDto {
   uid: string

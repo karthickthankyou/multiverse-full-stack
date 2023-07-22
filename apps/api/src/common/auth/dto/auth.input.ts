@@ -1,5 +1,5 @@
 import { Field, InputType, ObjectType, registerEnumType } from '@nestjs/graphql'
-import { Role } from '@multiverse-org/types'
+import { Role } from '../../types'
 
 @InputType()
 export class LoginInput {

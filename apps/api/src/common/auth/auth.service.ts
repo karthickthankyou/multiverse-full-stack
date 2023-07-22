@@ -11,7 +11,7 @@ import {
   RegisterInput,
 } from './dto/auth.input'
 
-import { GetUserType, Role } from '@multiverse-org/types'
+import { GetUserType, Role } from '../../common/types'
 import { FirebaseService } from 'src/common/firebase/firebase.service'
 
 @Injectable()

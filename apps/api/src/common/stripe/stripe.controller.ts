@@ -3,7 +3,7 @@ import { CreateStripeDto } from './dto/create-stripe-session.dto'
 import StripeService from './stripe.service'
 import { UserStoryType } from '@prisma/client'
 import { PrismaService } from '../prisma/prisma.service'
-import { StripeItemType } from '@multiverse-org/types'
+import { StripeItemType } from '../types'
 import { Response } from 'express'
 
 @Controller('stripe')

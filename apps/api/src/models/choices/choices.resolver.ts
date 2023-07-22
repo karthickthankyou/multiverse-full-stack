@@ -21,7 +21,7 @@ import {
 import { Node } from '../nodes/entities/node.entity'
 
 import { PrismaService } from 'src/common/prisma/prisma.service'
-import { GetUserType } from '@multiverse-org/types'
+import { GetUserType } from '../../common/types'
 import { checkRowLevelPermission } from 'src/common/guards'
 import { BadRequestException } from '@nestjs/common'
 

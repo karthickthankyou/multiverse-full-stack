@@ -1,4 +1,4 @@
-import { GetUserType, Role } from '@multiverse-org/types'
+import { GetUserType, Role } from '../../common/types'
 import { Injectable } from '@nestjs/common'
 import * as admin from 'firebase-admin'
 import { PrismaService } from '../prisma/prisma.service'

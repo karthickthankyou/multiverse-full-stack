@@ -18,7 +18,7 @@ import {
 } from 'src/common/decorators/auth/auth.decorator'
 import { MeilisearchService } from 'src/common/meilisearch/meilisearch.service'
 import { PrismaService } from 'src/common/prisma/prisma.service'
-import { GetUserType } from '@multiverse-org/types'
+import { GetUserType } from '../../common/types'
 import { checkRowLevelPermission } from 'src/common/guards'
 import { Node } from '../nodes/entities/node.entity'
 import { User } from '../users/entities/user.entity'
