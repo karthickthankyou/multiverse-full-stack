@@ -41,7 +41,6 @@ const LoginForm = ({ className }: ILoginFormProps) => {
 
   const uid = useAppSelector(selectUid)
   if (uid) {
-    notification$.next({ message: 'Logged in. Redirecting...' })
     router.push('/')
   }
 

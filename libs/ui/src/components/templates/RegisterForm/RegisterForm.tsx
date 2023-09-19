@@ -37,13 +37,12 @@ export const RegisterForm = ({ className }: { className?: string }) => {
     },
   )
 
-  //   const router = useRouter()
+  const router = useRouter()
 
   const uid = useAppSelector(selectUid)
 
   if (uid) {
-    notification$.next({ message: 'Registered. Redirecting...' })
-    // router.push('/')
+    router.push('/')
   }
 
   return (

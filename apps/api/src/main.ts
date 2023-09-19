@@ -9,6 +9,10 @@ async function bootstrap() {
   const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',')
 
   console.log(allowedOrigins)
+  console.log(
+    'process.env.PURCHASED_REDIRECT_URL',
+    process.env.PURCHASED_REDIRECT_URL,
+  )
 
   app.enableCors({
     origin: allowedOrigins,
