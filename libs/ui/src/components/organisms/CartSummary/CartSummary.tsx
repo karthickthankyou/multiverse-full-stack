@@ -72,11 +72,14 @@ export const createPaymentSession = async (
   redirectUrl: string,
   items: StripeItemType[],
 ) => {
-  const checkoutSession = await axios.post('http://localhost:3000/stripe', {
-    items,
-    redirectUrl,
-    uid,
-  })
+  const checkoutSession = await axios.post(
+    process.env.NEXT_PUBLIC_API_URL + '/stripe',
+    {
+      items,
+      redirectUrl,
+      uid,
+    },
+  )
 
   console.log('checkoutSession', checkoutSession)
 

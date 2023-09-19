@@ -50,7 +50,7 @@ export const ApolloProvider = ({ children }: IApolloProviderProps) => {
 
   //   Create an http link
   const httpLink = createHttpLink({
-    uri: process.env.NEXT_PUBLIC_API_URL,
+    uri: process.env.NEXT_PUBLIC_API_URL + '/graphql',
   })
 
   const authLink = setContext(async (_, { headers }) => {
