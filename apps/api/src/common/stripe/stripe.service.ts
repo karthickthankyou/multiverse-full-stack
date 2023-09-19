@@ -31,8 +31,8 @@ export default class StripeService {
           },
         })),
       mode: 'payment',
-      success_url: `http://localhost:3000/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${redirectUrl}/cart`,
+      success_url: process.env.STRIPE_SUCCESS_URL,
+      cancel_url: process.env.STRIPE_CANCEL_URL,
       metadata: {
         uid,
         items: JSON.stringify(items),
